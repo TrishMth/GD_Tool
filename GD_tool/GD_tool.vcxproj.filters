@@ -18,5 +18,13 @@
     <ClCompile Include="src\WinMain.cpp">
       <Filter>Sourcefiles</Filter>
     </ClCompile>
+    <ClCompile Include="src\Window.cpp">
+      <Filter>Sourcefiles</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\include\Window.h">
+      <Filter>Headerfiles</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
