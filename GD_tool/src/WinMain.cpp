@@ -1,8 +1,10 @@
 #pragma region Internal Includes
 #include "include\Window.h"
+#include "FVector1D.h"
 #pragma endregion 
 #pragma region External Includes
 #include <Windows.h>
+#include <cstdint>
 #pragma endregion 
 ///
 ///\brief
@@ -26,6 +28,7 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
 {
 	GD_Tool::Mainframework::Window* currentWindow = new GD_Tool::Mainframework::Window(); 
 	currentWindow->Init(1024, 786, hInstance, nCmdShow);
+	
 
 	return 1; 
 }
