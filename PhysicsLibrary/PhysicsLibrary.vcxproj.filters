@@ -24,12 +24,36 @@
     <ClInclude Include="src\include\FVector2D.h">
       <Filter>Headerfiles</Filter>
     </ClInclude>
+    <ClInclude Include="src\include\BaseMath.h">
+      <Filter>Headerfiles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\FVector3D.h">
+      <Filter>Headerfiles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\FVector4D.h">
+      <Filter>Headerfiles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\FMatrix4x4.h">
+      <Filter>Headerfiles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\FMatrix3x3.h">
+      <Filter>Headerfiles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\FVector1D.cpp">
       <Filter>Sourcefiles</Filter>
     </ClCompile>
     <ClCompile Include="src\FVector2D.cpp">
+      <Filter>Sourcefiles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FVector3D.cpp">
+      <Filter>Sourcefiles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FVector4D.cpp">
+      <Filter>Sourcefiles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FMatrix4x4.cpp">
       <Filter>Sourcefiles</Filter>
     </ClCompile>
   </ItemGroup>

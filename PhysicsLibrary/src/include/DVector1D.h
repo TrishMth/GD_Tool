@@ -6,9 +6,9 @@
 #pragma endregion 
 
 
-namespace GD_Tool
+namespace PhysicsLibrary
 {
-	namespace PhysicsLibrary
+	namespace Basics
 	{
 		///\class DVector1D.h "src/include/DVector1D.h
 		///\brief This is the Vector class in 1-dimension with automatically converts every input in double and calculate everything intern in the more 

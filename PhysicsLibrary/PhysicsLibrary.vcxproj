@@ -118,13 +118,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\include\BaseMath.h" />
     <ClInclude Include="src\include\DVector1D.h" />
+    <ClInclude Include="src\include\FMatrix3x3.h" />
     <ClInclude Include="src\include\FVector1D.h" />
     <ClInclude Include="src\include\FVector2D.h" />
+    <ClInclude Include="src\include\FVector3D.h" />
+    <ClInclude Include="src\include\FMatrix4x4.h" />
+    <ClInclude Include="src\include\FVector4D.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\FMatrix4x4.cpp" />
     <ClCompile Include="src\FVector1D.cpp" />
     <ClCompile Include="src\FVector2D.cpp" />
+    <ClCompile Include="src\FVector3D.cpp" />
+    <ClCompile Include="src\FVector4D.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
