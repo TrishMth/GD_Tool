@@ -56,5 +56,8 @@
     <ClCompile Include="src\FMatrix4x4.cpp">
       <Filter>Sourcefiles</Filter>
     </ClCompile>
+    <ClCompile Include="src\FMatrix3x3.cpp">
+      <Filter>Sourcefiles</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

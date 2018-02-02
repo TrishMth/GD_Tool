@@ -128,6 +128,7 @@
     <ClInclude Include="src\include\FVector4D.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\FMatrix3x3.cpp" />
     <ClCompile Include="src\FMatrix4x4.cpp" />
     <ClCompile Include="src\FVector1D.cpp" />
     <ClCompile Include="src\FVector2D.cpp" />
