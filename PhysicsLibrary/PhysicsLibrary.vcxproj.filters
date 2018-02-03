@@ -15,12 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\include\DVector1D.h">
-      <Filter>Headerfiles</Filter>
-    </ClInclude>
-    <ClInclude Include="src\include\FVector1D.h">
-      <Filter>Headerfiles</Filter>
-    </ClInclude>
     <ClInclude Include="src\include\FVector2D.h">
       <Filter>Headerfiles</Filter>
     </ClInclude>
@@ -41,9 +35,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\FVector1D.cpp">
-      <Filter>Sourcefiles</Filter>
-    </ClCompile>
     <ClCompile Include="src\FVector2D.cpp">
       <Filter>Sourcefiles</Filter>
     </ClCompile>
@@ -57,6 +48,9 @@
       <Filter>Sourcefiles</Filter>
     </ClCompile>
     <ClCompile Include="src\FMatrix3x3.cpp">
+      <Filter>Sourcefiles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseMath.cpp">
       <Filter>Sourcefiles</Filter>
     </ClCompile>
   </ItemGroup>

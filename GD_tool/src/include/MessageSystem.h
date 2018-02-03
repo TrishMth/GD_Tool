@@ -9,8 +9,8 @@ namespace GD_Tool
 {
 	namespace Mainframework
 	{
-		static std::string Log(std::string str);
-		static std::string Warning(std::string str); 
-		static std::string Error(std::string str); 
+		static void Log(std::string classOfTheMsg, std::string headingOfMsg, std::string definitionOfMsg);
+		static void Warning(std::string classOfTheMsg, std::string headingOfMsg, std::string definitionOfMsg);
+		static void Error(std::string classOfTheMsg, std::string headingOfMsg, std::string definitionOfMsg);
 	}
 }

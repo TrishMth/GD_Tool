@@ -177,7 +177,7 @@ namespace PhysicsLibrary
 			* @param vec The Vector2D yout want to set as part of the current Vector
 			* @param float The variable you want to set as the Z variable of the Vector3D
 			*/
-			inline void SetVector2D(const FVector2D& vec, const float& Z) { m_XValue = vec.GetX(); m_YValue = vec.GetY(); m_ZValue = Z; }
+			//inline void SetVector2D(const PhysicsLibrary::Basics::FVector2D& vec, const float& Z) { m_XValue = vec.GetX(); m_YValue = vec.GetY(); m_ZValue = Z; }
 			/**
 			* Getter function for Vector3D
 			* 

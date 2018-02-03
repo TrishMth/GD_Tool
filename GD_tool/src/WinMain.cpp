@@ -1,5 +1,6 @@
 #pragma region Internal Includes
 #include "include\Window.h"
+#include "FVector3D.h"
 #pragma endregion 
 #pragma region External Includes
 #include <Windows.h>
@@ -26,6 +27,10 @@
 
 int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
+	PhysicsLibrary::Basics::FVector3D* vec = new PhysicsLibrary::Basics::FVector3D();
+	
+
+
 	GD_Tool::Mainframework::Window* currentWindow = new GD_Tool::Mainframework::Window(); 
 	currentWindow->Init(1024, 786, hInstance, nCmdShow);
 	
