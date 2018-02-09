@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Inherited Headerfiles">
+      <UniqueIdentifier>{5ed87467-a8eb-490d-aed7-1fe6a515a267}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\WinMain.cpp">
@@ -24,6 +27,9 @@
     <ClCompile Include="src\MessageSystem.cpp">
       <Filter>Sourcefiles</Filter>
     </ClCompile>
+    <ClCompile Include="src\Object.cpp">
+      <Filter>Sourcefiles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\include\Window.h">
@@ -31,6 +37,15 @@
     </ClInclude>
     <ClInclude Include="src\include\MessageSystem.h">
       <Filter>Headerfiles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Object.h">
+      <Filter>Headerfiles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\IBaseVariable.h">
+      <Filter>Headerfiles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\IntegerVariable.h">
+      <Filter>Inherited Headerfiles</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
