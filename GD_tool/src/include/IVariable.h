@@ -19,14 +19,14 @@ namespace GD_Tool
 {
 	namespace Mainframework
 	{
-		class IBaseVariable
+		class IVariable
 		{
 		public:
 			/** 
 			* Default Constructor of the Variable class
 			* @param type The type of the Variable you want to create 
 			*/
-			IBaseVariable(const EVariableTypes& type) : m_variableType(type) {};
+			IVariable(const EVariableTypes& type) : m_variableType(type) {};
 			/**
 			* Getter method to get the current type of the Variable
 			* return EVariableTypes The type of the current variable
@@ -39,7 +39,7 @@ namespace GD_Tool
 			/** 
 			* Default Destructor of the Variable class
 			*/
-			~IBaseVariable() {};
+			~IVariable() {};
 		private: 
 			EVariableTypes m_variableType; 
 		};
