@@ -145,6 +145,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\FloatVariable.cpp" />
+    <ClCompile Include="src\FormulaSystem.cpp" />
     <ClCompile Include="src\IntegerVariable.cpp" />
     <ClCompile Include="src\MessageSystem.cpp" />
     <ClCompile Include="src\Object.cpp" />
@@ -154,6 +155,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\include\FloatVariable.h" />
+    <ClInclude Include="src\include\FormulaSystem.h" />
     <ClInclude Include="src\include\IntegerVariable.h" />
     <ClInclude Include="src\include\IVariable.h" />
     <ClInclude Include="src\include\MessageSystem.h" />

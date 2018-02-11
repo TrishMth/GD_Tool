@@ -48,6 +48,9 @@
     <ClCompile Include="src\ProjectManager.cpp">
       <Filter>Manager Sourcefiles</Filter>
     </ClCompile>
+    <ClCompile Include="src\FormulaSystem.cpp">
+      <Filter>Sourcefiles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\include\Window.h">
@@ -70,6 +73,9 @@
     </ClInclude>
     <ClInclude Include="src\include\ProjectManager.h">
       <Filter>Manager Headerfiles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\FormulaSystem.h">
+      <Filter>Headerfiles</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
