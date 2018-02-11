@@ -45,13 +45,13 @@ namespace GD_Tool
 			* Method to add some variables to the objcet
 			* @param variable The current Variable you want to add to the Object
 			*/
-			void AddVariable(IVariable* variable);
+			void AddVariable(const IVariable& variable);
 			/**
 			* Default Destructor of the Object Class
 			*/
 			~Object(); 
 		private: 
-			std::vector<IVariable*> m_variables;
+			std::vector<IVariable> m_variables;
 			std::vector<Object*> m_attachedObjs; 
 			uint32_t m_objIndex; 
 			std::string m_name;

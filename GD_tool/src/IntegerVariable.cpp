@@ -1,6 +1,6 @@
 #include "include\IntegerVariable.h"
 
-GD_Tool::Mainframework::IntegerVariable::IntegerVariable(const int32_t value, const std::string& name)
+GD_Tool::Mainframework::IntegerVariable::IntegerVariable(const int32_t& value, const std::string& name)
 	:IVariable(EVariableTypes::Integer, name)
 	,m_value(value)
 {

@@ -11,16 +11,16 @@ namespace GD_Tool
 {
 	namespace Mainframework
 	{
-		class IntegerVariable : IVariable
+		class IntegerVariable : public IVariable
 		{
 		public:
 			/**
-			*Default Constructor of the IntegerVariable class which inherits from IVariable
+			* Default Constructor of the IntegerVariable class which inherits from IVariable
 			*
 			* @param type The type of the current Variable
 			* @param value The value of the current Variable
 			*/
-			IntegerVariable(const int32_t value, const std::string& name);
+			IntegerVariable(const int32_t& value, const std::string& name);
 			/**
 			* Getter function, to get the value of the integer variable
 			* 

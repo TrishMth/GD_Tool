@@ -12,7 +12,6 @@ enum class EVariableTypes
 	Boolean, 
 	Float, 
 	Double, 
-	String
 };
 
 namespace GD_Tool

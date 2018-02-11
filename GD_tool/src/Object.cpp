@@ -26,7 +26,7 @@ void GD_Tool::Mainframework::Object::SetIndex(const uint32_t& index)
 	m_objIndex = index; 
 }
 
-void GD_Tool::Mainframework::Object::AddVariable(IVariable* variable)
+void GD_Tool::Mainframework::Object::AddVariable(const IVariable& variable)
 {
 	m_variables.push_back(variable); 
 }
