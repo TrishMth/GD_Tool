@@ -1,7 +1,8 @@
 #include "include\Object.h"
 
-GD_Tool::Mainframework::Object::Object(const uint32_t& objIndex)
+GD_Tool::Mainframework::Object::Object(const uint32_t& objIndex, const std::string& name)
 	:m_objIndex(objIndex)
+	,m_name(name)
 {
 
 }
@@ -25,7 +26,7 @@ void GD_Tool::Mainframework::Object::SetIndex(const uint32_t& index)
 	m_objIndex = index; 
 }
 
-void GD_Tool::Mainframework::Object::AddVariable(IBaseVariable* variable)
+void GD_Tool::Mainframework::Object::AddVariable(IVariable* variable)
 {
 	m_variables.push_back(variable); 
 }

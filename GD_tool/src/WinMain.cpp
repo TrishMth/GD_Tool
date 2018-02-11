@@ -1,5 +1,9 @@
 #pragma region Internal Includes
 #include "include\Window.h"
+#include "include\IntegerVariable.h"
+#include "include\ProjectManager.h"
+#include "include\Object.h"
+#include "include\IVariable.h"
 #pragma endregion 
 #pragma region External Includes
 #include <Windows.h>
@@ -26,7 +30,12 @@
 
 int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-
+	
+	GD_Tool::Mainframework::ProjectManager* proMan = new GD_Tool::Mainframework::ProjectManager("THE PROJECT"); 
+	proMan->CreateObject("THE OBJECT");
+	std::vector<GD_Tool::Mainframework::Object*> currentObjects = proMan->GetObjects();
+	GD_Tool::Mainframework::IntegerVariable* intVar = new GD_Tool::Mainframework::IntegerVariable(12, "x");
+	GD_Tool::Mainframework::IVariable* BaseVar = new GD_Tool::Mainframework::IVariable(EVariableTypes::Integer, "BaseVar");
 
 	GD_Tool::Mainframework::Window* currentWindow = new GD_Tool::Mainframework::Window(); 
 	currentWindow->Init(1024, 786, hInstance, nCmdShow);

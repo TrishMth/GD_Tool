@@ -144,16 +144,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\FloatVariable.cpp" />
+    <ClCompile Include="src\IntegerVariable.cpp" />
     <ClCompile Include="src\MessageSystem.cpp" />
     <ClCompile Include="src\Object.cpp" />
+    <ClCompile Include="src\ProjectManager.cpp" />
     <ClCompile Include="src\Window.cpp" />
     <ClCompile Include="src\WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\include\FloatVariable.h" />
     <ClInclude Include="src\include\IntegerVariable.h" />
+    <ClInclude Include="src\include\IVariable.h" />
     <ClInclude Include="src\include\MessageSystem.h" />
     <ClInclude Include="src\include\Object.h" />
-    <ClInclude Include="src\include\IBaseVariable.h" />
+    <ClInclude Include="src\include\ProjectManager.h" />
     <ClInclude Include="src\include\Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -16,6 +16,15 @@
     <Filter Include="Inherited Headerfiles">
       <UniqueIdentifier>{5ed87467-a8eb-490d-aed7-1fe6a515a267}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Inherited Sourcefiles">
+      <UniqueIdentifier>{ede66a76-9fca-4124-9d49-12594a7f9d9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager Headerfiles">
+      <UniqueIdentifier>{0efcd457-8106-44df-9ed7-bab73eed8c46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager Sourcefiles">
+      <UniqueIdentifier>{0e263123-ecd8-47cb-8eb7-99d2b48e2a67}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\WinMain.cpp">
@@ -30,6 +39,15 @@
     <ClCompile Include="src\Object.cpp">
       <Filter>Sourcefiles</Filter>
     </ClCompile>
+    <ClCompile Include="src\IntegerVariable.cpp">
+      <Filter>Inherited Sourcefiles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FloatVariable.cpp">
+      <Filter>Inherited Sourcefiles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ProjectManager.cpp">
+      <Filter>Manager Sourcefiles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\include\Window.h">
@@ -41,11 +59,17 @@
     <ClInclude Include="src\include\Object.h">
       <Filter>Headerfiles</Filter>
     </ClInclude>
-    <ClInclude Include="src\include\IBaseVariable.h">
-      <Filter>Headerfiles</Filter>
-    </ClInclude>
     <ClInclude Include="src\include\IntegerVariable.h">
       <Filter>Inherited Headerfiles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\IVariable.h">
+      <Filter>Headerfiles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\FloatVariable.h">
+      <Filter>Inherited Headerfiles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\ProjectManager.h">
+      <Filter>Manager Headerfiles</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

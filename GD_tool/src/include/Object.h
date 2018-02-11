@@ -18,7 +18,7 @@ namespace GD_Tool
 			/**
 			* Default Constructor of the Object Class
 			*/
-			Object(const uint32_t& objIndex); 
+			Object(const uint32_t& objIndex, const std::string& name); 
 			/**
 			* Method to add another Object to this Object 
 			* @param obj The Object you wants to add to the current object
@@ -54,6 +54,7 @@ namespace GD_Tool
 			std::vector<IVariable*> m_variables;
 			std::vector<Object*> m_attachedObjs; 
 			uint32_t m_objIndex; 
+			std::string m_name;
 		};
 	}
 }
