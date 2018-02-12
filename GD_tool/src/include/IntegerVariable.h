@@ -28,6 +28,77 @@ namespace GD_Tool
 			*/
 			int32_t GetValue() const; 
 
+			/**
+			* Static function to add an int variable to another
+			* 
+			* @param value1 The integer value you want to add another to
+			* @param value2 The integer value you want to add to the other value.
+			* @return The calculated value
+			*/
+			int32_t static AddInt(const int32_t& value1, const int32_t& value2) { return value1 + value2;  }
+			/**
+			* Static function to add a float value to an integer value 
+			* 
+			* @param value1 The value you want to add another to 
+			* @param value2 The value you want to add to an other value
+			* @return The calculated value as float value
+			*/
+			float static AddFloat(const int32_t& value1, const int32_t& value2) { return value1 + value2; }
+			
+			/**
+			* Static function to substract an integer value from another 
+			* 
+			* @param value1 The value where you want to substract the other from 
+			* @param value2 The value you want to substract from the other
+			* @return The calculated result as int value
+			*/
+			int32_t static SubstractInt(const int32_t& value1, const int32_t& value2) { return value1 - value2; }
+			/**
+			* Static function to substract a float value from an integer value 
+			* 
+			* @param value1 The value you want to substract the other from 
+			* @param value2 The value you want to substract from the other
+			* @return The calculated result as float value 
+			*/
+			float static SubstractFloat(const int32_t& value1, const float& value2) { return value1 - value2; }
+
+			/**
+			* Static function to multiplicate an integer with another 
+			* 
+			* @param value1 The value you want to multiplicate another to 
+			* @param value2 The value you want to multiplicate to the other 
+			* @return The calculated result as int value
+			*/
+			int32_t static MultiplicatInt(const int32_t& value1, const int32_t& value2) { return value1*value2; }
+			/**
+			* Static function to multiplicate an float to an integer value 
+			* 
+			* @param value1 The value you want to multiplicate another to 
+			* @param value2 The value you want to multiplicate to the other 
+			* @return The calculcated result as float value 
+			*/
+			float static MultiplicateFloat(const int32_t& value1, const float& value2) { return value1*value2;  }
+			
+			/**
+			* Static function to divide an integer through another 
+			*
+			* @param value1 The value where you want to divide through 
+			* @param value2 The value you want to divide through the other 
+			* @return The calculated result as int value 
+			*/
+			int32_t static DivideInt(const int32_t& value1, const int32_t& value2) { return value1 / value2; }
+			/** 
+			* Static function to divide an float through an integer value 
+			* 
+			* @param value1 The value where you want to divide through 
+			* @param value2 The value you want to divide through the other 
+			* @return The calculated result as float value
+			*/
+			float static DivideFloat(const int32_t& value1, const float& value2) { return value1 / value2;  }
+
+			bool static Equal(const int32_t& value1, const int32_t value2) { return value1 == value2 ? true : false; }
+
+			bool static NotEqual(const int32_t& value1, const int32_t value2) { return value1 != value2 ? true : false; }
 
 
 

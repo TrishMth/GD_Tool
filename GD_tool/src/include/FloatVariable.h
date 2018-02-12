@@ -28,8 +28,16 @@ namespace GD_Tool
 			*/
 			int32_t GetValue() const;
 
-
-
+			float static AddInt(const float& value1, const int32_t& value2) { return value1 + value2; }
+			float static AddFloat(const float& value1, const float& value2) { return value1 + value2; }
+			float static SubstractInt(const float& value1, const int32_t& value2) { return value1 - value2; }
+			float static SubstractFloat(const float& value1, const float& value2) { return value1 - value2; }
+			float static MultiplicateInt(const float& value1, const int32_t& value2) { return value1 * value2; }
+			float static MultiplicateFloat(const float& value1, const float& value2) { return value1 * value2; }
+			float static DivideInt(const float& value1, const int32_t& value2) {return value1 / value2;}
+			float static DivideFloat(const float& value1, const float& value2) { return value1 / value2; } 
+			bool static Equal(const float& value1, const float& value2); 
+			bool static NotEqual(const float& value1, const float& value2); 
 
 			/**
 			* Operator override for the add operator (int32_t)
