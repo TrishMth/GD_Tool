@@ -18,14 +18,14 @@ namespace GD_Tool
 {
 	namespace Mainframework
 	{
-		class IVariable
+		class BaseVariable
 		{
 		public:
 			/** 
 			* Default Constructor of the Variable class
 			* @param type The type of the Variable you want to create 
 			*/
-			IVariable(const EVariableTypes& type, const std::string& name) : m_variableType(type), m_name(name) {};
+			BaseVariable(const EVariableTypes& type, const std::string& name) : m_variableType(type), m_name(name) {};
 			/**
 			* Getter function to get the name of the variable
 			* 
@@ -46,7 +46,7 @@ namespace GD_Tool
 			/** 
 			* Default Destructor of the Variable class
 			*/
-			~IVariable() {};
+			~BaseVariable() {};
 		private: 
 			EVariableTypes m_variableType; 
 			std::string m_name;

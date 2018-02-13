@@ -145,7 +145,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\FloatVariable.cpp" />
-    <ClCompile Include="src\FormulaSystem.cpp" />
+    <ClCompile Include="src\Formula.cpp" />
     <ClCompile Include="src\IntegerVariable.cpp" />
     <ClCompile Include="src\MessageSystem.cpp" />
     <ClCompile Include="src\Object.cpp" />
@@ -154,10 +154,15 @@
     <ClCompile Include="src\WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\include\BaseNode.h" />
+    <ClInclude Include="src\include\FloatAddFloatNode.h" />
+    <ClInclude Include="src\include\FloatAddIntNode.h" />
+    <ClInclude Include="src\include\IntAddFloatNode.h" />
+    <ClInclude Include="src\include\IntAddIntNode.h" />
     <ClInclude Include="src\include\FloatVariable.h" />
-    <ClInclude Include="src\include\FormulaSystem.h" />
+    <ClInclude Include="src\include\Formula.h" />
     <ClInclude Include="src\include\IntegerVariable.h" />
-    <ClInclude Include="src\include\IVariable.h" />
+    <ClInclude Include="src\include\BaseVariable.h" />
     <ClInclude Include="src\include\MessageSystem.h" />
     <ClInclude Include="src\include\Object.h" />
     <ClInclude Include="src\include\ProjectManager.h" />

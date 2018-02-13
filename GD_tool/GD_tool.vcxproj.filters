@@ -25,6 +25,9 @@
     <Filter Include="Manager Sourcefiles">
       <UniqueIdentifier>{0e263123-ecd8-47cb-8eb7-99d2b48e2a67}</UniqueIdentifier>
     </Filter>
+    <Filter Include="NodeSystem Headerfiles">
+      <UniqueIdentifier>{7df06475-c793-4a84-af9e-5ac70dca2f0b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\WinMain.cpp">
@@ -48,7 +51,7 @@
     <ClCompile Include="src\ProjectManager.cpp">
       <Filter>Manager Sourcefiles</Filter>
     </ClCompile>
-    <ClCompile Include="src\FormulaSystem.cpp">
+    <ClCompile Include="src\Formula.cpp">
       <Filter>Sourcefiles</Filter>
     </ClCompile>
   </ItemGroup>
@@ -65,17 +68,32 @@
     <ClInclude Include="src\include\IntegerVariable.h">
       <Filter>Inherited Headerfiles</Filter>
     </ClInclude>
-    <ClInclude Include="src\include\IVariable.h">
-      <Filter>Headerfiles</Filter>
-    </ClInclude>
     <ClInclude Include="src\include\FloatVariable.h">
       <Filter>Inherited Headerfiles</Filter>
     </ClInclude>
     <ClInclude Include="src\include\ProjectManager.h">
       <Filter>Manager Headerfiles</Filter>
     </ClInclude>
-    <ClInclude Include="src\include\FormulaSystem.h">
+    <ClInclude Include="src\include\Formula.h">
       <Filter>Headerfiles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\IntAddIntNode.h">
+      <Filter>NodeSystem Headerfiles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\FloatAddIntNode.h">
+      <Filter>NodeSystem Headerfiles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\IntAddFloatNode.h">
+      <Filter>NodeSystem Headerfiles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\FloatAddFloatNode.h">
+      <Filter>NodeSystem Headerfiles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\BaseVariable.h">
+      <Filter>Headerfiles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\BaseNode.h">
+      <Filter>NodeSystem Headerfiles</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
