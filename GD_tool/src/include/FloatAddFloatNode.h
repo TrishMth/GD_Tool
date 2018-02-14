@@ -16,7 +16,7 @@ namespace GD_Tool
 		private:			
 			float m_value;
 		public:
-			FloatAddFloatNode(const int32_t& value) :m_value(value), BaseNode(EVariableTypes::Float) {};
+			FloatAddFloatNode(const int32_t& value) :m_value(value), BaseNode(ENodeType::Operator) {};
 			void AddInt(const float& value) { m_value += value;}
 			float GetValue() { return m_value; }
 			~FloatAddFloatNode() {}

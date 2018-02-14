@@ -16,7 +16,7 @@ namespace GD_Tool
 		private: 
 			int32_t m_value; 
 		public: 
-			IntAddIntNode(const int32_t& value) :m_value(value), BaseNode(EVariableTypes::Integer) {};
+			IntAddIntNode(const int32_t& value) :m_value(value), BaseNode(ENodeType::Operator) {};
 			void AddInt(const int32_t& value) { m_value += value; }
 			int32_t GetValue() { return m_value; }
 			~IntAddIntNode() {}
