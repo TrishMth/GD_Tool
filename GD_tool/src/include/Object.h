@@ -1,7 +1,6 @@
 #pragma once
 #pragma region Internal Includes
-#include "IntegerVariable.h"
-#include "IVariable.h"
+#include "BaseVariable.h"
 #pragma endregion 
 #pragma region External Includes
 #include <string>
@@ -45,13 +44,19 @@ namespace GD_Tool
 			* Method to add some variables to the objcet
 			* @param variable The current Variable you want to add to the Object
 			*/
-			void AddVariable(const IVariable& variable);
+			void AddVariable(const BaseVariable& variable);
+			/** 
+			* Getter function to get the variables attached to the obj
+			* 
+			* @return All variables of this obj
+			*/
+			std::vector<BaseVariable> GetVariables() const ; 
 			/**
 			* Default Destructor of the Object Class
 			*/
 			~Object(); 
 		private: 
-			std::vector<IVariable> m_variables;
+			std::vector<BaseVariable> m_variables;
 			std::vector<Object*> m_attachedObjs; 
 			uint32_t m_objIndex; 
 			std::string m_name;

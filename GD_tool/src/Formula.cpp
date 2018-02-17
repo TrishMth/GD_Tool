@@ -1,12 +1,12 @@
 #include "include\Formula.h"
 
-bool GD_Tool::Mainframework::Formula::AddNode(BaseNode* node)
+void GD_Tool::Mainframework::Formula::CreateNode(const ENodeType& type)
 {
-	if (m_variable.GetType == node->GetVarType())
-	{
-		m_nodes.push_back(node);
-		return true;
-	}
-	else
-		return false;
+	BaseNode* newNode = new BaseNode(type); 
+	AddNode(newNode); 
+}
+
+void GD_Tool::Mainframework::Formula::AddNode(BaseNode* node)
+{
+	m_nodes.push_back(node);
 }

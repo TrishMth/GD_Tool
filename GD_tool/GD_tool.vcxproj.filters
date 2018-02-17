@@ -28,6 +28,15 @@
     <Filter Include="NodeSystem Headerfiles">
       <UniqueIdentifier>{7df06475-c793-4a84-af9e-5ac70dca2f0b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GlobalsHeader">
+      <UniqueIdentifier>{eb364976-e656-4fd8-9025-29f677fff608}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Save/Load SystemHeaders">
+      <UniqueIdentifier>{1412a8d3-1218-4efc-b483-24ae6a4c2ce0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Save/Load SystemSource">
+      <UniqueIdentifier>{fcb1bc87-20f1-4d9a-967b-8d531108ca91}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\WinMain.cpp">
@@ -54,6 +63,12 @@
     <ClCompile Include="src\Formula.cpp">
       <Filter>Sourcefiles</Filter>
     </ClCompile>
+    <ClCompile Include="src\SaveSystem.cpp">
+      <Filter>Save/Load SystemSource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LoadSystem.cpp">
+      <Filter>Save/Load SystemSource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\include\Window.h">
@@ -77,23 +92,32 @@
     <ClInclude Include="src\include\Formula.h">
       <Filter>Headerfiles</Filter>
     </ClInclude>
-    <ClInclude Include="src\include\IntAddIntNode.h">
-      <Filter>NodeSystem Headerfiles</Filter>
-    </ClInclude>
-    <ClInclude Include="src\include\FloatAddIntNode.h">
-      <Filter>NodeSystem Headerfiles</Filter>
-    </ClInclude>
-    <ClInclude Include="src\include\IntAddFloatNode.h">
-      <Filter>NodeSystem Headerfiles</Filter>
-    </ClInclude>
-    <ClInclude Include="src\include\FloatAddFloatNode.h">
+    <ClInclude Include="src\include\BaseNode.h">
       <Filter>NodeSystem Headerfiles</Filter>
     </ClInclude>
     <ClInclude Include="src\include\BaseVariable.h">
       <Filter>Headerfiles</Filter>
     </ClInclude>
-    <ClInclude Include="src\include\BaseNode.h">
+    <ClInclude Include="src\include\GlobalEnums.h">
+      <Filter>GlobalsHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\OperatorNodes.h">
       <Filter>NodeSystem Headerfiles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\AddNode.h">
+      <Filter>NodeSystem Headerfiles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\VariableNodes.h">
+      <Filter>NodeSystem Headerfiles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\GlobalStructs.h">
+      <Filter>GlobalsHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\SaveSystem.h">
+      <Filter>Save/Load SystemHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LoadSystem.h">
+      <Filter>Save/Load SystemHeaders</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

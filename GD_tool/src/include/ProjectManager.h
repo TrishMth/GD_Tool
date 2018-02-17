@@ -1,8 +1,10 @@
 #pragma once
 #pragma region Internal Includes
 #include "IntegerVariable.h"
-#include "IVariable.h"
+#include "BaseVariable.h"
 #include "Object.h"
+#include "Formula.h"
+#include "GlobalStructs.h"
 #pragma endregion 
 #pragma region External Includes
 #include <string>
@@ -46,10 +48,30 @@ namespace GD_Tool
 			* @param obj The object you want to add to the current project
 			*/
 			void AddObject(Object* obj);
+			/**
+			* Function to create a new Variable in the current project
+			*
+			*/
+			void CreateVariable();
+			/**
+			* Function to create a new Formula in the current project
+			*
+			*/
+			void CreateFormula(); 
+			/**
+			* Function to package the project and save the current project
+			*
+			* @return ProjectPackage The struct of the packaged project.
+			*/
+			ProjectPackage PackageProject(); 
 		private: 
 			std::string m_name; 
 			uint32_t m_objIndex; 
+			uint32_t m_varIndex; 
+			uint32_t m_formulaIndex; 
 			std::vector<Object*> m_baseObjects;
+			std::vector<BaseVariable> m_variables; 
+			std::vector<Formula*> m_formulas; 
 		};
 	}
 }

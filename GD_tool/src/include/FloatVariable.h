@@ -1,7 +1,7 @@
 #pragma once
 #pragma region Internal Includes
-#include "IVariable.h"
-#include "IntegerVariable.h"
+#include "BaseVariable.h"
+#include "BaseNode.h"
 #pragma endregion 
 #pragma region External Includes
 #include <string>
@@ -11,11 +11,11 @@ namespace GD_Tool
 {
 	namespace Mainframework
 	{
-		class FloatVariable :public IVariable
+		class FloatVariable : public BaseVariable, public BaseNode
 		{
 		public: 
 			/**
-			*Default Constructor of the FloatVariable class which inherits from IVariable
+			*Default Constructor of the FloatVariable class which inherits from BaseVariable
 			*
 			* @param type The type of the current Variable
 			* @param value The value of the current Variable

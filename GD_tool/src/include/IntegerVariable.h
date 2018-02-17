@@ -1,7 +1,7 @@
 #pragma once
 #pragma region Internal Includes
-#include "IVariable.h"
-#include "FloatVariable.h"
+#include "BaseVariable.h"
+#include "BaseNode.h"
 #pragma endregion 
 #pragma region External Includes
 #include <string>
@@ -11,7 +11,7 @@ namespace GD_Tool
 {
 	namespace Mainframework
 	{
-		class IntegerVariable : public IVariable
+		class IntegerVariable : public BaseVariable, public BaseNode
 		{
 		public:
 			/**
@@ -27,7 +27,18 @@ namespace GD_Tool
 			* @return The value of the integer variable
 			*/
 			int32_t GetValue() const; 
-
+			/**
+			* Setter function to change the value of this Integer manually
+			* 
+			* @param value The new value of this integer
+			*/
+			void SetValue(const int32_t& value); 
+			/**
+			* Setter function to change the value of this Integer maually 
+			* 
+			* @param value The float value you want to set as value of this integer. (Warning: possible Data loss!)
+			*/
+			void SetValue(const float& value); 
 			/**
 			* Static function to add an int variable to another
 			* 
@@ -43,7 +54,7 @@ namespace GD_Tool
 			* @param value2 The value you want to add to an other value
 			* @return The calculated value as float value
 			*/
-			float static AddFloat(const int32_t& value1, const int32_t& value2) { return value1 + value2; }
+			float static AddFloat(const float& value1, const float& value2) { return value1 + value2; }
 			
 			/**
 			* Static function to substract an integer value from another 

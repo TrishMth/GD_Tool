@@ -9,7 +9,8 @@ GD_Tool::Mainframework::Object::Object(const uint32_t& objIndex, const std::stri
 
 void GD_Tool::Mainframework::Object::AddObject(Object* obj)
 {
-	m_attachedObjs.push_back(obj); 
+	if(obj->GetIndex() != m_objIndex)
+		m_attachedObjs.push_back(obj); 
 }
 
 void GD_Tool::Mainframework::Object::RemoveObject(const uint32_t& index)
@@ -26,9 +27,14 @@ void GD_Tool::Mainframework::Object::SetIndex(const uint32_t& index)
 	m_objIndex = index; 
 }
 
-void GD_Tool::Mainframework::Object::AddVariable(const IVariable& variable)
+void GD_Tool::Mainframework::Object::AddVariable(const BaseVariable& variable)
 {
 	m_variables.push_back(variable); 
+}
+
+std::vector<GD_Tool::Mainframework::BaseVariable> GD_Tool::Mainframework::Object::GetVariables() const
+{
+	return m_variables; 
 }
 
 GD_Tool::Mainframework::Object::~Object()
