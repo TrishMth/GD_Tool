@@ -1,15 +1,10 @@
 #include "include\IntegerVariable.h"
 
 GD_Tool::Mainframework::IntegerVariable::IntegerVariable(const int32_t& value, const std::string& name)
-	:BaseVariable(EVariableTypes::Integer, name)
+	:BaseVariable(EVariableTypes::Integer, name, value)
 	,m_value(value)
 	,BaseNode(ENodeType::Variable)
 {
-}
-
-int32_t GD_Tool::Mainframework::IntegerVariable::GetValue() const
-{
-	return m_value;
 }
 
 void GD_Tool::Mainframework::IntegerVariable::SetValue(const int32_t & value)

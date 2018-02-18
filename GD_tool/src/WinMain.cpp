@@ -34,8 +34,10 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
 	GD_Tool::Mainframework::ProjectManager* proMan = new GD_Tool::Mainframework::ProjectManager("THE PROJECT"); 
 	proMan->CreateObject("THE OBJECT");
 	std::vector<GD_Tool::Mainframework::Object*> currentObjects = proMan->GetObjects();
-	GD_Tool::Mainframework::IntegerVariable IntVar(12.5f, "x");
+	GD_Tool::Mainframework::IntegerVariable IntVar(12, "x");
 	currentObjects[0]->AddVariable(IntVar);
+
+	proMan->PackageProject();
 
 	GD_Tool::Mainframework::Window* currentWindow = new GD_Tool::Mainframework::Window(); 
 	currentWindow->Init(1024, 786, hInstance, nCmdShow);

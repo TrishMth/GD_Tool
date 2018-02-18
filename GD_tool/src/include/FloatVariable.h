@@ -21,12 +21,6 @@ namespace GD_Tool
 			* @param value The value of the current Variable
 			*/
 			FloatVariable(const float& value, const std::string& name);
-			/**
-			* Getter function, to get the value of the integer variable
-			*
-			* @return The value of the integer variable
-			*/
-			int32_t GetValue() const;
 
 			float static AddInt(const float& value1, const int32_t& value2) { return value1 + value2; }
 			float static AddFloat(const float& value1, const float& value2) { return value1 + value2; }

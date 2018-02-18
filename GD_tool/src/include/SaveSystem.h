@@ -20,6 +20,21 @@ namespace GD_Tool
 		{
 		private: 
 			ProjectPackage m_currentProject; 
+			/**
+			* Private function to get all informations out of the package and compress them in a single string to write in a .txt file
+			*/
+			void BreakDownStruct();
+			/**
+			* Private function to spread out the objects 
+			*
+			* @param obj The Object you want to spread out 
+			* @return The objects spread out as string 
+			*/
+			std::string SpreadOutObject(Object* obj);
+			/**
+			* Private function to save all informations into a text file 
+			*/
+			void SaveProject(std::string informationsToSave); 
 		public: 
 			/**
 			* Default Constructor of the SaveSystem

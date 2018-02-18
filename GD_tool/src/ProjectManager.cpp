@@ -3,6 +3,9 @@
 GD_Tool::Mainframework::ProjectManager::ProjectManager(const std::string name)
 	:m_name(name)
 	,m_objIndex(0)
+	,m_saveSystem(nullptr)
+	,m_varIndex(0)
+	,m_formulaIndex(0)
 {
 }
 
@@ -52,5 +55,7 @@ GD_Tool::Mainframework::ProjectPackage GD_Tool::Mainframework::ProjectManager::P
 	package.ObjIndex = m_objIndex; 
 	package.VariableIndex = m_varIndex; 
 	package.Variables = m_variables; 
+	m_saveSystem = new SaveSystem(package);
+	return package; 
 }
 

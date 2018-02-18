@@ -19,6 +19,12 @@ namespace GD_Tool
 			*/
 			Object(const uint32_t& objIndex, const std::string& name); 
 			/**
+			* Getter function to get the name of the object
+			*
+			* @return The name of the Object
+			*/
+			std::string GetName() const { return m_name; }
+			/**
 			* Method to add another Object to this Object 
 			* @param obj The Object you wants to add to the current object
 			*/
@@ -41,6 +47,18 @@ namespace GD_Tool
 			*/
 			void SetIndex(const uint32_t& index);
 			/**
+			* Getter function to get the attached objs on this object
+			*
+			* @return The objects attached to this obj
+			*/
+			std::vector<Object*> GetAttachedObjs() const { return m_attachedObjs; }
+			/**
+			* Getter function to get the index of the attached Objects
+			*
+			* @return The index of the attached Objects
+			*/
+			uint32_t GetAttachedIndex() const { return m_attachedIndex; }
+			/**
 			* Method to add some variables to the objcet
 			* @param variable The current Variable you want to add to the Object
 			*/
@@ -58,7 +76,9 @@ namespace GD_Tool
 		private: 
 			std::vector<BaseVariable> m_variables;
 			std::vector<Object*> m_attachedObjs; 
+			uint32_t m_attachedIndex; 
 			uint32_t m_objIndex; 
+			uint32_t m_variableIndex; 
 			std::string m_name;
 		};
 	}

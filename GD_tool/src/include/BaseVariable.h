@@ -15,12 +15,41 @@ namespace GD_Tool
 	{
 		class BaseVariable
 		{
+		private: 
+			EVariableTypes m_variableType; 
+			int32_t m_iValue; 
+			float m_fValue; 
+			bool m_bValue; 
+			double m_dValue; 
+			std::string m_name;
+			bool m_isPublic; 
 		public:
 			/** 
-			* Default Constructor of the Variable class
+			* Default Constructor of the Variable class (int)
 			* @param type The type of the Variable you want to create 
 			*/
-			BaseVariable(const EVariableTypes& type, const std::string& name) : m_variableType(type), m_name(name), m_isPublic(true) {};
+			BaseVariable(const EVariableTypes& type, const std::string& name, const int32_t& value) : m_variableType(type), m_name(name), m_isPublic(true), m_iValue(value), m_fValue(0), m_dValue(0), m_bValue(0) {};
+			/**
+			* Default Constructor of the Variable class (float)
+			* @param type The type of the Variable you want to create
+			*/
+			BaseVariable(const EVariableTypes& type, const std::string& name, const float& value) : m_variableType(type), m_name(name), m_isPublic(true), m_iValue(0), m_fValue(value), m_dValue(0), m_bValue(0) {};
+			/**
+			* Default Constructor of the Variable class (bool)
+			* @param type The type of the Variable you want to create
+			*/
+			BaseVariable(const EVariableTypes& type, const std::string& name, const bool& value) : m_variableType(type), m_name(name), m_isPublic(true), m_iValue(0), m_fValue(0), m_dValue(0), m_bValue(value) {};
+			/**
+			* Default Constructor of the Variable class (double)
+			* @param type The type of the Variable you want to create
+			*/
+			BaseVariable(const EVariableTypes& type, const std::string& name, const double& value) : m_variableType(type), m_name(name), m_isPublic(true), m_iValue(0), m_fValue(0), m_dValue(value), m_bValue(0) {};
+			/**
+			* Getter function of the variable class (int)
+			*
+			* @return The value of the class 
+			*/
+			auto GetValue() const ;  
 			/**
 			* Getter function to get the name of the variable
 			* 
@@ -46,13 +75,7 @@ namespace GD_Tool
 			/** 
 			* Default Destructor of the Variable class
 			*/
-			~BaseVariable() {};
-		private: 
-			EVariableTypes m_variableType; 
-			/**
-			* The formula to calculate this variable */
-			std::string m_name;
-			bool m_isPublic; 
+			virtual ~BaseVariable() {};
 		};
 	}
 }

@@ -22,12 +22,6 @@ namespace GD_Tool
 			*/
 			IntegerVariable(const int32_t& value, const std::string& name);
 			/**
-			* Getter function, to get the value of the integer variable
-			* 
-			* @return The value of the integer variable
-			*/
-			int32_t GetValue() const; 
-			/**
 			* Setter function to change the value of this Integer manually
 			* 
 			* @param value The new value of this integer

@@ -5,6 +5,7 @@
 #include "Object.h"
 #include "Formula.h"
 #include "GlobalStructs.h"
+#include "SaveSystem.h"
 #pragma endregion 
 #pragma region External Includes
 #include <string>
@@ -72,6 +73,7 @@ namespace GD_Tool
 			std::vector<Object*> m_baseObjects;
 			std::vector<BaseVariable> m_variables; 
 			std::vector<Formula*> m_formulas; 
+			SaveSystem* m_saveSystem; 
 		};
 	}
 }
