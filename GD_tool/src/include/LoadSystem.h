@@ -18,19 +18,7 @@ namespace GD_Tool
 	{
 		class LoadSystem
 		{
-		private: 
-			ProjectPackage m_package; 
-		public: 
-			/**
-			* Default Constructor of the LoadSystem 
-			*
-			*@param package The package of the current project
-			*/
-			LoadSystem(const ProjectPackage package); 
-			/**
-			* Default Destructor of the LoadSystem
-			*/
-			~LoadSystem() {};
+		
 		};
 	}
 }

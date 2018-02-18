@@ -19,33 +19,35 @@ namespace GD_Tool
 		class SaveSystem
 		{
 		private: 
-			ProjectPackage m_currentProject; 
-			/**
-			* Private function to get all informations out of the package and compress them in a single string to write in a .txt file
-			*/
-			void BreakDownStruct();
-			/**
-			* Private function to spread out the objects 
-			*
-			* @param obj The Object you want to spread out 
-			* @return The objects spread out as string 
-			*/
-			std::string SpreadOutObject(Object* obj);
-			/**
-			* Private function to save all informations into a text file 
-			*/
-			void SaveProject(std::string informationsToSave); 
+			
 		public: 
 			/**
-			* Default Constructor of the SaveSystem
-			* 
-			* @param package The package of the current project to save it
+			* Default Constructor of the SaveSystem class 
+			*
+			* @param name The name of the current Project as SaveFile name to save the configs of the project.
 			*/
-			SaveSystem(const ProjectPackage package); 
+			SaveSystem(std::string name);
 			/**
-			*Default Destructor of the SaveSystem 
+			* Function to save the configs of the current project
+			* 
+			* @param name The name of the project. It's the name of the config file. 
 			*/
-			~SaveSystem() {};
+			void SaveProject(std::string name);
+			/**
+			* Function to save a created object. Will executed every time, when an object is created 
+			* and every time the user wants to save the object and the object is dirty.
+			* 
+			*/
+			void SaveObject(Object* obj);
+			/** Function to save a created node. Will executed every time a node will get created and the user wants to save 
+			* the node while it's dirty
+			*/
+			void SaveNode(BaseNode* node);
+			/**
+			* Default Destructor of the Savesystem
+			*/
+			~SaveSystem(); 
+	
 		};
 	}
 }

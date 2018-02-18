@@ -44,12 +44,7 @@ namespace GD_Tool
 			* @param type The type of the Variable you want to create
 			*/
 			BaseVariable(const EVariableTypes& type, const std::string& name, const double& value) : m_variableType(type), m_name(name), m_isPublic(true), m_iValue(0), m_fValue(0), m_dValue(value), m_bValue(0) {};
-			/**
-			* Getter function of the variable class (int)
-			*
-			* @return The value of the class 
-			*/
-			auto GetValue() const ;  
+			
 			/**
 			* Getter function to get the name of the variable
 			* 

@@ -6,6 +6,7 @@ GD_Tool::Mainframework::ProjectManager::ProjectManager(const std::string name)
 	,m_saveSystem(nullptr)
 	,m_varIndex(0)
 	,m_formulaIndex(0)
+	,m_isDirty(true)
 {
 }
 
@@ -45,17 +46,4 @@ void GD_Tool::Mainframework::ProjectManager::CreateFormula()
 	m_formulas.push_back(newFormula);
 }
 
-GD_Tool::Mainframework::ProjectPackage GD_Tool::Mainframework::ProjectManager::PackageProject()
-{
-	GD_Tool::Mainframework::ProjectPackage package;
-	package.FormulaIndex = m_formulaIndex; 
-	package.Formulas = m_formulas; 
-	package.Name = m_name; 
-	package.Objects = m_baseObjects; 
-	package.ObjIndex = m_objIndex; 
-	package.VariableIndex = m_varIndex; 
-	package.Variables = m_variables; 
-	m_saveSystem = new SaveSystem(package);
-	return package; 
-}
 

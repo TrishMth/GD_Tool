@@ -59,12 +59,6 @@ namespace GD_Tool
 			*
 			*/
 			void CreateFormula(); 
-			/**
-			* Function to package the project and save the current project
-			*
-			* @return ProjectPackage The struct of the packaged project.
-			*/
-			ProjectPackage PackageProject(); 
 		private: 
 			std::string m_name; 
 			uint32_t m_objIndex; 
@@ -74,6 +68,7 @@ namespace GD_Tool
 			std::vector<BaseVariable> m_variables; 
 			std::vector<Formula*> m_formulas; 
 			SaveSystem* m_saveSystem; 
+			bool m_isDirty; 
 		};
 	}
 }

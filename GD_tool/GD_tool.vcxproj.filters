@@ -69,9 +69,6 @@
     <ClCompile Include="src\LoadSystem.cpp">
       <Filter>Save/Load SystemSource</Filter>
     </ClCompile>
-    <ClCompile Include="src\BaseVariable.cpp">
-      <Filter>Sourcefiles</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\include\Window.h">

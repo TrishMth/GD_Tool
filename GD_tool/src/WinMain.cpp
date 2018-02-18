@@ -37,7 +37,6 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
 	GD_Tool::Mainframework::IntegerVariable IntVar(12, "x");
 	currentObjects[0]->AddVariable(IntVar);
 
-	proMan->PackageProject();
 
 	GD_Tool::Mainframework::Window* currentWindow = new GD_Tool::Mainframework::Window(); 
 	currentWindow->Init(1024, 786, hInstance, nCmdShow);
