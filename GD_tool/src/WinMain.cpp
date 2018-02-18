@@ -35,6 +35,10 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
 	proMan->CreateObject("THE OBJECT");
 	std::vector<GD_Tool::Mainframework::Object*> currentObjects = proMan->GetObjects();
 	GD_Tool::Mainframework::IntegerVariable IntVar(12, "x");
+	GD_Tool::Mainframework::BaseVariable BaseVar = (GD_Tool::Mainframework::BaseVariable)IntVar;
+	GD_Tool::Mainframework::IntegerVariable NewInt = (GD_Tool::Mainframework::IntegerVariable&)BaseVar; 
+	NewInt.GetValue();
+
 	currentObjects[0]->AddVariable(IntVar);
 
 

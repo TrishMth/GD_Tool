@@ -6,6 +6,7 @@ GD_Tool::Mainframework::FloatVariable::FloatVariable(const float& value, const s
 	,BaseNode(ENodeType::Operator)
 {
 }
+
 float GD_Tool::Mainframework::FloatVariable::operator+(const int32_t& value) const
 {
 	return m_value+value;

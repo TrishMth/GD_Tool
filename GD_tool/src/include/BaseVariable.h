@@ -17,12 +17,13 @@ namespace GD_Tool
 		{
 		private: 
 			EVariableTypes m_variableType; 
+			std::string m_name;
+			bool m_isPublic; 
+		protected:
 			int32_t m_iValue; 
 			float m_fValue; 
 			bool m_bValue; 
 			double m_dValue; 
-			std::string m_name;
-			bool m_isPublic; 
 		public:
 			/** 
 			* Default Constructor of the Variable class (int)
@@ -43,8 +44,7 @@ namespace GD_Tool
 			* Default Constructor of the Variable class (double)
 			* @param type The type of the Variable you want to create
 			*/
-			BaseVariable(const EVariableTypes& type, const std::string& name, const double& value) : m_variableType(type), m_name(name), m_isPublic(true), m_iValue(0), m_fValue(0), m_dValue(value), m_bValue(0) {};
-			
+			BaseVariable(const EVariableTypes& type, const std::string& name, const double& value) : m_variableType(type), m_name(name), m_isPublic(true), m_iValue(0), m_fValue(0), m_dValue(value), m_bValue(0) {};			
 			/**
 			* Getter function to get the name of the variable
 			* 
