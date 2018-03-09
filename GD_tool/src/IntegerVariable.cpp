@@ -1,8 +1,7 @@
 #include "include\IntegerVariable.h"
 
-GD_Tool::Mainframework::IntegerVariable::IntegerVariable(const int32_t& value, const std::string& name)
-	:BaseVariable(EVariableTypes::Integer, name, value)
-	,BaseNode(ENodeType::Variable)
+GD_Tool::Mainframework::IntegerVariable::IntegerVariable(const int32_t& value, const std::string& name, const uint32_t& index)
+	:BaseVariable(EVariableTypes::Integer, name, value), VariableNodes(index)
 {
 }
 

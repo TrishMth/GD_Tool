@@ -1,7 +1,7 @@
 #pragma once
 #pragma region Internal Includes
 #include "BaseVariable.h"
-#include "BaseNode.h"
+#include "VariableNodes.h"
 #pragma endregion 
 #pragma region External Includes
 #include <string>
@@ -11,7 +11,7 @@ namespace GD_Tool
 {
 	namespace Mainframework
 	{
-		class FloatVariable : public BaseVariable, public BaseNode
+		class FloatVariable : public BaseVariable, public VariableNodes
 		{
 		public: 
 			/**
@@ -20,7 +20,7 @@ namespace GD_Tool
 			* @param type The type of the current Variable
 			* @param value The value of the current Variable
 			*/
-			FloatVariable(const float& value, const std::string& name);
+			FloatVariable(const float& value, const std::string& name, const uint32_t& index);
 
 			float static AddInt(const float& value1, const int32_t& value2) { return value1 + value2; }
 			float static AddFloat(const float& value1, const float& value2) { return value1 + value2; }

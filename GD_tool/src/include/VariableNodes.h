@@ -18,7 +18,11 @@ namespace GD_Tool
 			/** 
 			* Default Constructor of the VariableNodes class which inherist from the BaseNode class
 			*/
-			VariableNodes() :BaseNode(ENodeType::Variable) {};
+			VariableNodes(const uint32_t& index) :BaseNode(ENodeType::Variable, index) {};
+			/**
+			* The overridden function to save the current node.
+			*/
+			virtual void Save() final;
 			/** 
 			* Default Destructor of the VariableNodes class 
 			*/

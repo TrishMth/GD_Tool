@@ -1,18 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Headerfiles">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Sourcefiles">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Resourcefiles">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Inherited Headerfiles">
       <UniqueIdentifier>{5ed87467-a8eb-490d-aed7-1fe6a515a267}</UniqueIdentifier>
     </Filter>
@@ -31,25 +19,30 @@
     <Filter Include="GlobalsHeader">
       <UniqueIdentifier>{eb364976-e656-4fd8-9025-29f677fff608}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Save/Load SystemHeaders">
-      <UniqueIdentifier>{1412a8d3-1218-4efc-b483-24ae6a4c2ce0}</UniqueIdentifier>
+    <Filter Include="Core Headerfiles">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Save/Load SystemSource">
-      <UniqueIdentifier>{fcb1bc87-20f1-4d9a-967b-8d531108ca91}</UniqueIdentifier>
+    <Filter Include="Core Sourcefiles">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="NodeSystem Sourcefiles">
+      <UniqueIdentifier>{83842625-3da4-45fc-8724-1973e6469896}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\WinMain.cpp">
-      <Filter>Sourcefiles</Filter>
+      <Filter>Core Sourcefiles</Filter>
     </ClCompile>
     <ClCompile Include="src\Window.cpp">
-      <Filter>Sourcefiles</Filter>
+      <Filter>Core Sourcefiles</Filter>
     </ClCompile>
     <ClCompile Include="src\MessageSystem.cpp">
-      <Filter>Sourcefiles</Filter>
+      <Filter>Core Sourcefiles</Filter>
     </ClCompile>
     <ClCompile Include="src\Object.cpp">
-      <Filter>Sourcefiles</Filter>
+      <Filter>Core Sourcefiles</Filter>
     </ClCompile>
     <ClCompile Include="src\IntegerVariable.cpp">
       <Filter>Inherited Sourcefiles</Filter>
@@ -61,24 +54,30 @@
       <Filter>Manager Sourcefiles</Filter>
     </ClCompile>
     <ClCompile Include="src\Formula.cpp">
-      <Filter>Sourcefiles</Filter>
+      <Filter>Core Sourcefiles</Filter>
     </ClCompile>
-    <ClCompile Include="src\SaveSystem.cpp">
-      <Filter>Save/Load SystemSource</Filter>
+    <ClCompile Include="src\VariableNodes.cpp">
+      <Filter>NodeSystem Sourcefiles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OperatorNodes.cpp">
+      <Filter>NodeSystem Sourcefiles</Filter>
     </ClCompile>
     <ClCompile Include="src\LoadSystem.cpp">
-      <Filter>Save/Load SystemSource</Filter>
+      <Filter>Core Sourcefiles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AppManager.cpp">
+      <Filter>Manager Sourcefiles</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\include\Window.h">
-      <Filter>Headerfiles</Filter>
+      <Filter>Core Headerfiles</Filter>
     </ClInclude>
     <ClInclude Include="src\include\MessageSystem.h">
-      <Filter>Headerfiles</Filter>
+      <Filter>Core Headerfiles</Filter>
     </ClInclude>
     <ClInclude Include="src\include\Object.h">
-      <Filter>Headerfiles</Filter>
+      <Filter>Core Headerfiles</Filter>
     </ClInclude>
     <ClInclude Include="src\include\IntegerVariable.h">
       <Filter>Inherited Headerfiles</Filter>
@@ -90,13 +89,13 @@
       <Filter>Manager Headerfiles</Filter>
     </ClInclude>
     <ClInclude Include="src\include\Formula.h">
-      <Filter>Headerfiles</Filter>
+      <Filter>Core Headerfiles</Filter>
     </ClInclude>
     <ClInclude Include="src\include\BaseNode.h">
       <Filter>NodeSystem Headerfiles</Filter>
     </ClInclude>
     <ClInclude Include="src\include\BaseVariable.h">
-      <Filter>Headerfiles</Filter>
+      <Filter>Core Headerfiles</Filter>
     </ClInclude>
     <ClInclude Include="src\include\GlobalEnums.h">
       <Filter>GlobalsHeader</Filter>
@@ -113,11 +112,11 @@
     <ClInclude Include="src\include\GlobalStructs.h">
       <Filter>GlobalsHeader</Filter>
     </ClInclude>
-    <ClInclude Include="src\include\SaveSystem.h">
-      <Filter>Save/Load SystemHeaders</Filter>
-    </ClInclude>
     <ClInclude Include="src\include\LoadSystem.h">
-      <Filter>Save/Load SystemHeaders</Filter>
+      <Filter>Core Headerfiles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\AppManager.h">
+      <Filter>Manager Headerfiles</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

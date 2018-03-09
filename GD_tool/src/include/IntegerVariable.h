@@ -1,7 +1,7 @@
 #pragma once
 #pragma region Internal Includes
 #include "BaseVariable.h"
-#include "BaseNode.h"
+#include "VariableNodes.h"
 #pragma endregion 
 #pragma region External Includes
 #include <string>
@@ -11,7 +11,7 @@ namespace GD_Tool
 {
 	namespace Mainframework
 	{
-		class IntegerVariable : public BaseVariable, public BaseNode
+		class IntegerVariable : public BaseVariable, public VariableNodes
 		{
 		public:
 			/**
@@ -20,7 +20,7 @@ namespace GD_Tool
 			* @param type The type of the current Variable
 			* @param value The value of the current Variable
 			*/
-			IntegerVariable(const int32_t& value, const std::string& name);
+			IntegerVariable(const int32_t& value, const std::string& name, const uint32_t& index);
 			/**
 			* Getter function to get the value of the Variable
 			*

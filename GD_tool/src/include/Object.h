@@ -4,20 +4,24 @@
 #pragma endregion 
 #pragma region External Includes
 #include <string>
-#include <vector>
+#include <map>
+#include <Windows.h>
+#include <fstream>
 #pragma endregion
 
 namespace GD_Tool
 {
 	namespace Mainframework
 	{
+		class ProjectManager;
+
 		class Object
 		{
 		public: 
 			/**
 			* Default Constructor of the Object Class
 			*/
-			Object(const uint32_t& objIndex, const std::string& name); 
+			Object(const uint32_t& objIndex, const std::string& name, ProjectManager* proMan); 
 			/**
 			* Getter function to get the name of the object
 			*
@@ -51,7 +55,7 @@ namespace GD_Tool
 			*
 			* @return The objects attached to this obj
 			*/
-			std::vector<Object*> GetAttachedObjs() const { return m_attachedObjs; }
+			std::map<uint32_t, Object*> GetAttachedObjs() const { return m_attachedObjs; }
 			/**
 			* Getter function to get the index of the attached Objects
 			*
@@ -62,24 +66,42 @@ namespace GD_Tool
 			* Method to add some variables to the objcet
 			* @param variable The current Variable you want to add to the Object
 			*/
-			void AddVariable(const BaseVariable& variable);
+			void AddVariable(BaseVariable* variable);
+			/**
+			* Function to remove a variable from an object
+			*
+			* @param index The index of the variable you want to remove from the object
+			*/
+			void RemoveVariable(const uint32_t& index);
 			/** 
 			* Getter function to get the variables attached to the obj
 			* 
 			* @return All variables of this obj
 			*/
-			std::vector<BaseVariable> GetVariables() const ; 
+			std::map<uint32_t, BaseVariable> GetVariables() const {	m_variables;}
+			/**
+			* Function to save the changes of this object
+			*
+			*/
+			void Save();
+			/**
+			* Deletes the file of the object
+			*/
+			void Delete();
 			/**
 			* Default Destructor of the Object Class
-			*/
+			*/		
 			~Object(); 
 		private: 
-			std::vector<BaseVariable> m_variables;
-			std::vector<Object*> m_attachedObjs; 
+			std::map<uint32_t, BaseVariable*> m_variables;
+			std::map<uint32_t, Object*> m_attachedObjs; 
 			uint32_t m_attachedIndex; 
 			uint32_t m_objIndex; 
 			uint32_t m_variableIndex; 
 			std::string m_name;
+			std::string m_fileName;
+			ProjectManager* m_pProMan;
+			bool m_isDirty; 
 		};
 	}
 }

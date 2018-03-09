@@ -144,19 +144,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\AppManager.cpp" />
     <ClCompile Include="src\FloatVariable.cpp" />
     <ClCompile Include="src\Formula.cpp" />
     <ClCompile Include="src\IntegerVariable.cpp" />
     <ClCompile Include="src\LoadSystem.cpp" />
     <ClCompile Include="src\MessageSystem.cpp" />
     <ClCompile Include="src\Object.cpp" />
+    <ClCompile Include="src\OperatorNodes.cpp" />
     <ClCompile Include="src\ProjectManager.cpp" />
-    <ClCompile Include="src\SaveSystem.cpp" />
+    <ClCompile Include="src\VariableNodes.cpp" />
     <ClCompile Include="src\Window.cpp" />
     <ClCompile Include="src\WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\include\AddNode.h" />
+    <ClInclude Include="src\include\AppManager.h" />
     <ClInclude Include="src\include\BaseNode.h" />
     <ClInclude Include="src\include\BaseVariable.h" />
     <ClInclude Include="src\include\GlobalEnums.h" />
@@ -169,7 +172,6 @@
     <ClInclude Include="src\include\Object.h" />
     <ClInclude Include="src\include\OperatorNodes.h" />
     <ClInclude Include="src\include\ProjectManager.h" />
-    <ClInclude Include="src\include\SaveSystem.h" />
     <ClInclude Include="src\include\VariableNodes.h" />
     <ClInclude Include="src\include\Window.h" />
   </ItemGroup>

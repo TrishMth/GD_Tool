@@ -28,6 +28,8 @@ namespace GD_Tool
 			/** 
 			* Default Constructor of the Variable class (int)
 			* @param type The type of the Variable you want to create 
+			* @param name The name of the Variable you want to create
+			* @param value The value of the variable you want to create.
 			*/
 			BaseVariable(const EVariableTypes& type, const std::string& name, const int32_t& value) : m_variableType(type), m_name(name), m_isPublic(true), m_iValue(value), m_fValue(0), m_dValue(0), m_bValue(0) {};
 			/**

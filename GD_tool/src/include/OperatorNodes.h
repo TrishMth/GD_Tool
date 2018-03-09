@@ -20,7 +20,11 @@ namespace GD_Tool
 			/**
 			* Default Constructor of the OperatorNodes base class
 			*/
-			OperatorNodes() : BaseNode(ENodeType::Operator){}
+			OperatorNodes(const uint32_t& index) : BaseNode(ENodeType::Operator, index){}
+			/**
+			* The overridden function to save the current node. 
+			*/
+			virtual void Save() final; 
 			/**
 			* Default Destructor of the OperatorNodes base class
 			*/
