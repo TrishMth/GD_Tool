@@ -21,7 +21,7 @@ namespace GD_Tool
 			/**
 			* Default Constructor of the Object Class
 			*/
-			Object(const uint32_t& objIndex, const std::string& name, ProjectManager* proMan); 
+			Object(const uint32_t& objIndex, const std::string& name); 
 			/**
 			* Getter function to get the name of the object
 			*
@@ -45,12 +45,6 @@ namespace GD_Tool
 			*/
 			uint32_t GetIndex() const; 
 			/**
-			* Setter function to re-set the index of the object
-			* 
-			* @param index The new index you want to set to the object
-			*/
-			void SetIndex(const uint32_t& index);
-			/**
 			* Getter function to get the attached objs on this object
 			*
 			* @return The objects attached to this obj
@@ -62,6 +56,17 @@ namespace GD_Tool
 			* @return The index of the attached Objects
 			*/
 			uint32_t GetAttachedIndex() const { return m_attachedIndex; }
+			/**
+			* Function to create a new variable, this will add the variable directly to the object.
+			*
+			* @param type The type of the variable you want to create
+			* @param name The name of the variable you want to create
+			* @param value The default value of the variable you want to create 
+			*/
+			void CreateVariable(const EVariableTypes& type, const std::string& name, const int32_t& value);
+			void CreateVariable(const EVariableTypes& type, const std::string& name, const float& value); 
+			void CreateVariable(const EVariableTypes& type, const std::string& name, const double& value); 
+			void CreateVariable(const EVariableTypes& type, const std::string& name, const bool& value); 
 			/**
 			* Method to add some variables to the objcet
 			* @param variable The current Variable you want to add to the Object
@@ -78,7 +83,7 @@ namespace GD_Tool
 			* 
 			* @return All variables of this obj
 			*/
-			std::map<uint32_t, BaseVariable> GetVariables() const {	m_variables;}
+			std::map<uint32_t, BaseVariable*> GetVariables() const {m_variables;}
 			/**
 			* Function to save the changes of this object
 			*
@@ -100,7 +105,6 @@ namespace GD_Tool
 			uint32_t m_variableIndex; 
 			std::string m_name;
 			std::string m_fileName;
-			ProjectManager* m_pProMan;
 			bool m_isDirty; 
 		};
 	}

@@ -26,14 +26,13 @@ namespace GD_Tool
 			std::string m_name; 
 			std::string m_fileName;
 			bool m_isDirty; 
-			ProjectManager* m_pProMan;
 		public: 
 			/** 
 			* Default Constructor of the Formula class
 			*
 			* @param variable The variable to start the node 
 			*/
-			Formula(std::string name, ProjectManager* proMan);
+			Formula(std::string name);
 			/**
 			* Getter function to get the name of the current formula
 			*
@@ -53,6 +52,14 @@ namespace GD_Tool
 			* @param name The name of the node you want to create 
 			*/
 			void CreateNode(const ENodeType& type);
+			/**
+			* Connects two nodes with each other
+			* 
+			* @param begNode The node whre the connection starts from 
+			* @param endNode The node where the connection ends
+			* @return True, if the connection was successful, false otherwise
+			*/
+			bool ConnectNodes(BaseNode* begNode, BaseNode* endNode);
 			/**
 			* Function to add a node to the Formula
 			* 

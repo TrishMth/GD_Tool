@@ -13,6 +13,9 @@ namespace GD_Tool
 {
 	namespace Mainframework
 	{
+		/**
+		* Description struct for the project 
+		*/
 		struct ProjectDesc
 		{
 			std::string GetBuffer() const { std::string FullBuffer = Begin + Name; return FullBuffer; }
@@ -20,6 +23,9 @@ namespace GD_Tool
 		private:
 			std::string Begin = "_pDesc\n";
 		};
+		/**
+		* Description struct for an object
+		*/
 		struct ObjectDesc
 		{
 			std::string GetObjDesc() const
@@ -35,6 +41,9 @@ namespace GD_Tool
 			std::vector<std::string> Names;
 			std::string Begin = "_objDesc\n";
 		};
+		/**
+		* Description struct for a formula
+		*/
 		struct FormulaDesc
 		{
 			std::string GetFormulaDesc() const

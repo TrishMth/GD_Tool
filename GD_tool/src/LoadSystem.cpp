@@ -1,11 +1,10 @@
 #include "include\LoadSystem.h"
 
 
-GD_Tool::Mainframework::ProjectManager* GD_Tool::Mainframework::LoadSystem::LoadProject(const std::string & filePath)
+void GD_Tool::Mainframework::LoadSystem::LoadProject(const std::string & filePath)
 {
 	std::fstream fileStream; 
 	fileStream.open(filePath, std::fstream::in);
-	ProjectManager* proMan = nullptr;
 	GD_Tool::Mainframework::ProjectDesc proDesc{};
 	GD_Tool::Mainframework::ObjectDesc objDesc{};
 	GD_Tool::Mainframework::FormulaDesc formDesc{};
@@ -53,7 +52,7 @@ GD_Tool::Mainframework::ProjectManager* GD_Tool::Mainframework::LoadSystem::Load
 				{
 				case 0:
 					proDesc.Name = strBuffer + "\n";
-					proMan = new ProjectManager(proDesc.Name);
+					ProjectManager::CreateInstance(strBuffer);
 
 					break;
 				}
@@ -68,8 +67,8 @@ GD_Tool::Mainframework::ProjectManager* GD_Tool::Mainframework::LoadSystem::Load
 				else
 				{
 					objDesc.Names.push_back(strBuffer);		
-					proMan->CreateObject(strBuffer);
-					LoadObjData(strBuffer, proMan);
+					ProjectManager::GetInstance().CreateObject(strBuffer);
+					LoadObjData(strBuffer);
 				}
 			}
 			if (inFormDesc)
@@ -82,26 +81,43 @@ GD_Tool::Mainframework::ProjectManager* GD_Tool::Mainframework::LoadSystem::Load
 				else
 				{
 					formDesc.Names.push_back(strBuffer);
-					proMan->CreateFormula(strBuffer);
+					ProjectManager::GetInstance().CreateFormula(strBuffer);
 				}
 			}			
 		}
 	}
-	else
-	{
-		return nullptr;
-	}
 	fileStream.close();
-	proMan->Save();
-	return proMan;
+	ProjectManager::GetInstance().Save();
 }
 
-bool GD_Tool::Mainframework::LoadSystem::LoadObjData(const std::string & objName, ProjectManager* proMan)
+void GD_Tool::Mainframework::LoadSystem::LoadConfig()
+{
+	std::fstream fileStream; 
+	fileStream.open(".//config.txt", std::fstream::out | std::fstream::in);
+	if (fileStream.is_open())
+	{
+		fileStream.seekg(0, fileStream.end);
+		size_t size = fileStream.tellg();
+		fileStream.seekg(0, fileStream.beg);
+		if (size == 0)
+			CreateDefaultConfigFile(fileStream);
+	}
+	
+	
+	fileStream.close();
+}
+
+void GD_Tool::Mainframework::LoadSystem::CreateDefaultConfigFile(const std::fstream& stream)
+{
+
+}
+
+bool GD_Tool::Mainframework::LoadSystem::LoadObjData(const std::string & objName)
 {
 	return false;
 }
 
-bool GD_Tool::Mainframework::LoadSystem::LoadFormData(const std::string & formName, ProjectManager* proMan)
+bool GD_Tool::Mainframework::LoadSystem::LoadFormData(const std::string & formName)
 {
 	return false;
 }

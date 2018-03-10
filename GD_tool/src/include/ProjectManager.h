@@ -21,12 +21,39 @@ namespace GD_Tool
 		
 		class ProjectManager
 		{
-		public: 
+		private: 
 			/**
 			* Default Constructor of the ProjectManager
+			*
 			* @param name The name of the new Project
 			*/
 			ProjectManager(const std::string name); 
+			/**
+			* Copy Constructor of the ProjectManager, it will denie the copy of the instance 
+			*
+			* @param The class to copy
+			*/
+			ProjectManager(const ProjectManager&) = delete; 
+
+		public: 
+			/**
+			* Creates the instance of the manager. 
+			* 
+			*@param name The name of the project 
+			*/
+			static void CreateInstance(const std::string& name);
+			/**
+			* Getter function to get the instance of the class, use this to use functions of the ProjectManager. 
+			*
+			* return The instance of this class
+			*/
+			static ProjectManager& GetInstance(); 
+			/**
+			* Helper function to see if the instance is instantiated. 
+			* 
+			* @return True if the instance is instantiated otherwise false. 
+			*/
+			bool IsInstantiated() const; 
 			/**
 			* Function to change the name of the project
 			*
@@ -97,11 +124,16 @@ namespace GD_Tool
 			*
 			*/
 			void Delete();
+			/**
+			* Safe Release function for the ProjectManager
+			*/
+			static void Release();
 			/** 
 			* Default Destructor of the ProjectManager
 			*/
 			~ProjectManager();
 		private: 
+			static ProjectManager* s_pProManager;
 			std::string m_name; 
 			std::string m_filePath;
 			std::string m_fileName;

@@ -22,7 +22,11 @@ namespace GD_Tool
 			*
 			* @param The filepath of the project to load 
 			*/
-			static ProjectManager* LoadProject(const std::string& filePath);
+			static void LoadProject(const std::string& filePath);
+			/**
+			* Loads the config file of this app
+			*/
+			static void LoadConfig();
 		private: 
 			/**
 			* Default Constructor of the Load system
@@ -31,21 +35,23 @@ namespace GD_Tool
 			*/
 			LoadSystem() {};
 			/**
+			* Creates the default config file. And sets all default settings.
+			*/
+			static void CreateDefaultConfigFile(const std::fstream& stream);
+			/**
 			* Static function to load the obj datas from an obj 
 			* 
 			* @param objName The name of the Object you want to read out the data. 
-			* @param proMan The ProjectManager where the objects were created in 
 			* @return True if you could read out the datas of the object, otherwise false. 
 			*/
-			bool static LoadObjData(const std::string& objName, ProjectManager* proMan); 
+			bool static LoadObjData(const std::string& objName); 
 			/**
 			* Static function to load the datas of a formula 
 			* 
 			* @param formName The Name of the Formula you want to read out the data. 
-			* @param proMan The project where the formula were created in.
 			* @return True if you could read out the datas of the formula, otherwise false. 
 			*/
-			bool static LoadFormData(const std::string& formName, ProjectManager* proMan);
+			bool static LoadFormData(const std::string& formName);
 
 		};
 	}

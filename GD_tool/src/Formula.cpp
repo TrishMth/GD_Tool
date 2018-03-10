@@ -1,11 +1,10 @@
 #include "include\Formula.h"
 #include "include\ProjectManager.h"
 
-GD_Tool::Mainframework::Formula::Formula(std::string name, ProjectManager * proMan)
+GD_Tool::Mainframework::Formula::Formula(std::string name)
 	:m_name(name)
 	, m_nodeIndex(0)
 	, m_isDirty(true)
-	, m_pProMan(proMan) 
 {
 	Save();
 }
@@ -30,6 +29,13 @@ void GD_Tool::Mainframework::Formula::CreateNode(const ENodeType& type)
 	
 }
 
+bool GD_Tool::Mainframework::Formula::ConnectNodes(BaseNode * begNode, BaseNode * endNode)
+{
+	begNode->SetNextNode(endNode); 
+	endNode->SetPrevNode(begNode); 
+	return true; 
+}
+
 void GD_Tool::Mainframework::Formula::AddNode(BaseNode* node)
 {	
 	m_nodes.insert(std::pair<uint32_t, BaseNode*>(m_nodeIndex, node));
@@ -45,7 +51,7 @@ void GD_Tool::Mainframework::Formula::Save()
 {
 	if (m_isDirty)
 	{
-		std::string projectFilePath = m_pProMan->GetFilePath() + "//Formulas"; 
+		std::string projectFilePath = ProjectManager::GetInstance().GetFilePath() + "//Formulas"; 
 		CreateDirectory(projectFilePath.c_str(), NULL);
 
 		std::fstream fileStream; 

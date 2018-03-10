@@ -27,6 +27,15 @@ namespace GD_Tool
 			*/
 			BaseNode(const ENodeType& type, const uint32_t& index) : m_nodeType(type), m_formulaIndex(index), m_pNextNode(nullptr), m_pPrevNode(nullptr) {};
 			/**
+			* Setter function to set the node, this node is connected to
+			* 
+			*/
+			void SetNextNode(BaseNode* nextNode) { m_pNextNode = nextNode; }
+			/**
+			* Setter function to set the node, this node is coming from.
+			*/
+			void SetPrevNode(BaseNode* prevNode) { m_pPrevNode = prevNode; }
+			/**
 			* Pure virtual function to save the node. It's overridden in the base files of the inherited classes
 			*
 			*/

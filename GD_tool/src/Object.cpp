@@ -1,13 +1,12 @@
 #include "include\Object.h"
 #include "include\ProjectManager.h"
 
-GD_Tool::Mainframework::Object::Object(const uint32_t& objIndex, const std::string& name, GD_Tool::Mainframework::ProjectManager* proMan)
+GD_Tool::Mainframework::Object::Object(const uint32_t& objIndex, const std::string& name)
 	:m_objIndex(objIndex)
 	, m_name(name)
 	, m_variableIndex(0)
 	, m_attachedIndex(0)
 	, m_isDirty(true)
-	,m_pProMan(proMan)
 {
 	Save();
 }
@@ -32,9 +31,29 @@ uint32_t GD_Tool::Mainframework::Object::GetIndex() const
 {
 	return m_objIndex;
 }
-void GD_Tool::Mainframework::Object::SetIndex(const uint32_t& index)
+
+void GD_Tool::Mainframework::Object::CreateVariable(const EVariableTypes & type, const std::string & name, const int32_t & value)
 {
-	m_objIndex = index; 
+	BaseVariable* newVariable = new BaseVariable(type, name, value);
+	AddVariable(newVariable);
+}
+
+void GD_Tool::Mainframework::Object::CreateVariable(const EVariableTypes & type, const std::string & name, const float & value)
+{
+	BaseVariable* newVariable = new BaseVariable(type, name, value); 
+	AddVariable(newVariable); 
+}
+
+void GD_Tool::Mainframework::Object::CreateVariable(const EVariableTypes & type, const std::string & name, const double & value)
+{
+	BaseVariable* newVariable = new BaseVariable(type, name, value); 
+	AddVariable(newVariable); 
+}
+
+void GD_Tool::Mainframework::Object::CreateVariable(const EVariableTypes & type, const std::string & name, const bool & value)
+{
+	BaseVariable* newVariable = new BaseVariable(type, name, value); 
+	AddVariable(newVariable); 
 }
 
 void GD_Tool::Mainframework::Object::AddVariable(BaseVariable* variable)
@@ -57,7 +76,7 @@ void GD_Tool::Mainframework::Object::Save()
 	
 	if (m_isDirty)
 	{
-		std::string projectFilePath = m_pProMan->GetFilePath() + "//Objects";
+		std::string projectFilePath = ProjectManager::GetInstance().GetFilePath() + "//Objects";
 		CreateDirectory(projectFilePath.c_str(),NULL);
 
 		std::fstream fileStream; 
