@@ -26,7 +26,7 @@ namespace GD_Tool
 			/**
 			* Loads the config file of this app
 			*/
-			static void LoadConfig();
+			static AppConfigDesc LoadConfig();
 		private: 
 			/**
 			* Default Constructor of the Load system
@@ -37,7 +37,7 @@ namespace GD_Tool
 			/**
 			* Creates the default config file. And sets all default settings.
 			*/
-			static void CreateDefaultConfigFile(const std::fstream& stream);
+			static AppConfigDesc CreateDefaultConfigFile(std::fstream& stream, AppConfigDesc& desc);
 			/**
 			* Static function to load the obj datas from an obj 
 			* 

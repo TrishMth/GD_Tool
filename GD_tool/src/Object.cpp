@@ -32,25 +32,25 @@ uint32_t GD_Tool::Mainframework::Object::GetIndex() const
 	return m_objIndex;
 }
 
-void GD_Tool::Mainframework::Object::CreateVariable(const EVariableTypes & type, const std::string & name, const int32_t & value)
+void GD_Tool::Mainframework::Object::CreateVariable(const GlobalEnums::EVariableTypes & type, const std::string & name, const int32_t & value)
 {
 	BaseVariable* newVariable = new BaseVariable(type, name, value);
 	AddVariable(newVariable);
 }
 
-void GD_Tool::Mainframework::Object::CreateVariable(const EVariableTypes & type, const std::string & name, const float & value)
+void GD_Tool::Mainframework::Object::CreateVariable(const GlobalEnums::EVariableTypes & type, const std::string & name, const float & value)
 {
 	BaseVariable* newVariable = new BaseVariable(type, name, value); 
 	AddVariable(newVariable); 
 }
 
-void GD_Tool::Mainframework::Object::CreateVariable(const EVariableTypes & type, const std::string & name, const double & value)
+void GD_Tool::Mainframework::Object::CreateVariable(const GlobalEnums::EVariableTypes & type, const std::string & name, const double & value)
 {
 	BaseVariable* newVariable = new BaseVariable(type, name, value); 
 	AddVariable(newVariable); 
 }
 
-void GD_Tool::Mainframework::Object::CreateVariable(const EVariableTypes & type, const std::string & name, const bool & value)
+void GD_Tool::Mainframework::Object::CreateVariable(const GlobalEnums::EVariableTypes & type, const std::string & name, const bool & value)
 {
 	BaseVariable* newVariable = new BaseVariable(type, name, value); 
 	AddVariable(newVariable); 

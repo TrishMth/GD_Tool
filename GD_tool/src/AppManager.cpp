@@ -3,6 +3,7 @@
 GD_Tool::Mainframework::AppManager* GD_Tool::Mainframework::AppManager::s_pAppManager = nullptr;
 
 GD_Tool::Mainframework::AppManager::AppManager()
+
 {
 	s_pAppManager = this; 
 }
@@ -20,9 +21,9 @@ void GD_Tool::Mainframework::AppManager::CreateInstance()
 
 void GD_Tool::Mainframework::AppManager::InitApp(HINSTANCE hInstance, int32_t nCmdShow)
 {
-	LoadSystem::LoadConfig();
+	m_configDesc = LoadSystem::LoadConfig();
 	Window* window = new Window();
-	window->Init(1024, 768, hInstance, nCmdShow);
+	window->Init(m_configDesc.WindowWidth, m_configDesc.WindowHeight, hInstance, nCmdShow);
 }
 
 void GD_Tool::Mainframework::AppManager::NewProject(const std::string & ProjectName)
@@ -38,8 +39,7 @@ void GD_Tool::Mainframework::AppManager::LoadProject(const std::string & FilePat
 	}
 	LoadSystem::LoadProject(FilePath);
 	if (!ProjectManager::GetInstance().IsInstantiated())
-		MessageSystem::Error("AppManager", "Couldn't load the project", "The project data couldn't get load or the file isn't compatible.");
-	
+		MessageSystem::Error("AppManager", "Couldn't load the project", "The project data couldn't get load or the file isn't compatible.");	
 }
 
 GD_Tool::Mainframework::AppManager& GD_Tool::Mainframework::AppManager::GetInstance()

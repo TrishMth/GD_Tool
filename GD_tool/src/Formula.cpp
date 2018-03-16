@@ -9,24 +9,23 @@ GD_Tool::Mainframework::Formula::Formula(std::string name)
 	Save();
 }
 
-void GD_Tool::Mainframework::Formula::CreateNode(const ENodeType& type)
+void GD_Tool::Mainframework::Formula::CreateNode(const GlobalEnums::ENodeType& type)
 {
 	switch (type)
 	{
-		case ENodeType::Variable:
+		case GlobalEnums::ENodeType::Variable:
 		{
 			VariableNodes* newNode = new VariableNodes(m_nodeIndex);
 			AddNode(newNode);
 		}
 			break;
-		case ENodeType::Operator:
+		case GlobalEnums::ENodeType::Operator:
 		{
 			OperatorNodes* newNode = new OperatorNodes(m_nodeIndex);
 			AddNode(newNode);
 		}
 			break;
-	}
-	
+	}	
 }
 
 bool GD_Tool::Mainframework::Formula::ConnectNodes(BaseNode * begNode, BaseNode * endNode)

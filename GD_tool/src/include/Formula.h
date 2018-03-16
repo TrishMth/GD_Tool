@@ -51,7 +51,7 @@ namespace GD_Tool
 			* @param varType The Variabletype of the node you want to create 
 			* @param name The name of the node you want to create 
 			*/
-			void CreateNode(const ENodeType& type);
+			void CreateNode(const GlobalEnums::ENodeType& type);
 			/**
 			* Connects two nodes with each other
 			* 

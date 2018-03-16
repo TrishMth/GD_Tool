@@ -1,23 +1,32 @@
 #pragma once
-
-enum class EVariableTypes
+namespace GD_Tool
 {
-	Integer,
-	Boolean,
-	Float,
-	Double,
-};
+	namespace Mainframework
+	{
+		struct GlobalEnums 
+		{
+		enum class EVariableTypes
+		{
+			Integer = 0,
+			Boolean,
+			Float,
+			Double,
+		};
 
-enum class ENodeType
-{
-	Intern,
-	Variable,
-	Operator
-};
+		enum class ENodeType
+		{
+			Intern = 0,
+			Variable,
+			Operator
+		};
 
-enum class ENodeOutputs
-{
-	Success, 
-	Warning, 
-	Error
-};
+		enum class ENodeOutputs
+		{
+			Success = 0, 
+			Warning, 
+			Error
+		};
+
+		};
+	}
+}

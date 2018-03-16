@@ -31,7 +31,7 @@ namespace GD_Tool
 			std::string GetObjDesc() const
 			{
 				std::string FullBuffer = Begin;
-				for (int i = 0; i < Count; i++)
+				for (uint32_t i = 0; i < Count; i++)
 				{
 					FullBuffer.append(Names[i]);
 				}
@@ -49,7 +49,7 @@ namespace GD_Tool
 			std::string GetFormulaDesc() const
 			{
 				std::string FullBuffer = Begin;
-				for (int i = 0; i < Count; i++)
+				for (uint32_t i = 0; i < Count; i++)
 				{
 					FullBuffer.append(Names[i]);
 				}
@@ -59,6 +59,21 @@ namespace GD_Tool
 			std::vector<std::string> Names;
 			std::string Begin = "_FormDesc\n";
 			std::string End = "_End\n";
+		};
+		struct AppConfigDesc
+		{
+			void SetAppConfigDesc(const std::string& str, const uint32_t& line)
+			{
+				switch (line)
+				{
+				case 0: 
+					WindowWidth = atoi(str.c_str());
+				case 1: 
+					WindowHeight = atoi(str.c_str());
+				}
+			}
+			uint32_t WindowWidth = 0; 
+			uint32_t WindowHeight = 0;
 		};
 	}
 }

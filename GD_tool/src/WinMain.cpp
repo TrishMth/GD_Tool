@@ -24,7 +24,7 @@
 *</CENTER>
 */
 
-int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int32_t nCmdShow)
 {	
 	GD_Tool::Mainframework::AppManager::CreateInstance();
 	GD_Tool::Mainframework::AppManager::GetInstance().InitApp(hInstance, nCmdShow);

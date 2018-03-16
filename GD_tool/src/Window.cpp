@@ -46,6 +46,8 @@ void const GD_Tool::Mainframework::Window::Init(const uint16_t& resolutionX, con
 		hInstance,
 		nullptr
 	);
+	m_dx11Comp = new RenderLib::Mainframework::DX11();
+	m_dx11Comp->Init(hWnd);
 	///\internal use the run function after the initialization of the Window. 
 	Run(hWnd, nCmdShow);
 }
@@ -74,6 +76,8 @@ void const GD_Tool::Mainframework::Window::ShutDown()
 {
 	///\internal sets manually the message to WM_QUIT. 
 	m_message.message = WM_QUIT; 
+	m_dx11Comp->Release();
+	delete m_dx11Comp;
 }
 
 GD_Tool::Mainframework::Window::~Window()

@@ -1,7 +1,7 @@
 #include "include\FloatVariable.h"
 
 GD_Tool::Mainframework::FloatVariable::FloatVariable(const float& value, const std::string& name, const uint32_t& index)
-	:BaseVariable(EVariableTypes::Float, name, value)
+	:BaseVariable(GlobalEnums::EVariableTypes::Float, name, value)
 	,VariableNodes(index)
 {
 }

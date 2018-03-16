@@ -2,6 +2,7 @@
 #pragma region Internal Includes
 #pragma endregion 
 #pragma region External Includes
+#include "DX11.h"
 #include <Windows.h>
 #include <cstdint>
 #pragma endregion 
@@ -32,7 +33,7 @@ namespace GD_Tool
 			* @param hInstance The handle of the current instance  
 			* @param nCmdShow The command of the current window to specialize how the window will be displayed
 			*/
-			void const Init(const uint16_t& resolutionX, const uint16_t& resolutionY, const HINSTANCE& hInstance, const int32_t& nCmdShow);  
+			void const Init(const uint16_t& resolutionX, const uint16_t& resolutionY, const HINSTANCE& hInstance, const int32_t& nCmdShow);  			
 			/**
 			*Shut down the current window
 			*/
@@ -52,6 +53,7 @@ namespace GD_Tool
 			* private member variable of a MSG to set the message to WM_QUIT in the shut down and the run function. 
 			*/
 			MSG m_message; 
+			RenderLib::Mainframework::DX11* m_dx11Comp;
 
 		};
 	}

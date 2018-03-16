@@ -19,7 +19,7 @@ namespace GD_Tool
 			/** 
 			* Default Constructor of the VariableNodes class which inherist from the BaseNode class
 			*/
-			VariableNodes(const uint32_t& index) :BaseNode(ENodeType::Variable, index){};
+			VariableNodes(const uint32_t& index) :BaseNode(GlobalEnums::ENodeType::Variable, index){};
 			/**
 			* The overridden function to save the current node.
 			*/

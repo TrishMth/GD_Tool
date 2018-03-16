@@ -15,7 +15,7 @@ namespace GD_Tool
 		class BaseNode
 		{
 		private:
-			const ENodeType m_nodeType;
+			const GlobalEnums::ENodeType m_nodeType;
 			const uint32_t m_formulaIndex; 
 			BaseNode* m_pNextNode;
 			BaseNode* m_pPrevNode;
@@ -25,7 +25,7 @@ namespace GD_Tool
 			* 
 			* @param The type of the Node.
 			*/
-			BaseNode(const ENodeType& type, const uint32_t& index) : m_nodeType(type), m_formulaIndex(index), m_pNextNode(nullptr), m_pPrevNode(nullptr) {};
+			BaseNode(const GlobalEnums::ENodeType& type, const uint32_t& index) : m_nodeType(type), m_formulaIndex(index), m_pNextNode(nullptr), m_pPrevNode(nullptr) {};
 			/**
 			* Setter function to set the node, this node is connected to
 			* 
@@ -49,11 +49,11 @@ namespace GD_Tool
 			*
 			* @return The type of the Node
 			*/
-			ENodeType GetNodeType() const { return m_nodeType; };
+			GlobalEnums::ENodeType GetNodeType() const { return m_nodeType; };
 			/**
 			* Default Destructor of the Basenode class
 			*/
-			~BaseNode() {};
+			~BaseNode() { delete m_pNextNode; delete m_pPrevNode; };
 		};
 	}
 }

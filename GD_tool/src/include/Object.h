@@ -63,10 +63,10 @@ namespace GD_Tool
 			* @param name The name of the variable you want to create
 			* @param value The default value of the variable you want to create 
 			*/
-			void CreateVariable(const EVariableTypes& type, const std::string& name, const int32_t& value);
-			void CreateVariable(const EVariableTypes& type, const std::string& name, const float& value); 
-			void CreateVariable(const EVariableTypes& type, const std::string& name, const double& value); 
-			void CreateVariable(const EVariableTypes& type, const std::string& name, const bool& value); 
+			void CreateVariable(const GlobalEnums::EVariableTypes& type, const std::string& name, const int32_t& value);
+			void CreateVariable(const GlobalEnums::EVariableTypes& type, const std::string& name, const float& value); 
+			void CreateVariable(const GlobalEnums::EVariableTypes& type, const std::string& name, const double& value); 
+			void CreateVariable(const GlobalEnums::EVariableTypes& type, const std::string& name, const bool& value); 
 			/**
 			* Method to add some variables to the objcet
 			* @param variable The current Variable you want to add to the Object

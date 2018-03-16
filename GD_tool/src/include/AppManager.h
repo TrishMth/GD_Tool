@@ -3,6 +3,7 @@
 #include "LoadSystem.h"
 #include "MessageSystem.h"
 #include "Window.h"
+#include "GlobalStructs.h"
 #pragma endregion 
 #pragma region External Includes
 #include <cstring>
@@ -15,7 +16,11 @@ namespace GD_Tool
 		class AppManager
 		{
 		private: 
+			/**
+			* Instance of the AppManager
+			*/
 			static AppManager* s_pAppManager; 
+			AppConfigDesc m_configDesc{};
 			/**
 			* Default Constructor of the AppManager
 			*
