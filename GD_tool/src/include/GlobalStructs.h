@@ -7,12 +7,36 @@
 #pragma region External includes
 #include <string>
 #include <vector>
+#include <DirectXMath.h>
 #pragma endregion 
 
 namespace GD_Tool
 {
 	namespace Mainframework
 	{
+		struct VERTEX_CONSTANT_BUFFER
+		{
+			float        mvp[4][4];
+		};
+
+		struct MAPVERTEX
+		{
+			float x = 0, y = 0, z = 0;
+			float Color[4]{ 0,0,0,0 };
+		};
+		struct MAP_VS_CONSTANT_BUFFER
+		{
+			float x = 0; 
+		};
+		struct GRAPH_VS_CONSTANT_BUFFER
+		{
+			float fTime = 0;
+		};
+		struct GRAPHVERTEX
+		{
+			float x = 0, y = 0, z = 0;
+			float Color[4]{ 0,0,0,0 };
+		};
 		/**
 		* Description struct for the project 
 		*/

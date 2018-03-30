@@ -2,8 +2,10 @@
 #include "ProjectManager.h"
 #include "LoadSystem.h"
 #include "MessageSystem.h"
-#include "Window.h"
 #include "GlobalStructs.h"
+#include "DX11Graph.h"
+#include "DX11Map.h"
+#include "DX11BaseWindow.h"
 #pragma endregion 
 #pragma region External Includes
 #include <cstring>
@@ -47,7 +49,7 @@ namespace GD_Tool
 			* @param hInstance The instance handler of the window 
 			* @param nCmdShow The mode of the currentwindow
 			*/
-			void InitApp(HINSTANCE hInstance, int32_t nCmdShow);
+			int32_t InitApp(HINSTANCE hInstance, int32_t nCmdShow);
 			/**
 			* Creates a new Project 
 			* 

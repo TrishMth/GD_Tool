@@ -19,11 +19,22 @@ void GD_Tool::Mainframework::AppManager::CreateInstance()
 		s_pAppManager = new AppManager();
 }
 
-void GD_Tool::Mainframework::AppManager::InitApp(HINSTANCE hInstance, int32_t nCmdShow)
+int32_t GD_Tool::Mainframework::AppManager::InitApp(HINSTANCE hInstance, int32_t nCmdShow)
 {
+#if defined(DEBUG) | defined(_DEBUG)
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif
 	m_configDesc = LoadSystem::LoadConfig();
-	Window* window = new Window();
-	window->Init(m_configDesc.WindowWidth, m_configDesc.WindowHeight, hInstance, nCmdShow);
+	DX11BaseWindow dx11Base(hInstance); 
+	if (!dx11Base.Init(m_configDesc.WindowWidth, m_configDesc.WindowHeight))
+		return false; 
+	dx11Base.Run();
+	DX11Graph dx11(hInstance);
+	if (!dx11.Init(m_configDesc.WindowWidth, m_configDesc.WindowHeight))
+		return false; 
+	//dx11m.Run();
+	return dx11.Run();
+	return 0;
 }
 
 void GD_Tool::Mainframework::AppManager::NewProject(const std::string & ProjectName)

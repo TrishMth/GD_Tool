@@ -30,12 +30,24 @@
     <Filter Include="NodeSystem Sourcefiles">
       <UniqueIdentifier>{83842625-3da4-45fc-8724-1973e6469896}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Rendering Source">
+      <UniqueIdentifier>{5fc76b93-d1be-44fe-961b-977db8f99469}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering Header">
+      <UniqueIdentifier>{72a4b18b-3c85-4838-b525-b612e4fcde7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{1c42ba99-0025-4fd0-82f9-d86954efe8b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUIHeaderfiles">
+      <UniqueIdentifier>{14ed5381-f887-4600-943c-1bb06228da60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUISourcefiles">
+      <UniqueIdentifier>{de18f02e-a02d-4f64-85f8-537aea1356b5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\WinMain.cpp">
-      <Filter>Core Sourcefiles</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Window.cpp">
       <Filter>Core Sourcefiles</Filter>
     </ClCompile>
     <ClCompile Include="src\MessageSystem.cpp">
@@ -68,11 +80,32 @@
     <ClCompile Include="src\AppManager.cpp">
       <Filter>Manager Sourcefiles</Filter>
     </ClCompile>
+    <ClCompile Include="src\DX11.cpp">
+      <Filter>Rendering Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Timer.cpp">
+      <Filter>Rendering Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DX11Graph.cpp">
+      <Filter>Rendering Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imgui.cpp">
+      <Filter>GUISourcefiles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imgui_draw.cpp">
+      <Filter>GUISourcefiles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DX11Map.cpp">
+      <Filter>Rendering Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DX11BaseWindow.cpp">
+      <Filter>Rendering Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imgui_demo.cpp">
+      <Filter>GUISourcefiles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\include\Window.h">
-      <Filter>Core Headerfiles</Filter>
-    </ClInclude>
     <ClInclude Include="src\include\MessageSystem.h">
       <Filter>Core Headerfiles</Filter>
     </ClInclude>
@@ -118,5 +151,49 @@
     <ClInclude Include="src\include\AppManager.h">
       <Filter>Manager Headerfiles</Filter>
     </ClInclude>
+    <ClInclude Include="src\include\DX11.h">
+      <Filter>Rendering Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Timer.h">
+      <Filter>Rendering Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\DX11Graph.h">
+      <Filter>Rendering Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\imconfig.h">
+      <Filter>GUIHeaderfiles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\imgui.h">
+      <Filter>GUIHeaderfiles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\imgui_internal.h">
+      <Filter>GUIHeaderfiles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\stb_rect_pack.h">
+      <Filter>GUIHeaderfiles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\stb_textedit.h">
+      <Filter>GUIHeaderfiles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\stb_truetype.h">
+      <Filter>GUIHeaderfiles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\DX11Map.h">
+      <Filter>Rendering Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\DXDefines.h">
+      <Filter>Rendering Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\DX11BaseWindow.h">
+      <Filter>Rendering Header</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="VS\GraphV.Shader">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="PS\GraphP.Shader">
+      <Filter>Shader</Filter>
+    </None>
   </ItemGroup>
 </Project>

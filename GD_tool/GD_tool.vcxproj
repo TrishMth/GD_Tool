@@ -72,10 +72,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)\bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)\data\$(Platform)\$(Configuration)\GD_Tool\</IntDir>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64;$(DXSDK_DIR)Lib\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)\bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)\data\$(Platform)\$(Configuration)\GD_Tool\</IntDir>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64;$(DXSDK_DIR)Lib\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)\bin\$(Plaform)\$(Configuration)\</OutDir>
@@ -93,8 +97,8 @@
       <AdditionalIncludeDirectories>$(SolutionDir)\PhysicsLibrary\src\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;PhysicsLibrary.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)bin\$(Platform)\$(Configuration)\PhysLib\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;PhysicsLibrary.lib;Effects11d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)bin\$(Platform)\$(Configuration)\PhysLib\; $(SolutionDir)extern\DX11FX\Bin\$(Platform)\$(Configuration);</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -102,13 +106,16 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\PhysicsLibrary\src\include; $(SolutionDir)\RenderLib\src\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\PhysicsLibrary\src\include; $(SolutionDir)extern\DX11FX\inc;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <AdditionalLibraryDirectories>$(SolutionDir)bin\$(Platform)\$(Configuration)\PhysLib\; $(SolutionDir)\bin\$(Platform)\$(Configuration)\RenderLib\;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;PhysicsLibrary.lib;RenderLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)bin\$(Platform)\$(Configuration)\PhysLib\; $(SolutionDir)extern\DX11FX\Bin\$(Platform)\$(Configuration);</AdditionalLibraryDirectories>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;PhysicsLibrary.lib;Effects11d.lib;D3DCompiler.lib;D3D11.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -117,13 +124,13 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\PhysicsLibrary\src\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\PhysicsLibrary\src\include; $(SolutionDir)extern\DX11FX\inc;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;PhysicsLibrary.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)bin\$(Platform)\$(Configuration)\PhysLib\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;PhysicsLibrary.lib;Effects11.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)bin\$(Platform)\$(Configuration)\PhysLib\; $(SolutionDir)extern\DX11FX\Bin\$(Platform)\$(Configuration);</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -133,28 +140,38 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\PhysicsLibrary\src\include; $(SolutionDir)\RenderLib\src\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\PhysicsLibrary\src\include; $(SolutionDir)extern\DX11FX\inc;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <SubSystem>Windows</SubSystem>
-      <AdditionalLibraryDirectories>$(SolutionDir)bin\$(Platform)\$(Configuration)\PhysLib\; $(SolutionDir)\bin\$(Platform)\$(Configuration)\RenderLib\;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;PhysicsLibrary.lib;RenderLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)bin\$(Platform)\$(Configuration)\PhysLib\; $(SolutionDir)extern\DX11FX\Bin\$(Platform)\$(Configuration);</AdditionalLibraryDirectories>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;PhysicsLibrary.lib;Effects11.lib;D3DCompiler.lib;D3D11.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\AppManager.cpp" />
+    <ClCompile Include="src\DX11BaseWindow.cpp" />
+    <ClCompile Include="src\DX11Graph.cpp" />
+    <ClCompile Include="src\DX11.cpp" />
+    <ClCompile Include="src\DX11Map.cpp" />
     <ClCompile Include="src\FloatVariable.cpp" />
     <ClCompile Include="src\Formula.cpp" />
+    <ClCompile Include="src\imgui.cpp" />
+    <ClCompile Include="src\imgui_demo.cpp" />
+    <ClCompile Include="src\imgui_draw.cpp" />
     <ClCompile Include="src\IntegerVariable.cpp" />
     <ClCompile Include="src\LoadSystem.cpp" />
     <ClCompile Include="src\MessageSystem.cpp" />
     <ClCompile Include="src\Object.cpp" />
     <ClCompile Include="src\OperatorNodes.cpp" />
     <ClCompile Include="src\ProjectManager.cpp" />
+    <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="src\VariableNodes.cpp" />
-    <ClCompile Include="src\Window.cpp" />
     <ClCompile Include="src\WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -162,18 +179,33 @@
     <ClInclude Include="src\include\AppManager.h" />
     <ClInclude Include="src\include\BaseNode.h" />
     <ClInclude Include="src\include\BaseVariable.h" />
+    <ClInclude Include="src\include\DX11BaseWindow.h" />
+    <ClInclude Include="src\include\DX11Graph.h" />
+    <ClInclude Include="src\include\DX11.h" />
+    <ClInclude Include="src\include\DX11Map.h" />
+    <ClInclude Include="src\include\DXDefines.h" />
     <ClInclude Include="src\include\GlobalEnums.h" />
     <ClInclude Include="src\include\FloatVariable.h" />
     <ClInclude Include="src\include\Formula.h" />
     <ClInclude Include="src\include\GlobalStructs.h" />
+    <ClInclude Include="src\include\imconfig.h" />
+    <ClInclude Include="src\include\imgui.h" />
+    <ClInclude Include="src\include\imgui_internal.h" />
     <ClInclude Include="src\include\IntegerVariable.h" />
     <ClInclude Include="src\include\LoadSystem.h" />
     <ClInclude Include="src\include\MessageSystem.h" />
     <ClInclude Include="src\include\Object.h" />
     <ClInclude Include="src\include\OperatorNodes.h" />
     <ClInclude Include="src\include\ProjectManager.h" />
+    <ClInclude Include="src\include\stb_rect_pack.h" />
+    <ClInclude Include="src\include\stb_textedit.h" />
+    <ClInclude Include="src\include\stb_truetype.h" />
+    <ClInclude Include="src\include\Timer.h" />
     <ClInclude Include="src\include\VariableNodes.h" />
-    <ClInclude Include="src\include\Window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PS\GraphP.Shader" />
+    <None Include="VS\GraphV.Shader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

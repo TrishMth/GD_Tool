@@ -26,7 +26,17 @@ namespace GD_Tool
 			Warning, 
 			Error
 		};
-
+		enum class EMapSizes
+		{
+			Size128,
+			Size256,
+			Size512,
+			Size1k,
+			Size2k,
+			Size4k,
+			Size8k,
+			Size16k
+		};
 		};
 	}
 }
