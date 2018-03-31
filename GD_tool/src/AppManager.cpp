@@ -29,11 +29,11 @@ int32_t GD_Tool::Mainframework::AppManager::InitApp(HINSTANCE hInstance, int32_t
 	if (!dx11Base.Init(m_configDesc.WindowWidth, m_configDesc.WindowHeight))
 		return false; 
 	dx11Base.Run();
-	DX11Graph dx11(hInstance);
-	if (!dx11.Init(m_configDesc.WindowWidth, m_configDesc.WindowHeight))
-		return false; 
+	//DX11Graph dx11(hInstance);
+	//if (!dx11.Init(m_configDesc.WindowWidth, m_configDesc.WindowHeight))
+	//	return false; 
 	//dx11m.Run();
-	return dx11.Run();
+	//return dx11.Run();
 	return 0;
 }
 

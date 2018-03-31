@@ -44,7 +44,11 @@ namespace GD_Tool
 			bool InitMainWindow(); 
 			bool InitDirect3D(); 
 			bool Failed(HRESULT aResult);
-
+			HRESULT CreateDeviceD3D(HWND hwnd);
+			void InvalidateDeviceObjects();
+			void CleanupRenderTarget();
+			void CreateRenderTarget();
+			void CleanupDeviceD3D();
 
 			void CalculateFrameStats();
 		public:
@@ -75,7 +79,6 @@ namespace GD_Tool
 			*/
 			virtual ~DX11();
 		private: // Member variables
-
 		protected:
 
 			
@@ -91,6 +94,8 @@ namespace GD_Tool
 			UINT m_4xMsaaQuality;
 			uint32_t m_resolutionX; 
 			uint32_t m_resolutionY; 
+			int64_t m_time;
+			int64_t m_ticksPerSecond;
 
 			IDXGISwapChain* m_pSwapChain;
 			ID3D11Device* m_pDevice; 
@@ -98,6 +103,7 @@ namespace GD_Tool
 			ID3D11RenderTargetView * m_pBackBuffer;
 			ID3D11Texture2D* m_pDepthStencilBuffer; 
 			ID3D11DepthStencilView* m_pDepthStencilView; 
+			ID3D11Device * m_pBaseDevice;
 
 			Timer m_timer;
 			std::wstring m_MainWindowCaption;

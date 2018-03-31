@@ -4,24 +4,102 @@ GD_Tool::Mainframework::DX11BaseWindow::DX11BaseWindow(HINSTANCE hInstance)
 	:DX11(hInstance)
 	, m_pBaseVertexBuffer(nullptr)
 	, m_pBaseConstBuffer(nullptr)
+	, m_pBaseIndexBuffer(nullptr)
 	, m_pVShader(nullptr)
 	, m_pPShader(nullptr)
-	, m_pInputLayout(nullptr)
-	, m_pBaseIndexBuffer(nullptr)
 	, m_pBlendState(nullptr)
+	, m_pFontSampler(nullptr)
+	, m_pInputLayout(nullptr)
+	, m_pDepthStencilState(nullptr)
+	, m_pRasterizerState(nullptr)
+	, m_pFontTexView(nullptr)
 {
 }
+// Backup DX state that will be modified to restore it afterwards (unfortunately this is very ugly looking and verbose. Close your eyes!)
+struct BACKUP_DX11_STATE
+{
+	UINT                        ScissorRectsCount, ViewportsCount;
+	D3D11_RECT                  ScissorRects[D3D11_VIEWPORT_AND_SCISSORRECT_OBJECT_COUNT_PER_PIPELINE];
+	D3D11_VIEWPORT              Viewports[D3D11_VIEWPORT_AND_SCISSORRECT_OBJECT_COUNT_PER_PIPELINE];
+	ID3D11RasterizerState*      RS= nullptr;
+	ID3D11BlendState*           BlendState = nullptr ;
+	FLOAT                       BlendFactor[4];
+	UINT                        SampleMask;
+	UINT                        StencilRef;
+	ID3D11DepthStencilState*    DepthStencilState = nullptr ;
+	ID3D11ShaderResourceView*   PSShaderResource = nullptr;
+	ID3D11SamplerState*         PSSampler = nullptr;
+	ID3D11PixelShader*          PS = nullptr;
+	ID3D11VertexShader*         VS = nullptr;
+	UINT                        PSInstancesCount, VSInstancesCount;
+	ID3D11ClassInstance*        PSInstances[256], *VSInstances[256];   // 256 is max according to PSSetShader documentation
+	D3D11_PRIMITIVE_TOPOLOGY    PrimitiveTopology;
+	ID3D11Buffer*               IndexBuffer = nullptr, *VertexBuffer = nullptr , *VSConstantBuffer = nullptr;
+	UINT                        IndexBufferOffset, VertexBufferStride, VertexBufferOffset;
+	DXGI_FORMAT                 IndexBufferFormat;
+	ID3D11InputLayout*          InputLayout = nullptr;
+	BACKUP_DX11_STATE()
+	{
+		for (int i = 0; i < 256; i++)
+		{
+			PSInstances[i] = nullptr;
+			VSInstances[i] = nullptr;
+		}
+	}
+	~BACKUP_DX11_STATE()
+	{
+		if(RS != nullptr)
+			RS->Release();
+		if(BlendState != nullptr)
+			BlendState->Release();
+		if(DepthStencilState != nullptr)
+			DepthStencilState->Release();
+		if(PSShaderResource != nullptr)
+			PSShaderResource->Release();
+		if(PSSampler != nullptr)
+			PSSampler->Release();
+		if(PS != nullptr)
+			PS->Release();
+		if(VS != nullptr)
+			VS->Release();
+		for (int i = 0; i < 256; i++)
+		{
+			if(PSInstances[i] != nullptr)
+				PSInstances[i]->Release();
+			if(VSInstances[i] != nullptr)
+				VSInstances[i]->Release();	
+		}
+		if(IndexBuffer != nullptr)
+			IndexBuffer->Release();
+		if(VertexBuffer != nullptr)
+			VertexBuffer->Release();
+		if(VSConstantBuffer != nullptr)
+			VSConstantBuffer->Release();
+		if(InputLayout != nullptr)
+			InputLayout->Release();
+	}
 
+};
 GD_Tool::Mainframework::DX11BaseWindow::~DX11BaseWindow()
 {
+	DX11::Release();
 	ReleaseWindow();
 }
 
 bool GD_Tool::Mainframework::DX11BaseWindow::Init(const uint32_t & resolutionX, const uint32_t & resolutionY)
 {
+	if (!DX11::Init(resolutionX, resolutionY))
+		return false; 
 	ImGui::CreateContext();
+
+	if (!QueryPerformanceFrequency((LARGE_INTEGER *)&m_ticksPerSecond))
+		return false;
+	if (!QueryPerformanceCounter((LARGE_INTEGER *)&m_time))
+		return false;
+
 	// Setup back-end capabilities flags
 	ImGuiIO& io = ImGui::GetIO();
+	m_pDevice = m_pBaseDevice;
 	io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;   // We can honor GetMouseCursor() values (optional)
 	io.BackendFlags |= ImGuiBackendFlags_HasSetMousePos;    // We can honor io.WantSetMousePos requests (optional, rarely used)
 
@@ -49,21 +127,21 @@ bool GD_Tool::Mainframework::DX11BaseWindow::Init(const uint32_t & resolutionX, 
 	io.KeyMap[ImGuiKey_Z] = 'Z';
 
 	io.ImeWindowHandle = m_hMainWnd;
-	if (!DX11::Init(resolutionX, resolutionY))
-		return false; 
-	BuildShader(); 
-	BuildBuffers();
+
+
 	return true; 
 }
 
 int32_t GD_Tool::Mainframework::DX11BaseWindow::Run()
 {
+	ImGui::StyleColorsDark();
 	MSG msg = { 0 };
 	ImGuiIO& GUI = ImGui::GetIO();
 
-	GUI.DisplaySize.x = m_resolutionX;
-	GUI.DisplaySize.y = m_resolutionY;
-	ImGui::StyleColorsDark();
+	RECT rect{ 0 };
+	GetClientRect(m_hMainWnd, &rect);
+	GUI.DisplaySize = ImVec2((float)(rect.right - rect.left), (float)(rect.bottom - rect.top));
+
 	int width, height;
 	unsigned char* pixels;
 	GUI.Fonts->GetTexDataAsRGBA32(&pixels, &width, &height);
@@ -78,56 +156,58 @@ int32_t GD_Tool::Mainframework::DX11BaseWindow::Run()
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
+			continue;
+		}
+		
+		NewFrame();
+		if (!m_appPaused)
+		{
+				
+			UpdateScene(m_timer.DeltaTime());
+				
+			// 1. Show a simple window.
+			// Tip: if we don't call ImGui::Begin()/ImGui::End() the widgets automatically appears in a window called "Debug".
+			{
+				static float f = 0.0f;
+				static int counter = 0;
+				ImGui::Text("Hello, world!");                           // Display some text (you can use a format string too)
+				ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f    
+				ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+
+				ImGui::Checkbox("Demo Window", &show_window_demo);      // Edit bools storing our windows open/close state
+
+				if (ImGui::Button("Button"))                            // Buttons return true when clicked (NB: most widgets return true when edited/activated)
+					counter++;
+				ImGui::SameLine();
+				ImGui::Text("counter = %d", counter);
+
+				ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+			}
+			ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiCond_FirstUseEver); // Normally user code doesn't need/want to call this because positions are saved in .ini file anyway. Here we just want to make the demo initial state a bit more friendly!
+			ImGui::ShowDemoWindow(&show_window_demo);
+			m_pDevCon->OMSetRenderTargets(1, &m_pBackBuffer, NULL);
+			m_pDevCon->ClearRenderTargetView(m_pBackBuffer, (float*)&clear_color);
+			//DrawScene();
+			ImGui::Render();
+			RenderDrawData(ImGui::GetDrawData());
+			m_pSwapChain->Present(1, 0);
+
 		}
 		else
 		{
-			m_timer.Tick();
-			if (!m_appPaused)
-			{
-				CalculateFrameStats();
-
-				UpdateScene(m_timer.DeltaTime());
-				
-				ImGui::NewFrame();
-				GUI.DeltaTime = m_timer.DeltaTime();
-				// 1. Show a simple window.
-				// Tip: if we don't call ImGui::Begin()/ImGui::End() the widgets automatically appears in a window called "Debug".
-				{
-					static float f = 0.0f;
-					static int counter = 0;
-					ImGui::Text("Hello, world!");                           // Display some text (you can use a format string too)
-					ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f    
-					ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
-
-					ImGui::Checkbox("Demo Window", &show_window_demo);      // Edit bools storing our windows open/close state
-
-					if (ImGui::Button("Button"))                            // Buttons return true when clicked (NB: most widgets return true when edited/activated)
-						counter++;
-					ImGui::SameLine();
-					ImGui::Text("counter = %d", counter);
-
-					ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-				}
-				ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiCond_FirstUseEver); // Normally user code doesn't need/want to call this because positions are saved in .ini file anyway. Here we just want to make the demo initial state a bit more friendly!
-				ImGui::ShowDemoWindow(&show_window_demo);
-				DrawScene();
-				ImGui::Render();
-				RenderDrawData(ImGui::GetDrawData());
-				m_pSwapChain->Present(1, 0);
-
-			}
-			else
-			{
-				Sleep(100);
-			}
+			Sleep(100);
 		}
+		
 	}
 	return (int32_t)msg.wParam;
 }
 
 void GD_Tool::Mainframework::DX11BaseWindow::OnResize()
 {
-
+	DX11::OnResize();
+	ImGuiIO& GUI = ImGui::GetIO();
+	GUI.DisplaySize.x = m_resolutionX; 
+	GUI.DisplaySize.y = m_resolutionY; 
 }
 
 void GD_Tool::Mainframework::DX11BaseWindow::UpdateScene(const float& dTime)
@@ -216,30 +296,7 @@ void GD_Tool::Mainframework::DX11BaseWindow::RenderDrawData(ImDrawData* draw_dat
 		m_pDevCon->Unmap(m_pBaseConstBuffer, 0);
 	}
 
-	// Backup DX state that will be modified to restore it afterwards (unfortunately this is very ugly looking and verbose. Close your eyes!)
-	struct BACKUP_DX11_STATE
-	{
-		UINT                        ScissorRectsCount, ViewportsCount;
-		D3D11_RECT                  ScissorRects[D3D11_VIEWPORT_AND_SCISSORRECT_OBJECT_COUNT_PER_PIPELINE];
-		D3D11_VIEWPORT              Viewports[D3D11_VIEWPORT_AND_SCISSORRECT_OBJECT_COUNT_PER_PIPELINE];
-		ID3D11RasterizerState*      RS;
-		ID3D11BlendState*           BlendState;
-		FLOAT                       BlendFactor[4];
-		UINT                        SampleMask;
-		UINT                        StencilRef;
-		ID3D11DepthStencilState*    DepthStencilState;
-		ID3D11ShaderResourceView*   PSShaderResource;
-		ID3D11SamplerState*         PSSampler;
-		ID3D11PixelShader*          PS;
-		ID3D11VertexShader*         VS;
-		UINT                        PSInstancesCount, VSInstancesCount;
-		ID3D11ClassInstance*        PSInstances[256], *VSInstances[256];   // 256 is max according to PSSetShader documentation
-		D3D11_PRIMITIVE_TOPOLOGY    PrimitiveTopology;
-		ID3D11Buffer*               IndexBuffer, *VertexBuffer, *VSConstantBuffer;
-		UINT                        IndexBufferOffset, VertexBufferStride, VertexBufferOffset;
-		DXGI_FORMAT                 IndexBufferFormat;
-		ID3D11InputLayout*          InputLayout;
-	};
+	
 	BACKUP_DX11_STATE old;
 	old.ScissorRectsCount = old.ViewportsCount = D3D11_VIEWPORT_AND_SCISSORRECT_OBJECT_COUNT_PER_PIPELINE;
 	m_pDevCon->RSGetScissorRects(&old.ScissorRectsCount, old.ScissorRects);
@@ -284,7 +341,7 @@ void GD_Tool::Mainframework::DX11BaseWindow::RenderDrawData(ImDrawData* draw_dat
 	const float blend_factor[4] = { 0.f, 0.f, 0.f, 0.f };
 	m_pDevCon->OMSetBlendState(m_pBlendState, blend_factor, 0xffffffff);
 	m_pDevCon->OMSetDepthStencilState(m_pDepthStencilState, 0);
-	m_pDevCon->RSSetState(m_pRasterizerStatze);
+	m_pDevCon->RSSetState(m_pRasterizerState);
 
 	// Render command lists
 	int vtx_offset = 0;
@@ -340,8 +397,7 @@ void GD_Tool::Mainframework::DX11BaseWindow::CreateFontsTexture()
 
 	// Upload texture to graphics system
 	{
-		D3D11_TEXTURE2D_DESC desc;
-		ZeroMemory(&desc, sizeof(desc));
+		D3D11_TEXTURE2D_DESC desc{};
 		desc.Width = width;
 		desc.Height = height;
 		desc.MipLevels = 1;
@@ -360,8 +416,7 @@ void GD_Tool::Mainframework::DX11BaseWindow::CreateFontsTexture()
 		m_pDevice->CreateTexture2D(&desc, &subResource, &pTexture);
 
 		// Create texture view
-		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
-		ZeroMemory(&srvDesc, sizeof(srvDesc));
+		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc{};
 		srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 		srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 		srvDesc.Texture2D.MipLevels = desc.MipLevels;
@@ -375,8 +430,7 @@ void GD_Tool::Mainframework::DX11BaseWindow::CreateFontsTexture()
 
 	// Create texture sampler
 	{
-		D3D11_SAMPLER_DESC desc;
-		ZeroMemory(&desc, sizeof(desc));
+		D3D11_SAMPLER_DESC desc{};
 		desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 		desc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 		desc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
@@ -392,14 +446,18 @@ void GD_Tool::Mainframework::DX11BaseWindow::CreateFontsTexture()
 
 void GD_Tool::Mainframework::DX11BaseWindow::NewFrame()
 {
+	if (!m_pFontSampler)
+		BuildShader();
 	ImGuiIO& GUI = ImGui::GetIO();
 
 	RECT rect{ 0 };
 	GetClientRect(m_hMainWnd, &rect); 
 
 	GUI.DisplaySize = ImVec2((float)(rect.right - rect.left), (float)(rect.bottom - rect.top));
-	GUI.DeltaTime = m_timer.DeltaTime();
-
+	int64_t currentTime;
+	QueryPerformanceCounter((LARGE_INTEGER *)&currentTime);
+	GUI.DeltaTime = (float)(currentTime - m_time) / m_ticksPerSecond;
+	m_time = currentTime;
 	// Read keyboard modifiers inputs
 	GUI.KeyCtrl = (GetKeyState(VK_CONTROL) & 0x8000) != 0;
 	GUI.KeyShift = (GetKeyState(VK_SHIFT) & 0x8000) != 0;
@@ -461,28 +519,13 @@ bool GD_Tool::Mainframework::DX11BaseWindow::UpdateCursor()
 	return true;
 }
 
-LRESULT GD_Tool::Mainframework::DX11BaseWindow::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+bool GD_Tool::Mainframework::DX11BaseWindow::WndProcHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	LRESULT result;
-	result = DX11::MsgProc(hwnd, msg, wParam, lParam);
-	ImGuiIO& GUI = ImGui::GetIO();
-
+	if (ImGui::GetCurrentContext() == NULL)
+		return 0;
+	ImGuiIO& io = ImGui::GetIO();
 	switch (msg)
 	{
-	case WM_SIZE:
-		if (wParam == 2)
-		{
-			OnResize();
-			m_maximized = true;
-			m_minimized = false;
-		}
-		else if (m_maximized && wParam == 0)
-		{
-			OnResize();
-			m_maximized = false;
-			m_minimized = true;
-		}
-		break;
 	case WM_LBUTTONDOWN: case WM_LBUTTONDBLCLK:
 	case WM_RBUTTONDOWN: case WM_RBUTTONDBLCLK:
 	case WM_MBUTTONDOWN: case WM_MBUTTONDBLCLK:
@@ -493,7 +536,7 @@ LRESULT GD_Tool::Mainframework::DX11BaseWindow::MsgProc(HWND hwnd, UINT msg, WPA
 		if (msg == WM_MBUTTONDOWN || msg == WM_MBUTTONDBLCLK) button = 2;
 		if (!ImGui::IsAnyMouseDown() && ::GetCapture() == NULL)
 			::SetCapture(hwnd);
-		GUI.MouseDown[button] = true;
+		io.MouseDown[button] = true;
 		return 0;
 	}
 	case WM_LBUTTONUP:
@@ -504,42 +547,70 @@ LRESULT GD_Tool::Mainframework::DX11BaseWindow::MsgProc(HWND hwnd, UINT msg, WPA
 		if (msg == WM_LBUTTONUP) button = 0;
 		if (msg == WM_RBUTTONUP) button = 1;
 		if (msg == WM_MBUTTONUP) button = 2;
-		GUI.MouseDown[button] = false;
+		io.MouseDown[button] = false;
 		if (!ImGui::IsAnyMouseDown() && ::GetCapture() == hwnd)
 			::ReleaseCapture();
 		return 0;
 	}
 	case WM_MOUSEWHEEL:
-		GUI.MouseWheel += GET_WHEEL_DELTA_WPARAM(wParam) > 0 ? +1.0f : -1.0f;
+		io.MouseWheel += GET_WHEEL_DELTA_WPARAM(wParam) > 0 ? +1.0f : -1.0f;
 		return 0;
 	case WM_MOUSEHWHEEL:
-		GUI.MouseWheelH += GET_WHEEL_DELTA_WPARAM(wParam) > 0 ? +1.0f : -1.0f;
+		io.MouseWheelH += GET_WHEEL_DELTA_WPARAM(wParam) > 0 ? +1.0f : -1.0f;
 		return 0;
 	case WM_MOUSEMOVE:
-		GUI.MousePos.x = (signed short)(lParam);
-		GUI.MousePos.y = (signed short)(lParam >> 16);
+		io.MousePos.x = (signed short)(lParam);
+		io.MousePos.y = (signed short)(lParam >> 16);
 		return 0;
 	case WM_KEYDOWN:
 	case WM_SYSKEYDOWN:
 		if (wParam < 256)
-			GUI.KeysDown[wParam] = 1;
+			io.KeysDown[wParam] = 1;
 		return 0;
 	case WM_KEYUP:
 	case WM_SYSKEYUP:
 		if (wParam < 256)
-			GUI.KeysDown[wParam] = 0;
+			io.KeysDown[wParam] = 0;
 		return 0;
 	case WM_CHAR:
 		// You can also use ToAscii()+GetKeyboardState() to retrieve characters.
 		if (wParam > 0 && wParam < 0x10000)
-			GUI.AddInputCharacter((unsigned short)wParam);
+			io.AddInputCharacter((unsigned short)wParam);
 		return 0;
 	case WM_SETCURSOR:
 		if (LOWORD(lParam) == HTCLIENT && UpdateCursor())
 			return 1;
+	}
+	return 0;
+}
+
+LRESULT GD_Tool::Mainframework::DX11BaseWindow::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	
+	if (WndProcHandler(hwnd, msg, wParam, lParam))
+		return true;
+
+	switch (msg)
+	{
+	case WM_SIZE:
+		if (m_pDevice != NULL && wParam != SIZE_MINIMIZED)
+		{
+			InvalidateDeviceObjects();
+			CleanupRenderTarget();
+			m_pSwapChain->ResizeBuffers(0, (UINT)LOWORD(lParam), (UINT)HIWORD(lParam), DXGI_FORMAT_UNKNOWN, 0);
+			CreateRenderTarget();
+			BuildShader();
+		}
+		return 0;
+	case WM_SYSCOMMAND:
+		if ((wParam & 0xfff0) == SC_KEYMENU) // Disable ALT application menu
+			return 0;
+		break;
+	case WM_DESTROY:
+		PostQuitMessage(0);
 		return 0;
 	}
-	return result;
+	return DefWindowProc(hwnd, msg, wParam, lParam);
 }
 
 void GD_Tool::Mainframework::DX11BaseWindow::ReleaseWindow()
@@ -551,6 +622,10 @@ void GD_Tool::Mainframework::DX11BaseWindow::ReleaseWindow()
 	SafeRelease(m_pVShader); 
 	SafeRelease(m_pPShader);
 	SafeRelease(m_pBlendState);
+	SafeRelease(m_pFontSampler); 
+	SafeRelease(m_pDepthStencilState);
+	SafeRelease(m_pRasterizerState);
+	SafeRelease(m_pFontTexView);
 	ImGui::DestroyContext();
 }
 
@@ -558,7 +633,8 @@ void GD_Tool::Mainframework::DX11BaseWindow::BuildShader()
 {
 	if (!m_pDevice)
 		return; 
-	
+	if (m_pFontSampler)
+		InvalidateDeviceObjects();
 	{
 		static const char* vertexShader =
 			"cbuffer vertexBuffer : register(b0) \
@@ -639,12 +715,12 @@ void GD_Tool::Mainframework::DX11BaseWindow::BuildShader()
 			return;
 		if (m_pDevice->CreatePixelShader((DWORD*)pPShaderBlob->GetBufferPointer(), pPShaderBlob->GetBufferSize(), NULL, &m_pPShader) != S_OK)
 			return;
+		SafeRelease(pPShaderBlob);
 	}
 
 	// Create the blending setup
 	{
-		D3D11_BLEND_DESC desc;
-		ZeroMemory(&desc, sizeof(desc));
+		D3D11_BLEND_DESC desc{};
 		desc.AlphaToCoverageEnable = false;
 		desc.RenderTarget[0].BlendEnable = true;
 		desc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
@@ -659,19 +735,17 @@ void GD_Tool::Mainframework::DX11BaseWindow::BuildShader()
 
 	// Create the rasterizer state
 	{
-		D3D11_RASTERIZER_DESC desc;
-		ZeroMemory(&desc, sizeof(desc));
+		D3D11_RASTERIZER_DESC desc{};
 		desc.FillMode = D3D11_FILL_SOLID;
 		desc.CullMode = D3D11_CULL_NONE;
 		desc.ScissorEnable = true;
 		desc.DepthClipEnable = true;
-		m_pDevice->CreateRasterizerState(&desc, &m_pRasterizerStatze);
+		m_pDevice->CreateRasterizerState(&desc, &m_pRasterizerState);
 	}
 
 	// Create depth-stencil State
 	{
-		D3D11_DEPTH_STENCIL_DESC desc;
-		ZeroMemory(&desc, sizeof(desc));
+		D3D11_DEPTH_STENCIL_DESC desc{};
 		desc.DepthEnable = false;
 		desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 		desc.DepthFunc = D3D11_COMPARISON_ALWAYS;

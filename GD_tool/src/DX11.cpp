@@ -14,6 +14,60 @@ bool GD_Tool::Mainframework::DX11::Failed(HRESULT aResult)
 	}
 	return false;
 }
+HRESULT GD_Tool::Mainframework::DX11::CreateDeviceD3D(HWND hwnd)
+{
+	// Setup swap chain
+	DXGI_SWAP_CHAIN_DESC sd;
+	ZeroMemory(&sd, sizeof(sd));
+	sd.BufferCount = 2;
+	sd.BufferDesc.Width = 0;
+	sd.BufferDesc.Height = 0;
+	sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	sd.BufferDesc.RefreshRate.Numerator = 60;
+	sd.BufferDesc.RefreshRate.Denominator = 1;
+	sd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
+	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+	sd.OutputWindow = hwnd;
+	sd.SampleDesc.Count = 1;
+	sd.SampleDesc.Quality = 0;
+	sd.Windowed = TRUE;
+	sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+
+	UINT createDeviceFlags = 0;
+	//createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
+	D3D_FEATURE_LEVEL featureLevel;
+	const D3D_FEATURE_LEVEL featureLevelArray[2] = { D3D_FEATURE_LEVEL_11_0, D3D_FEATURE_LEVEL_10_0, };
+	if (D3D11CreateDeviceAndSwapChain(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, createDeviceFlags, featureLevelArray, 2, D3D11_SDK_VERSION, &sd, &m_pSwapChain, &m_pBaseDevice, &featureLevel, &m_pDevCon) != S_OK)
+		return E_FAIL;
+
+	CreateRenderTarget();
+
+	return S_OK;
+}
+void GD_Tool::Mainframework::DX11::InvalidateDeviceObjects()
+{
+	SafeRelease(m_pBackBuffer);
+	SafeRelease(m_pDepthStencilBuffer);
+	SafeRelease(m_pDepthStencilView);
+}
+void GD_Tool::Mainframework::DX11::CleanupRenderTarget()
+{
+	SafeRelease(m_pBackBuffer);
+}
+void GD_Tool::Mainframework::DX11::CreateRenderTarget()
+{
+	ID3D11Texture2D* pBackBuffer;
+	m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
+	m_pBaseDevice->CreateRenderTargetView(pBackBuffer, NULL, &m_pBackBuffer);
+	pBackBuffer->Release();
+}
+void GD_Tool::Mainframework::DX11::CleanupDeviceD3D()
+{
+	SafeRelease(m_pSwapChain); 
+	SafeRelease(m_pDevice); 
+	SafeRelease(m_pDevCon);
+	SafeRelease(m_pBaseDevice);
+}
 namespace
 {
 	// This is just used to forward Windows messages from a global window
@@ -50,8 +104,8 @@ bool GD_Tool::Mainframework::DX11::InitMainWindow()
 	rect.bottom = m_resolutionY;
 
 	///\internal Adjusts the Window to the left upper corner
-	if (!AdjustWindowRectEx(&rect, WS_OVERLAPPEDWINDOW, false, NULL))
-		return false;
+	/*if (!AdjustWindowRectEx(&rect, WS_OVERLAPPEDWINDOW, false, NULL))
+		return false;*/
 	ATOM atom = 0;
 	// registers the current window. 
 	atom = RegisterClassEx(&wndClass);
@@ -64,22 +118,20 @@ bool GD_Tool::Mainframework::DX11::InitMainWindow()
 		wndClass.lpszClassName,
 		"GD_Tool",
 		WS_OVERLAPPEDWINDOW,
-		0,
-		0,
-		std::abs(rect.right) - std::abs(rect.left),
-		std::abs(rect.bottom) - std::abs(rect.top),
+		200,
+		200,
+		rect.right,
+		rect.bottom,
 		NULL,
 		NULL,
 		m_hAppInstance,
 		nullptr
 	);
-	int x = GetLastError();
 	if (m_hMainWnd == NULL)
 		return false;
 
 
-	ShowWindow(m_hMainWnd, SW_SHOW); 
-	UpdateWindow(m_hMainWnd);
+	
 	return true; 
 }
 
@@ -88,6 +140,7 @@ bool GD_Tool::Mainframework::DX11::InitDirect3D()
 	HRESULT hr;
 	UINT m4xMsaaQuality = 0;
 
+	
 
 	DXGI_SWAP_CHAIN_DESC scDesc{};
 
@@ -100,7 +153,7 @@ bool GD_Tool::Mainframework::DX11::InitDirect3D()
 	scDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 
 
-	scDesc.BufferCount = 1;
+	scDesc.BufferCount = 2;
 	scDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 
 	if (m_enable4xMsaa)
@@ -119,7 +172,7 @@ bool GD_Tool::Mainframework::DX11::InitDirect3D()
 	scDesc.Windowed = TRUE;
 
 	scDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
-
+	scDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 
 	UINT createDeviceFlags = 0;
 	D3D_FEATURE_LEVEL featureLevel;
@@ -146,15 +199,11 @@ bool GD_Tool::Mainframework::DX11::InitDirect3D()
 	assert(m4xMsaaQuality > 0);
 
 
-	ID3D11Texture2D* pBackBuffer;
-	m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
-
-	m_pDevice->CreateRenderTargetView(pBackBuffer, nullptr, &m_pBackBuffer);
-	SafeRelease(pBackBuffer);
+	CreateRenderTarget();
 
 
 
-	D3D11_TEXTURE2D_DESC depthStencilDesc{};
+	/*D3D11_TEXTURE2D_DESC depthStencilDesc{};
 
 	depthStencilDesc.Width = m_resolutionX;
 	depthStencilDesc.Height = m_resolutionY;
@@ -206,7 +255,7 @@ bool GD_Tool::Mainframework::DX11::InitDirect3D()
 	m_viewPort.MaxDepth = 1.0f;
 
 	m_pDevCon->RSSetViewports(1, &m_viewPort);
-
+*/
 	return true;
 }
 
@@ -262,8 +311,11 @@ GD_Tool::Mainframework::DX11::DX11(const HINSTANCE& hInstance)
 	, m_pDepthStencilBuffer(nullptr)
 	, m_pBackBuffer(nullptr)
 	, m_pDepthStencilView(nullptr)
+	,m_pBaseDevice(nullptr)
 {
 	g_pDX11App = this;
+	m_timer.Start();
+
 }
 HINSTANCE GD_Tool::Mainframework::DX11::ApplicationInstance() const
 {
@@ -282,11 +334,18 @@ bool GD_Tool::Mainframework::DX11::Init(const uint32_t& resolutionX, const uint3
 {
 	m_resolutionX = resolutionX; 
 	m_resolutionY = resolutionY;
-	m_timer.Start();
 	if (!InitMainWindow())
 		return false; 
-	if (!InitDirect3D())
-		return false; 
+	if (CreateDeviceD3D(m_hMainWnd) < 0)
+	{
+		CleanupDeviceD3D();
+		return false;
+	}
+	ShowWindow(m_hMainWnd, SW_SHOW);
+	UpdateWindow(m_hMainWnd);
+
+	/*if (!InitDirect3D())
+		return false; */
 
 	return true; 
 }
@@ -427,17 +486,15 @@ LRESULT GD_Tool::Mainframework::DX11::MsgProc(HWND hwnd, UINT msg, WPARAM wParam
 
 void GD_Tool::Mainframework::DX11::Release()
 {
-	if(m_pSwapChain != nullptr)
-		m_pSwapChain->SetFullscreenState(FALSE, NULL);
-
+	InvalidateDeviceObjects();
 	if (m_pDevCon)
 		m_pDevCon->ClearState(); 
-	SafeRelease(m_pSwapChain);
+	if(m_pSwapChain != nullptr)
+		m_pSwapChain->SetFullscreenState(FALSE, NULL);
 	SafeRelease(m_pDevice);
-	SafeRelease(m_pDevCon);
-	SafeRelease(m_pBackBuffer);
-	SafeRelease(m_pDepthStencilBuffer); 
-	SafeRelease(m_pDepthStencilView);
+	SafeRelease(m_pDevCon); 
+
+	
 }
 
 GD_Tool::Mainframework::DX11::~DX11()

@@ -67,6 +67,7 @@ namespace GD_Tool
 			void CreateFontsTexture();
 			void NewFrame();
 			bool UpdateCursor();
+			bool WndProcHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 			/**
 			* Reads out the Vertex and Pixel Shader and build them
 			*/
@@ -75,14 +76,6 @@ namespace GD_Tool
 			* Build the vertex and constant buffer
 			*/
 			void BuildBuffers();
-			/**
-			* Creates a grid with the incoming size
-			*
-			* @param width The width of the grid.
-			* @param depth The depth of the grid.
-			* @param vCntX The vertex count on the x axis
-			* @param vCntZ The vertex count on the z axis.
-			*/
 		private:
 			ID3D11Buffer * m_pBaseVertexBuffer;
 			ID3D11Buffer* m_pBaseIndexBuffer;
@@ -93,8 +86,10 @@ namespace GD_Tool
 			ID3D11SamplerState* m_pFontSampler;
 			ID3D11InputLayout* m_pInputLayout;
 			ID3D11DepthStencilState* m_pDepthStencilState;
-			ID3D11RasterizerState* m_pRasterizerStatze;
+			ID3D11RasterizerState* m_pRasterizerState;
 			ID3D11ShaderResourceView* m_pFontTexView;
+
+			
 
 			POINT m_lastMousePos{};
 		};
