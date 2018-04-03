@@ -85,9 +85,9 @@ void GD_Tool::Mainframework::LoadSystem::LoadProject(const std::string & filePat
 				}
 			}			
 		}
+		ProjectManager::GetInstance().Save();
 	}
 	fileStream.close();
-	ProjectManager::GetInstance().Save();
 }
 
 GD_Tool::Mainframework::AppConfigDesc GD_Tool::Mainframework::LoadSystem::LoadConfig()

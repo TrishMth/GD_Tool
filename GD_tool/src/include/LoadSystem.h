@@ -2,6 +2,7 @@
 #pragma region Internal Includes
 #include "ProjectManager.h"
 #include "GlobalStructs.h"
+#include "MessageSystem.h"
 #pragma endregion 
 #pragma region External Includes
 #include <string>

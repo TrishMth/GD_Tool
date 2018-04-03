@@ -1,6 +1,5 @@
 #pragma once
 #pragma region Internal Includes
-#include "Timer.h"
 #pragma endregion 
 #pragma region External Includes
 #include <D3D11.h>
@@ -45,12 +44,11 @@ namespace GD_Tool
 			bool InitDirect3D(); 
 			bool Failed(HRESULT aResult);
 			HRESULT CreateDeviceD3D(HWND hwnd);
-			void InvalidateDeviceObjects();
+			virtual void InvalidateDeviceObjects();
 			void CleanupRenderTarget();
 			void CreateRenderTarget();
 			void CleanupDeviceD3D();
 
-			void CalculateFrameStats();
 		public:
 			void RenderFrame();
 			/**
@@ -105,7 +103,6 @@ namespace GD_Tool
 			ID3D11DepthStencilView* m_pDepthStencilView; 
 			ID3D11Device * m_pBaseDevice;
 
-			Timer m_timer;
 			std::wstring m_MainWindowCaption;
 
 			bool m_enable4xMsaa;

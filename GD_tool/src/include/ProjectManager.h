@@ -5,6 +5,7 @@
 #include "Object.h"
 #include "Formula.h"
 #include "GlobalStructs.h"
+#include "GlobalEnums.h"
 #pragma endregion 
 #pragma region External Includes
 #include "Windows.h"
@@ -36,6 +37,7 @@ namespace GD_Tool
 			ProjectManager(const ProjectManager&) = delete; 
 
 		public: 
+			
 			/**
 			* Creates the instance of the manager. 
 			* 
@@ -67,6 +69,16 @@ namespace GD_Tool
 			* @param index The index of the object 
 			*/
 			void CreateObject(const std::string& name);
+			void CreateGlobalVariable(const GlobalEnums::EVariableTypes& type, const std::string& name, const int32_t& value);
+			void CreateGlobalVariable(const GlobalEnums::EVariableTypes& type, const std::string& name, const float& value);
+			void CreateGlobalVariable(const GlobalEnums::EVariableTypes& type, const std::string& name, const double& value);
+			void CreateGlobalVariable(const GlobalEnums::EVariableTypes& type, const std::string& name, const bool& value);
+
+			void AddVariable(BaseVariable* variable);
+
+			std::map<uint32_t, BaseVariable*> GetGlobalVars() const;
+
+			void RemoveGlobalVar(const uint32_t& index);
 			/**
 			* Function to get the current name of the project
 			*
@@ -86,7 +98,7 @@ namespace GD_Tool
 			*/
 			void RemoveObject(const uint32_t& index);
 			/**
-			* Function to get the vector of the objects of the current project
+			* Function to get the map of the objects of the current project
 			*
 			* return The vector of the current objects
 			*/
@@ -139,8 +151,10 @@ namespace GD_Tool
 			std::string m_fileName;
 			uint32_t m_objIndex; 
 			uint32_t m_formulaIndex; 
+			uint32_t m_globalVarIndex;
 			std::map<uint32_t, Object*> m_baseObjects;
 			std::map<uint32_t, Formula*> m_formulas; 
+			std::map<uint32_t, BaseVariable*> m_globalVariables;
 			bool m_isDirty; 
 		};
 	}

@@ -20,6 +20,14 @@ namespace GD_Tool
 			Operator
 		};
 
+		enum class EMsgType
+		{
+			Default,
+			Log,
+			Warning,
+			Error
+		};
+
 		enum class ENodeOutputs
 		{
 			Success = 0, 

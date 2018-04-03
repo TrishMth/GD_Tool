@@ -1,3 +1,4 @@
+#pragma once
 #pragma region Internal Includes
 #include "ProjectManager.h"
 #include "LoadSystem.h"
@@ -9,6 +10,7 @@
 #pragma endregion 
 #pragma region External Includes
 #include <cstring>
+#include <fstream>
 #pragma endregion 
 
 namespace GD_Tool
@@ -56,6 +58,8 @@ namespace GD_Tool
 			* @param ProjectName The name of the new project
 			*/
 			void NewProject(const std::string& ProjectName);
+
+			bool CheckNewProjectFile(const std::string& ProjectName);
 			/**
 			* Loads a existing project by getting the filepath 
 			*

@@ -259,29 +259,7 @@ bool GD_Tool::Mainframework::DX11::InitDirect3D()
 	return true;
 }
 
-void GD_Tool::Mainframework::DX11::CalculateFrameStats()
-{
-	static int s_frameCount = 0; 
-	static float s_timeElapsed = 0.0f; 
 
-	s_frameCount++; 
-
-	if ((m_timer.Time() - s_timeElapsed) >= 1.0f)
-	{
-		float fps = (float)s_frameCount; 
-		float mspf = 1000.0f / fps;
-
-		std::wostringstream outs;
-		outs.precision(6);
-		outs << m_MainWindowCaption << L" "
-			<< L"FPS: " << fps << L" "
-			<< L"Frame Time: " << mspf << L" (ms)"; 
-		SetWindowTextW(m_hMainWnd, outs.str().c_str());
-
-		s_frameCount = 0; 
-		s_timeElapsed += 1.0f; 
-	}
-}
 
 void GD_Tool::Mainframework::DX11::RenderFrame()
 {
@@ -314,7 +292,6 @@ GD_Tool::Mainframework::DX11::DX11(const HINSTANCE& hInstance)
 	,m_pBaseDevice(nullptr)
 {
 	g_pDX11App = this;
-	m_timer.Start();
 
 }
 HINSTANCE GD_Tool::Mainframework::DX11::ApplicationInstance() const
@@ -442,23 +419,19 @@ LRESULT GD_Tool::Mainframework::DX11::MsgProc(HWND hwnd, UINT msg, WPARAM wParam
 		if (LOWORD(wParam) == WA_INACTIVE)
 		{
 			m_appPaused = true;
-			m_timer.Stop();
 		}
 		else
 		{
 			m_appPaused = false;
-			m_timer.Start();
 		}
 		return 0;
 	case WM_ENTERSIZEMOVE:
 		m_appPaused = true;
 		m_resizing = true;
-		m_timer.Stop();
 		return 0;
 	case WM_EXITSIZEMOVE:
 		m_appPaused = false;
 		m_resizing = false;
-		m_timer.Start();
 		OnResize();
 		return 0;
 	case WM_DESTROY:

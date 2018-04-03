@@ -28,6 +28,7 @@ namespace GD_Tool
 			* @return The name of the Object
 			*/
 			std::string GetName() const { return m_name; }
+			void CreateSubObject(const std::string& name);
 			/**
 			* Method to add another Object to this Object 
 			* @param obj The Object you wants to add to the current object

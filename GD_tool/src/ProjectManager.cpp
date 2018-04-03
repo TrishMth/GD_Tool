@@ -8,12 +8,15 @@ GD_Tool::Mainframework::ProjectManager::ProjectManager(const std::string name)
 	,m_objIndex(0)
 	,m_formulaIndex(0)
 	,m_isDirty(true)
+	, m_globalVarIndex(0)
 {
 	
 	m_filePath = ".//" + m_name;
 	s_pProManager = this;
 	Save();
 }
+
+
 
 void GD_Tool::Mainframework::ProjectManager::CreateInstance(const std::string & name)
 {
@@ -43,6 +46,48 @@ void GD_Tool::Mainframework::ProjectManager::CreateObject(const std::string & na
 	m_objIndex++;
 	AddObject(newObj);
 	m_isDirty = true; 
+}
+
+void GD_Tool::Mainframework::ProjectManager::CreateGlobalVariable(const GlobalEnums::EVariableTypes & type, const std::string & name, const int32_t & value)
+{
+	BaseVariable* newVariable = new BaseVariable(type, name, value);
+	AddVariable(newVariable);
+}
+
+void GD_Tool::Mainframework::ProjectManager::CreateGlobalVariable(const GlobalEnums::EVariableTypes & type, const std::string & name, const float & value)
+{
+	BaseVariable* newVariable = new BaseVariable(type, name, value);
+	AddVariable(newVariable);
+}
+
+void GD_Tool::Mainframework::ProjectManager::CreateGlobalVariable(const GlobalEnums::EVariableTypes & type, const std::string & name, const double & value)
+{
+	BaseVariable* newVariable = new BaseVariable(type, name, value);
+	AddVariable(newVariable);
+}
+
+void GD_Tool::Mainframework::ProjectManager::CreateGlobalVariable(const GlobalEnums::EVariableTypes & type, const std::string & name, const bool & value)
+{
+	BaseVariable* newVariable = new BaseVariable(type, name, value);
+	AddVariable(newVariable);
+}
+
+void GD_Tool::Mainframework::ProjectManager::AddVariable(BaseVariable * variable)
+{
+	m_globalVariables.insert(std::pair<uint32_t, BaseVariable*>(m_globalVarIndex, variable));
+	m_globalVarIndex++;
+	m_isDirty = true;
+}
+
+std::map<uint32_t, GD_Tool::Mainframework::BaseVariable*> GD_Tool::Mainframework::ProjectManager::GetGlobalVars() const
+{
+	return m_globalVariables;
+}
+
+void GD_Tool::Mainframework::ProjectManager::RemoveGlobalVar(const uint32_t & index)
+{
+	m_globalVariables.erase(index);
+	m_isDirty = true;
 }
 
 void GD_Tool::Mainframework::ProjectManager::RemoveObject(const uint32_t & index)
@@ -87,7 +132,6 @@ void GD_Tool::Mainframework::ProjectManager::Save()
 {
 	if (m_isDirty)
 	{
-		CreateDirectory(m_filePath.c_str(),NULL);
 		std::fstream fileStream;
 		m_fileName = m_filePath + "//project.txt";
 

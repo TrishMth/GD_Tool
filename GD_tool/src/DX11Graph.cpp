@@ -30,7 +30,6 @@ int32_t GD_Tool::Mainframework::DX11Graph::Run()
 	MSG msg = { 0 };
 
 
-	m_timer.Reset();
 
 	while (msg.message != WM_QUIT)
 	{
@@ -41,10 +40,8 @@ int32_t GD_Tool::Mainframework::DX11Graph::Run()
 		}
 		else
 		{
-			m_timer.Tick();
 			if (!m_appPaused)
 			{
-				CalculateFrameStats();
 			}
 			else
 			{
@@ -63,7 +60,6 @@ void GD_Tool::Mainframework::DX11Graph::OnResize()
 
 void GD_Tool::Mainframework::DX11Graph::UpdateScene()
 {
-	m_pConstBuf->fTime = m_timer.Time();
 	UpdateConstBuf();
 }
 

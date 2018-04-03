@@ -1,5 +1,6 @@
 #pragma once
 #pragma region Internal Includes
+#include "BaseGUI.h"
 #pragma endregion 
 #pragma region External Includes
 #include <string>

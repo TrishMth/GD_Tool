@@ -56,7 +56,6 @@ int32_t GD_Tool::Mainframework::DX11Map::Run()
 	MSG msg = { 0 };
 
 
-	m_timer.Reset();
 
 	while (msg.message != WM_QUIT)
 	{
@@ -67,10 +66,8 @@ int32_t GD_Tool::Mainframework::DX11Map::Run()
 		}
 		else
 		{
-			m_timer.Tick();
 			if (!m_appPaused)
 			{
-				CalculateFrameStats();
 			}
 			else
 			{

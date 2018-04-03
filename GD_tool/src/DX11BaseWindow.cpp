@@ -134,6 +134,8 @@ bool GD_Tool::Mainframework::DX11BaseWindow::Init(const uint32_t & resolutionX, 
 
 int32_t GD_Tool::Mainframework::DX11BaseWindow::Run()
 {
+	
+
 	ImGui::StyleColorsDark();
 	MSG msg = { 0 };
 	ImGuiIO& GUI = ImGui::GetIO();
@@ -148,8 +150,7 @@ int32_t GD_Tool::Mainframework::DX11BaseWindow::Run()
 	GUI.Fonts->AddFontDefault();
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 	bool show_window_demo = true; 
-	m_timer.Reset();
-
+	
 	while (msg.message != WM_QUIT)
 	{
 		if (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
@@ -163,34 +164,17 @@ int32_t GD_Tool::Mainframework::DX11BaseWindow::Run()
 		if (!m_appPaused)
 		{
 				
-			UpdateScene(m_timer.DeltaTime());
-				
-			// 1. Show a simple window.
-			// Tip: if we don't call ImGui::Begin()/ImGui::End() the widgets automatically appears in a window called "Debug".
-			{
-				static float f = 0.0f;
-				static int counter = 0;
-				ImGui::Text("Hello, world!");                           // Display some text (you can use a format string too)
-				ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f    
-				ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
-
-				ImGui::Checkbox("Demo Window", &show_window_demo);      // Edit bools storing our windows open/close state
-
-				if (ImGui::Button("Button"))                            // Buttons return true when clicked (NB: most widgets return true when edited/activated)
-					counter++;
-				ImGui::SameLine();
-				ImGui::Text("counter = %d", counter);
-
-				ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-			}
-			ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiCond_FirstUseEver); // Normally user code doesn't need/want to call this because positions are saved in .ini file anyway. Here we just want to make the demo initial state a bit more friendly!
-			ImGui::ShowDemoWindow(&show_window_demo);
+			UpdateScene(ImGui::GetIO().Framerate);
+			BaseGUI::GetInstance().Init();
+			
 			m_pDevCon->OMSetRenderTargets(1, &m_pBackBuffer, NULL);
 			m_pDevCon->ClearRenderTargetView(m_pBackBuffer, (float*)&clear_color);
-			//DrawScene();
 			ImGui::Render();
 			RenderDrawData(ImGui::GetDrawData());
-			m_pSwapChain->Present(1, 0);
+			if (BaseGUI::GetInstance().VSync())
+				m_pSwapChain->Present(1, 0);
+			else
+				m_pSwapChain->Present(0, 0);
 
 		}
 		else
@@ -582,6 +566,27 @@ bool GD_Tool::Mainframework::DX11BaseWindow::WndProcHandler(HWND hwnd, UINT msg,
 			return 1;
 	}
 	return 0;
+}
+
+void GD_Tool::Mainframework::DX11BaseWindow::InvalidateDeviceObjects()
+{
+	if (!m_pDevice)
+		return; 
+	SafeRelease(m_pFontSampler);
+	SafeRelease(m_pFontTexView);
+	SafeRelease(m_pBaseIndexBuffer); 
+	SafeRelease(m_pBaseVertexBuffer); 
+
+	SafeRelease(m_pBlendState);
+	SafeRelease(m_pDepthStencilState);
+	SafeRelease(m_pRasterizerState);
+	SafeRelease(m_pPShader);
+	SafeRelease(m_pBaseConstBuffer);
+	SafeRelease(m_pInputLayout);
+	SafeRelease(m_pVShader);
+	
+	DX11::InvalidateDeviceObjects();
+
 }
 
 LRESULT GD_Tool::Mainframework::DX11BaseWindow::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)

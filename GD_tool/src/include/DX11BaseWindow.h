@@ -3,6 +3,7 @@
 #include "DX11.h"
 #include "GlobalStructs.h"
 #include "imgui.h"
+#include "BaseGUI.h"
 #pragma endregion 
 #define DIRECTINPUT_VERSION 0x0800
 #pragma region External Includes
@@ -68,6 +69,7 @@ namespace GD_Tool
 			void NewFrame();
 			bool UpdateCursor();
 			bool WndProcHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+			virtual void InvalidateDeviceObjects() final;
 			/**
 			* Reads out the Vertex and Pixel Shader and build them
 			*/

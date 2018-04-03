@@ -3,6 +3,8 @@
 #include "Object.h"
 #include "BaseVariable.h"
 #include "Formula.h"
+#include "GlobalEnums.h"
+#include "imgui.h"
 #pragma endregion 
 #pragma region External includes
 #include <string>
@@ -99,5 +101,6 @@ namespace GD_Tool
 			uint32_t WindowWidth = 0; 
 			uint32_t WindowHeight = 0;
 		};
+		
 	}
 }

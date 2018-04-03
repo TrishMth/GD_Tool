@@ -155,6 +155,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\AppManager.cpp" />
+    <ClCompile Include="src\BaseGUI.cpp" />
     <ClCompile Include="src\DX11BaseWindow.cpp" />
     <ClCompile Include="src\DX11Graph.cpp" />
     <ClCompile Include="src\DX11.cpp" />
@@ -170,13 +171,13 @@
     <ClCompile Include="src\Object.cpp" />
     <ClCompile Include="src\OperatorNodes.cpp" />
     <ClCompile Include="src\ProjectManager.cpp" />
-    <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="src\VariableNodes.cpp" />
     <ClCompile Include="src\WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\include\AddNode.h" />
     <ClInclude Include="src\include\AppManager.h" />
+    <ClInclude Include="src\include\BaseGUI.h" />
     <ClInclude Include="src\include\BaseNode.h" />
     <ClInclude Include="src\include\BaseVariable.h" />
     <ClInclude Include="src\include\DX11BaseWindow.h" />
@@ -200,7 +201,6 @@
     <ClInclude Include="src\include\stb_rect_pack.h" />
     <ClInclude Include="src\include\stb_textedit.h" />
     <ClInclude Include="src\include\stb_truetype.h" />
-    <ClInclude Include="src\include\Timer.h" />
     <ClInclude Include="src\include\VariableNodes.h" />
   </ItemGroup>
   <ItemGroup>

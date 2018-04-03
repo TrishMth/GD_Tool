@@ -11,13 +11,18 @@ GD_Tool::Mainframework::Object::Object(const uint32_t& objIndex, const std::stri
 	Save();
 }
 
+void GD_Tool::Mainframework::Object::CreateSubObject(const std::string & name)
+{
+	Object* obj = new Object(m_attachedIndex, name);
+	AddObject(obj);
+}
+
 void GD_Tool::Mainframework::Object::AddObject(Object* obj)
 {
-	if (obj->GetIndex() != m_objIndex)
-	{
-		m_attachedObjs.insert(std::pair<uint32_t, Object*>(m_attachedIndex, obj));
-		m_attachedIndex++;
-	}
+	
+	m_attachedObjs.insert(std::pair<uint32_t, Object*>(m_attachedIndex, obj));
+	m_attachedIndex++;
+
 	m_isDirty = true; 
 }
 
