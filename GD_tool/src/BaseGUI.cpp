@@ -14,6 +14,7 @@ GD_Tool::Mainframework::BaseGUI::BaseGUI()
 	, m_bShowGeneralSettings(false)
 	, m_bVSync(true)
 	, m_bShowStats(false)
+	, m_bUpdateWndSize(false)
 {
 	s_pBaseGUI = this;
 	ImGui::CreateContext();
@@ -44,6 +45,10 @@ void GD_Tool::Mainframework::BaseGUI::Init()
 
 	if (m_bShowStats)
 		CreateStats();
+	
+	if(m_bShowFormulaNodeWnd)
+		CreateFormulaNodeWnd();
+
 }
 
 void GD_Tool::Mainframework::BaseGUI::AddLogToConsole(char* text, ImVec4 col)
@@ -55,6 +60,11 @@ void GD_Tool::Mainframework::BaseGUI::AddLogToConsole(char* text, ImVec4 col)
 bool GD_Tool::Mainframework::BaseGUI::VSync()
 {
 	return m_bVSync;
+}
+
+void GD_Tool::Mainframework::BaseGUI::UpdateAllWndSizes()
+{
+
 }
 
 
@@ -140,8 +150,11 @@ void GD_Tool::Mainframework::BaseGUI::CreateMenuBar()
 
 void GD_Tool::Mainframework::BaseGUI::CreateNewWindow(const char* wndName)
 {
-
-	static char str[256] = "Enter name here";
+	ImGuiIO& io = ImGui::GetIO();
+	ImGui::SetNextWindowSize(ImVec2(200, 100), ImGuiCond_FirstUseEver);
+	
+	ImGui::SetNextWindowPos(ImVec2((io.DisplaySize.x / 2 )-100, (io.DisplaySize.y / 2)- 100), ImGuiCond_FirstUseEver);
+	static char str[64] = "Enter name here";
 	if (m_bShowNewProjWnd || m_bShowOpenProjWnd)
 	{
 		if (ImGui::Begin(wndName))
@@ -154,6 +167,8 @@ void GD_Tool::Mainframework::BaseGUI::CreateNewWindow(const char* wndName)
 					AppManager::GetInstance().NewProject(str);
 					m_bShowNewProjWnd = false;
 				}
+				if (ImGui::Button("Cancel"))
+					m_bShowNewProjWnd = false;
 			}
 			else if (m_bShowOpenProjWnd)
 			{
@@ -163,6 +178,8 @@ void GD_Tool::Mainframework::BaseGUI::CreateNewWindow(const char* wndName)
 					AppManager::GetInstance().LoadProject(str);
 					m_bShowOpenProjWnd = false;
 				}
+				if (ImGui::Button("Cancel"))
+					m_bShowOpenProjWnd = false;
 			}
 		}
 		ImGui::End();
@@ -171,7 +188,9 @@ void GD_Tool::Mainframework::BaseGUI::CreateNewWindow(const char* wndName)
 
 void GD_Tool::Mainframework::BaseGUI::CreateObjectMngWnd()
 {
-	static bool showObjectWnd; 
+	ImGui::SetNextWindowSize(ImVec2(200, 700), ImGuiCond_FirstUseEver);
+	ImGui::SetNextWindowPos(ImVec2(800, 20), ImGuiCond_FirstUseEver);
+	
 	if (!ImGui::Begin("Object Manager", &m_bShowObjectManager))
 	{
 		ImGui::End();
@@ -236,7 +255,10 @@ void GD_Tool::Mainframework::BaseGUI::CreateObjectMngWnd()
 
 void GD_Tool::Mainframework::BaseGUI::CreateObjectWnd()
 {
-	if(ImGui::Begin("Create new object"))
+	ImGuiIO& io = ImGui::GetIO();
+	ImGui::SetNextWindowSize(ImVec2(200, 100), ImGuiCond_FirstUseEver);
+	ImGui::SetNextWindowPos(ImVec2(io.DisplaySize.x / 2 - 100, io.DisplaySize.y / 2 - 100), ImGuiCond_FirstUseEver);
+	if(ImGui::Begin("Create new object"), &m_bShowCreateObject)
 	{
 		static char str[128] = "Object name";
 		ImGui::InputText("Please enter a name for the new object", str, IM_ARRAYSIZE(str));
@@ -245,13 +267,16 @@ void GD_Tool::Mainframework::BaseGUI::CreateObjectWnd()
 			ProjectManager::GetInstance().CreateObject(str);
 			m_bShowCreateObject = false;
 		}
+		if (ImGui::Button("Cancel"))
+			ImGui::End();
 	}
 	ImGui::End();
 }
 
 void GD_Tool::Mainframework::BaseGUI::CreateConsole()
 {
-	ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
+	ImGui::SetNextWindowSize(ImVec2(700, 120), ImGuiCond_FirstUseEver);
+	ImGui::SetNextWindowPos(ImVec2(200, 600), ImGuiCond_FirstUseEver);
 	if (!ImGui::Begin("Console", &m_bShowConsole))
 	{
 		ImGui::End();
@@ -335,7 +360,7 @@ void GD_Tool::Mainframework::BaseGUI::CreateFormulaTree(Formula * formula, const
 		for (int i = 0; i < IM_ARRAYSIZE(io.MouseDown); i++)
 		{
 			if (ImGui::IsMouseDoubleClicked(i))
-				CreateFormulaNodeWnd();
+				m_bShowFormulaNodeWnd = true;
 		}
 		nodeClicked = count;
 	}
@@ -361,6 +386,9 @@ void GD_Tool::Mainframework::BaseGUI::CreateSubObject(Object* obj)
 
 void GD_Tool::Mainframework::BaseGUI::CreateFormulaWnd()
 {
+	ImGuiIO& io = ImGui::GetIO();
+	ImGui::SetNextWindowPos(ImVec2(200, 100), ImGuiCond_FirstUseEver);
+	ImGui::SetNextWindowSize(ImVec2(io.DisplaySize.x / 2 - 100, io.DisplaySize.y / 2 -50), ImGuiCond_FirstUseEver);
 	if (ImGui::Begin("Create new formula"))
 	{
 		static char str[128] = "Formula name"; 
@@ -376,6 +404,9 @@ void GD_Tool::Mainframework::BaseGUI::CreateFormulaWnd()
 
 void GD_Tool::Mainframework::BaseGUI::CreateGlobalVars()
 {
+	ImGuiIO& io = ImGui::GetIO();
+	ImGui::SetNextWindowPos(ImVec2(1, 20), ImGuiCond_FirstUseEver);
+	ImGui::SetNextWindowSize(ImVec2(200, 150), ImGuiCond_FirstUseEver);
 	if (ImGui::Begin("Global Variables"))
 	{
 		uint32_t counter = 0;
@@ -388,7 +419,7 @@ void GD_Tool::Mainframework::BaseGUI::CreateGlobalVars()
 			bool nodeOpen = ImGui::TreeNodeEx((void*)(intptr_t)counter, node_flags, it->second->GetName().c_str(), counter);
 			
 			static char str[128] = "Enter new name here";
-
+			static int inputInt = 0;
 			if (ImGui::IsItemClicked())
 				nodeClicked = counter;
 			if (nodeOpen)
@@ -399,6 +430,15 @@ void GD_Tool::Mainframework::BaseGUI::CreateGlobalVars()
 				switch (it->second->GetType())
 				{
 				case GlobalEnums::EVariableTypes::Integer:
+				{
+					IntegerVariable* intVar = (IntegerVariable*)it->second;
+					if (intVar != nullptr)
+					{
+						inputInt = intVar->GetValue();
+						if (ImGui::InputInt("Current Value", &inputInt) && inputInt != intVar->GetValue())
+							it->second->Set(inputInt);
+					}
+				}
 					break;
 				}
 				ImGui::TreePop();
@@ -419,6 +459,9 @@ void GD_Tool::Mainframework::BaseGUI::CreateGlobalVars()
 
 void GD_Tool::Mainframework::BaseGUI::CreateNewGlobalVar()
 {
+	ImGuiIO& io = ImGui::GetIO();
+	ImGui::SetNextWindowSize(ImVec2(200, 100), ImGuiCond_FirstUseEver); 
+	ImGui::SetNextWindowPos(ImVec2(io.DisplaySize.x / 2 - 100, io.DisplaySize.y / 2 -50), ImGuiCond_FirstUseEver);
 	if (ImGui::Begin("Create new variable"))
 	{
 		static ImGuiComboFlags flags = 0;
@@ -500,7 +543,42 @@ void GD_Tool::Mainframework::BaseGUI::CreateNewGlobalVar()
 
 void GD_Tool::Mainframework::BaseGUI::CreateFormulaNodeWnd()
 {
+	ImGuiIO& io = ImGui::GetIO();
+	static bool showContextMenu; 
+	if (!ImGui::Begin("Formula node window", &m_bShowFormulaNodeWnd))
+	{
+		ImGui::End();
+		return;
+	}
+	if (ImGui::IsMouseClicked(1) && ImGui::IsMouseHoveringWindow())
+		showContextMenu = true; 
+	
+	if (showContextMenu)
+	{
+		ImGui::SetNextWindowPos(ImGui::GetMousePos(), ImGuiCond_Appearing);
+		ImGui::SetNextWindowSize(ImVec2(100, 50), ImGuiCond_FirstUseEver);
+		if (!ImGui::Begin("Context"))
+		{
+			ImGui::End();
+			ImGui::End();
 
+			showContextMenu = false; 
+			return;
+		}
+		
+		if (!ImGui::IsWindowFocused())
+		{
+			ImGui::End(); 
+			ImGui::End();
+
+			showContextMenu = false; 
+			return;
+		}
+		ImGui::End();
+
+	}
+
+	ImGui::End();
 }
 
 void GD_Tool::Mainframework::BaseGUI::CreateGeneralSettings()
@@ -524,7 +602,7 @@ void GD_Tool::Mainframework::BaseGUI::CreateStats()
 	{
 		ImGui::End(); 
 		return; 
-	}
+	}	
 	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 	ImGui::End();
 }

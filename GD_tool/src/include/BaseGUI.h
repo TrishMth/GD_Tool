@@ -23,6 +23,7 @@ namespace GD_Tool
 			void Init();
 			void AddLogToConsole(char* text, ImVec4 col);
 			bool VSync();
+			void UpdateAllWndSizes();
 			~BaseGUI();
 
 		private: 
@@ -31,6 +32,7 @@ namespace GD_Tool
 
 			BaseGUI();
 			BaseGUI(const BaseGUI&) = delete; 
+
 			void CreateMenuBar();
 			void CreateNewWindow(const char* wndName);
 			void CreateObjectMngWnd();
@@ -60,6 +62,7 @@ namespace GD_Tool
 			bool m_bShowStats; 
 
 			bool m_bVSync; 
+			bool m_bUpdateWndSize; 
 
 			ImVector<char*> m_inputBuf;
 			ImVector<ImVec4> m_inputCol;

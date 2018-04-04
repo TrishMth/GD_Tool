@@ -58,12 +58,13 @@ void GD_Tool::Mainframework::AppManager::LoadProject(const std::string & FilePat
 {
 	if (ProjectManager::GetInstance().IsInstantiated())
 	{
-		ProjectManager::GetInstance().~ProjectManager(); 
+		ProjectManager::GetInstance().Release(); 
 	}
 	LoadSystem::LoadProject(FilePath);
 	if (!ProjectManager::GetInstance().IsInstantiated())
 		MessageSystem::Error("AppManager", "Couldn't load the project", "The project data couldn't get load or the file isn't compatible.");
-	MessageSystem::Log("LoadSystem", "Loading successful", "The data of: " + FilePath + "successfully loaded the project");
+	else
+		MessageSystem::Log("LoadSystem", "Loading successful", "The data of: " + FilePath + "successfully loaded the project");
 
 }
 

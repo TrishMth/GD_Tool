@@ -4,11 +4,11 @@ GD_Tool::Mainframework::IntegerVariable::IntegerVariable(const int32_t& value, c
 	:BaseVariable(GlobalEnums::EVariableTypes::Integer, name, value), VariableNodes(index)
 {
 }
-//
-//int32_t GD_Tool::Mainframework::IntegerVariable::GetValue() const
-//{
-//	return m_iValue;
-//}
+
+int32_t GD_Tool::Mainframework::IntegerVariable::GetValue() const
+{
+	return m_iValue;
+}
 
 void GD_Tool::Mainframework::IntegerVariable::SetValue(const int32_t & value)
 {

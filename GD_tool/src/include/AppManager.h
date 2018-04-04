@@ -58,7 +58,7 @@ namespace GD_Tool
 			* @param ProjectName The name of the new project
 			*/
 			void NewProject(const std::string& ProjectName);
-
+			AppConfigDesc GetCurrentConfig() const { return m_configDesc;  }
 			bool CheckNewProjectFile(const std::string& ProjectName);
 			/**
 			* Loads a existing project by getting the filepath 

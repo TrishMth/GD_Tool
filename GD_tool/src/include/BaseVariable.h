@@ -47,13 +47,11 @@ namespace GD_Tool
 			* @param type The type of the Variable you want to create
 			*/
 			BaseVariable(const GlobalEnums::EVariableTypes& type, const std::string& name, const double& value) : m_variableType(type), m_name(name), m_isPublic(true), m_iValue(0), m_fValue(0), m_dValue(value), m_bValue(0) {};
-			/**
-			* Getter function, to get the value of the Variable
-			*
-			* @return The value of the variables
-			*/
-			template <typename T>
-			T GetValue() const;
+
+			void Set(const int32_t& value) { m_iValue = value; }
+			void Set(const float& value) { m_fValue = value; }
+			void Set(const bool& value) { m_bValue = value; }
+			void Set(const double& value) { m_dValue = value; }
 			/**
 			* Getter function to get the name of the variable
 			* 
@@ -81,20 +79,6 @@ namespace GD_Tool
 			*/
 			virtual ~BaseVariable() {};
 		};
-		template<typename T>
-		inline T BaseVariable::GetValue() const
-		{
-			switch (m_variableType)
-			{
-			case EVariableTypes::Integer:
-				return m_iValue;
-			case EVariableTypes::Float:
-				return m_fValue;
-			case EVariableTypes::Boolean:
-				return m_bValue;
-			case EVariableTypes::Double:
-				return m_dValue;
-			}
-		}
+		
 	}
 }
