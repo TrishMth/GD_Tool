@@ -532,6 +532,9 @@ void GD_Tool::Mainframework::BaseGUI::CreateNewGlobalVar()
 			if (var != nullptr)
 			{
 				ProjectManager::GetInstance().AddVariable(var);
+				m_bShowCreateVariables = false;
+				ImGui::End(); 
+				return;
 			}
 			else
 				MessageSystem::Error("GUI", "Couldn't create the variable", "The variable couldn't get generated.");
@@ -574,6 +577,12 @@ void GD_Tool::Mainframework::BaseGUI::CreateFormulaNodeWnd()
 			showContextMenu = false; 
 			return;
 		}
+		NodeList names; 
+		for (uint32_t i = 0; i < names.GetNames().size(); i++)
+		{
+		}
+
+
 		ImGui::End();
 
 	}

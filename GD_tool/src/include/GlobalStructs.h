@@ -102,6 +102,19 @@ namespace GD_Tool
 			uint32_t WindowHeight = 0;
 			bool Maximized = false; 
 		};
+		struct NodeList
+		{
+			std::vector<std::string> GetNames()
+			{
+				std::vector<std::string> names; 
+				names.push_back(add); 
+				names.push_back(intNode);
+				names.push_back(floatNode);
+			}
+			std::string add = "Add Node"; 
+			std::string intNode = "Integer Variable"; 
+			std::string floatNode = "Float Variable"; 
+		};
 		
 	}
 }
