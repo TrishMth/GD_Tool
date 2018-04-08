@@ -6,6 +6,7 @@
 #include "BaseVariable.h"
 #pragma endregion 
 #pragma region External Includes
+#include <map>
 #pragma endregion 
 
 

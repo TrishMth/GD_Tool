@@ -136,7 +136,6 @@ int32_t GD_Tool::Mainframework::DX11BaseWindow::Run()
 {
 	
 
-	ImGui::StyleColorsDark();
 	MSG msg = { 0 };
 	ImGuiIO& GUI = ImGui::GetIO();
 

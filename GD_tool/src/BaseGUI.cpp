@@ -577,10 +577,6 @@ void GD_Tool::Mainframework::BaseGUI::CreateFormulaNodeWnd()
 			showContextMenu = false; 
 			return;
 		}
-		NodeList names; 
-		for (uint32_t i = 0; i < names.GetNames().size(); i++)
-		{
-		}
 
 
 		ImGui::End();
@@ -600,8 +596,27 @@ void GD_Tool::Mainframework::BaseGUI::CreateGeneralSettings()
 		return;
 	}
 	ImGui::Checkbox("VSync", &m_bVSync);
-
-
+	static ImGuiComboFlags flags = 0;
+	const char* typeName[] = { "Dark", "Light", "Classic"};
+	static const char* currentType = typeName[0];
+	if (ImGui::BeginCombo("Select window style", currentType, flags))
+	{
+		for (uint32_t i = 0; i < IM_ARRAYSIZE(typeName); i++)
+		{
+			bool isSelected = (currentType == typeName[i]);
+			if (ImGui::Selectable(typeName[i], isSelected))
+				currentType = typeName[i];
+			if (isSelected)
+				ImGui::SetItemDefaultFocus();
+		}		
+		ImGui::EndCombo();
+	}
+	if (currentType == typeName[0])
+		ImGui::StyleColorsDark();
+	else if (currentType == typeName[1])
+		ImGui::StyleColorsLight();
+	else
+		ImGui::StyleColorsClassic();
 	ImGui::End();
 }
 
