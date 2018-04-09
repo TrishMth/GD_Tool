@@ -10,7 +10,6 @@ GD_Tool::Mainframework::BaseGUI::BaseGUI()
 	, m_bShowCreateSubObject(false)
 	, m_bShowGlobalVariables(false)
 	, m_bShowCreateVariables(false)
-	, m_bShowFormulaNodeWnd(false)
 	, m_bShowGeneralSettings(false)
 	, m_bVSync(true)
 	, m_bShowStats(false)
@@ -37,17 +36,21 @@ void GD_Tool::Mainframework::BaseGUI::Init()
 	if (m_bShowGlobalVariables && ProjectManager::GetInstance().IsInstantiated())
 		CreateGlobalVars();
 		
-	if (m_bShowFormulaNodeWnd)
-		CreateFormulaNodeWnd();
-
+	
 	if (m_bShowGeneralSettings)
 		CreateGeneralSettings();
 
 	if (m_bShowStats)
 		CreateStats();
-	
-	if(m_bShowFormulaNodeWnd)
-		CreateFormulaNodeWnd();
+
+	for (std::list<Formula*>::iterator it = m_showNodeWndContainer.begin(); it != m_showNodeWndContainer.end(); ++it)
+	{
+		Formula* formula = *it; 
+		if (formula->GetShowNodeWindow())
+			CreateFormulaNodeWnd(formula);
+		else
+			m_showNodeWndContainer.erase(it);
+	}
 
 }
 
@@ -268,7 +271,11 @@ void GD_Tool::Mainframework::BaseGUI::CreateObjectWnd()
 			m_bShowCreateObject = false;
 		}
 		if (ImGui::Button("Cancel"))
+		{
+			m_bShowCreateObject = false; 
 			ImGui::End();
+			return;
+		}
 	}
 	ImGui::End();
 }
@@ -360,7 +367,10 @@ void GD_Tool::Mainframework::BaseGUI::CreateFormulaTree(Formula * formula, const
 		for (int i = 0; i < IM_ARRAYSIZE(io.MouseDown); i++)
 		{
 			if (ImGui::IsMouseDoubleClicked(i))
-				m_bShowFormulaNodeWnd = true;
+			{
+				formula->SetShowNodeWindow(true);
+				m_showNodeWndContainer.push_back(formula);
+			}
 		}
 		nodeClicked = count;
 	}
@@ -544,11 +554,11 @@ void GD_Tool::Mainframework::BaseGUI::CreateNewGlobalVar()
 	}
 }
 
-void GD_Tool::Mainframework::BaseGUI::CreateFormulaNodeWnd()
+void GD_Tool::Mainframework::BaseGUI::CreateFormulaNodeWnd(Formula* formula)
 {
 	ImGuiIO& io = ImGui::GetIO();
 	static bool showContextMenu; 
-	if (!ImGui::Begin("Formula node window", &m_bShowFormulaNodeWnd))
+	if (!ImGui::Begin("Formula node window"))
 	{
 		ImGui::End();
 		return;
@@ -558,29 +568,7 @@ void GD_Tool::Mainframework::BaseGUI::CreateFormulaNodeWnd()
 	
 	if (showContextMenu)
 	{
-		ImGui::SetNextWindowPos(ImGui::GetMousePos(), ImGuiCond_Appearing);
-		ImGui::SetNextWindowSize(ImVec2(100, 50), ImGuiCond_FirstUseEver);
-		if (!ImGui::Begin("Context"))
-		{
-			ImGui::End();
-			ImGui::End();
-
-			showContextMenu = false; 
-			return;
-		}
-		
-		if (!ImGui::IsWindowFocused())
-		{
-			ImGui::End(); 
-			ImGui::End();
-
-			showContextMenu = false; 
-			return;
-		}
-
-
-		ImGui::End();
-
+		CreateNode(formula);
 	}
 
 	ImGui::End();
@@ -629,5 +617,61 @@ void GD_Tool::Mainframework::BaseGUI::CreateStats()
 	}	
 	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 	ImGui::End();
+}
+
+void GD_Tool::Mainframework::BaseGUI::CreateNode(Formula* formula)
+{
+	ImGui::SetNextWindowPos(ImGui::GetMousePos(), ImGuiCond_Appearing);
+	ImGui::SetNextWindowSize(ImVec2(100, 50), ImGuiCond_FirstUseEver);
+	if (ImGui::Begin("Context"))
+	{
+		static ImGuiComboFlags flags = 0;
+		static GlobalEnums::EVariableTypes varType;
+		const char* typeName[] = { "Operators", "Variables" };
+		static const char* currentType = typeName[0];
+		if (ImGui::BeginCombo("Node type", currentType))
+		{
+			for (uint32_t i = 0; i < IM_ARRAYSIZE(typeName); i++)
+			{
+				bool isSelected = (currentType == typeName[i]);
+				if (ImGui::Selectable(typeName[i], isSelected))
+					currentType = typeName[i];
+				if (isSelected)
+					ImGui::SetItemDefaultFocus();
+			}
+			ImGui::EndCombo();
+			
+		}
+
+		if (currentType == typeName[1])
+		{
+				static char str[128] = "Variable name";
+				ImGui::InputText("Please enter a name for the new variable", str, IM_ARRAYSIZE(str));
+
+				static GlobalEnums::ENodeType nodeType;
+				const char* variableTypeName[] = { "Integer variable", "Float variable" };
+				static const char* currentVarType = variableTypeName[0];
+				if (ImGui::BeginCombo("Node type", currentVarType))
+				{
+					static ImGuiComboFlags flags = 0;
+					for (uint32_t i = 0; i < IM_ARRAYSIZE(variableTypeName); i++)
+					{
+						bool isSelected = (currentVarType == variableTypeName[i]);
+						if (ImGui::Selectable(variableTypeName[i], isSelected))
+							currentVarType = variableTypeName[i];
+						if (isSelected)
+							ImGui::SetItemDefaultFocus();
+					}
+					ImGui::EndCombo();
+				}
+				if (currentVarType == variableTypeName[0])
+					varType = GlobalEnums::EVariableTypes::Integer;
+
+				if (ImGui::Button("Create node"))
+					formula->CreateVariableNode(varType, str);
+
+		}
+		ImGui::End();
+	}
 }
 

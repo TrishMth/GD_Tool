@@ -97,11 +97,16 @@ namespace GD_Tool
 					WindowWidth = atoi(str.c_str());
 				case 1: 
 					WindowHeight = atoi(str.c_str());
+				case 2: 
+					Maximized = atoi(str.c_str());
+				case 3: 
+					styles = atoi(str.c_str());
 				}
 			}
 			uint32_t WindowWidth = 0; 
 			uint32_t WindowHeight = 0;
 			bool Maximized = false; 
+			uint8_t styles = 0;
 		};
 		
 	}

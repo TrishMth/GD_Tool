@@ -51,7 +51,7 @@ namespace GD_Tool
 			* @param hInstance The instance handler of the window 
 			* @param nCmdShow The mode of the currentwindow
 			*/
-			int32_t InitApp(HINSTANCE hInstance, int32_t nCmdShow);
+			int32_t InitApp(HINSTANCE hInstance);
 			/**
 			* Creates a new Project 
 			* 

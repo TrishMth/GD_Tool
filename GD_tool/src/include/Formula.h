@@ -26,6 +26,7 @@ namespace GD_Tool
 			std::string m_name; 
 			std::string m_fileName;
 			bool m_isDirty; 
+			bool m_showNodeWnd; 
 		public: 
 			/** 
 			* Default Constructor of the Formula class
@@ -51,7 +52,7 @@ namespace GD_Tool
 			* @param varType The Variabletype of the node you want to create 
 			* @param name The name of the node you want to create 
 			*/
-			void CreateNode(const GlobalEnums::ENodeType& type);
+			void CreateVariableNode(const GlobalEnums::EVariableTypes& type, const std::string& name);
 			/**
 			* Connects two nodes with each other
 			* 
@@ -77,6 +78,10 @@ namespace GD_Tool
 			*
 			*/
 			void Save();
+			/**
+			*/
+			bool GetShowNodeWindow()const {	return m_showNodeWnd; }
+			void SetShowNodeWindow(const bool& show) { m_showNodeWnd = show; }
 			/**
 			* Delete formula file
 			*

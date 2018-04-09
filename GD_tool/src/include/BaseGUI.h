@@ -7,6 +7,8 @@
 #pragma endregion 
 #pragma region External Includes
 #include <map>
+#include <list>
+#include <unordered_map>
 #pragma endregion 
 
 
@@ -45,9 +47,10 @@ namespace GD_Tool
 			void CreateFormulaWnd();
 			void CreateGlobalVars();
 			void CreateNewGlobalVar();
-			void CreateFormulaNodeWnd();
+			void CreateFormulaNodeWnd(Formula* formula);
 			void CreateGeneralSettings();
 			void CreateStats();
+			void CreateNode(Formula* formula);
 
 			bool m_bShowNewProjWnd; 
 			bool m_bShowOpenProjWnd;
@@ -58,7 +61,6 @@ namespace GD_Tool
 			bool m_bShowCreateFormula;
 			bool m_bShowGlobalVariables;
 			bool m_bShowCreateVariables;
-			bool m_bShowFormulaNodeWnd; 
 			bool m_bShowGeneralSettings; 
 			bool m_bShowStats; 
 
@@ -68,6 +70,8 @@ namespace GD_Tool
 			ImVector<char*> m_inputBuf;
 			ImVector<ImVec4> m_inputCol;
 			
+			std::list<Formula*> m_showNodeWndContainer;
+
 		};
 	}
 }

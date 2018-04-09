@@ -104,6 +104,12 @@
     <ClCompile Include="src\BaseGUI.cpp">
       <Filter>GUISourcefiles</Filter>
     </ClCompile>
+    <ClCompile Include="src\Editor.cpp">
+      <Filter>NodeSystem Sourcefiles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NodeEditor.cpp">
+      <Filter>NodeSystem Sourcefiles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\include\MessageSystem.h">
@@ -186,6 +192,15 @@
     </ClInclude>
     <ClInclude Include="src\include\BaseGUI.h">
       <Filter>GUIHeaderfiles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\AddNodeBase.h">
+      <Filter>NodeSystem Headerfiles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Editor.h">
+      <Filter>NodeSystem Headerfiles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\NodeEditor.h">
+      <Filter>NodeSystem Headerfiles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

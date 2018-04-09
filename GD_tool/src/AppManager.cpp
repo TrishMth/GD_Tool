@@ -21,7 +21,7 @@ void GD_Tool::Mainframework::AppManager::CreateInstance()
 
 }
 
-int32_t GD_Tool::Mainframework::AppManager::InitApp(HINSTANCE hInstance, int32_t nCmdShow)
+int32_t GD_Tool::Mainframework::AppManager::InitApp(HINSTANCE hInstance)
 {
 #if defined(DEBUG) | defined(_DEBUG)
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -38,7 +38,10 @@ void GD_Tool::Mainframework::AppManager::NewProject(const std::string & ProjectN
 {
 
 	if (CheckNewProjectFile(ProjectName))
+	{
 		MessageSystem::Log("AppManager", "Create new project", "A new project with the name: " + ProjectName + " is created");
+		return;
+	}
 	ProjectManager::CreateInstance(ProjectName);
 	
 }

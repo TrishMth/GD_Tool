@@ -5,25 +5,22 @@ GD_Tool::Mainframework::Formula::Formula(std::string name)
 	:m_name(name)
 	, m_nodeIndex(0)
 	, m_isDirty(true)
+	, m_showNodeWnd(false)
 {
 	Save();
 }
 
-void GD_Tool::Mainframework::Formula::CreateNode(const GlobalEnums::ENodeType& type)
+void GD_Tool::Mainframework::Formula::CreateVariableNode(const GlobalEnums::EVariableTypes& type, const std::string& name)
 {
 	switch (type)
 	{
-		case GlobalEnums::ENodeType::Variable:
+	case GlobalEnums::EVariableTypes::Integer:
 		{
-			VariableNodes* newNode = new VariableNodes(m_nodeIndex);
-			AddNode(newNode);
+		IntegerVariable* intVar = new IntegerVariable(0, name, m_nodeIndex); 
+		AddNode(intVar);
 		}
 			break;
-		case GlobalEnums::ENodeType::Operator:
-		{
-			OperatorNodes* newNode = new OperatorNodes(m_nodeIndex);
-			AddNode(newNode);
-		}
+		
 			break;
 	}	
 }
@@ -40,6 +37,8 @@ void GD_Tool::Mainframework::Formula::AddNode(BaseNode* node)
 	m_nodes.insert(std::pair<uint32_t, BaseNode*>(m_nodeIndex, node));
 	m_nodeIndex++;
 }
+
+
 
 void GD_Tool::Mainframework::Formula::RemoveNode(BaseNode* node)
 {
