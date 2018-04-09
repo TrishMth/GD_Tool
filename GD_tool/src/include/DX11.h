@@ -3,8 +3,6 @@
 #pragma endregion 
 #pragma region External Includes
 #include <D3D11.h>
-#include <D3DX11.h>
-#include <D3DX10.h>
 #include <D3Dcompiler.h>
 #include <cstdint>
 #include <cassert>
@@ -50,7 +48,6 @@ namespace GD_Tool
 			void CleanupDeviceD3D();
 
 		public:
-			void RenderFrame();
 			/**
 			*Default Constructor for DX11.
 			*/

@@ -36,6 +36,9 @@ namespace GD_Tool
 			* @param The AppManager to copy
 			*/
 			AppManager(const AppManager&) = delete; 
+			/**
+			*/
+			void Save();
 		public: 
 			/**
 			* Default Destructor of the AppManager, will only set the s_pAppManager to nullptr
@@ -59,6 +62,7 @@ namespace GD_Tool
 			*/
 			void NewProject(const std::string& ProjectName);
 			AppConfigDesc GetCurrentConfig() const { return m_configDesc;  }
+			void SetNewConfig(const AppConfigDesc& configDesc) { m_configDesc = configDesc; }
 			bool CheckNewProjectFile(const std::string& ProjectName);
 			/**
 			* Loads a existing project by getting the filepath 

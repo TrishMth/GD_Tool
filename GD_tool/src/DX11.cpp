@@ -1,5 +1,6 @@
 #include "include\DX11.h"
 
+
 //function to check the HRESULT of some functions
 bool GD_Tool::Mainframework::DX11::Failed(HRESULT aResult)
 {
@@ -260,18 +261,6 @@ bool GD_Tool::Mainframework::DX11::InitDirect3D()
 }
 
 
-
-void GD_Tool::Mainframework::DX11::RenderFrame()
-{
-	m_pDevCon->ClearRenderTargetView(m_pBackBuffer, D3DXCOLOR(0.0f, 0.2f, 0.4f, 1.0f));
-	HRESULT hr; 
-	hr = m_pSwapChain->Present(0, 0);
-	if (Failed(hr))
-	{
-		OutputDebugStringW(L"Failed to present DX11 to the screen");
-		return;
-	}
-}
 
 GD_Tool::Mainframework::DX11::DX11(const HINSTANCE& hInstance)
 	:m_hAppInstance(hInstance)

@@ -9,6 +9,23 @@ GD_Tool::Mainframework::AppManager::AppManager()
 	BaseGUI::CreateInstance();
 }
 
+void GD_Tool::Mainframework::AppManager::Save()
+{
+	std::fstream fileStream; 
+	fileStream.open(".//config.txt", std::fstream::out); 
+	if (fileStream.is_open())
+	{
+		std::string buffer; 
+		buffer.append(std::to_string(m_configDesc.WindowWidth) + "\n");
+		buffer.append(std::to_string(m_configDesc.WindowHeight) + "\n"); 
+		buffer.append(std::to_string(m_configDesc.Maximized) + "\n"); 
+		buffer.append(std::to_string(m_configDesc.Styles)+ "\n"); 
+		buffer.append(std::to_string(m_configDesc.VSync) + "\n");
+
+		fileStream.write(buffer.c_str(), buffer.size());
+	}
+}
+
 GD_Tool::Mainframework::AppManager::~AppManager()
 {
 	s_pAppManager = nullptr; 
@@ -80,5 +97,6 @@ void GD_Tool::Mainframework::AppManager::Release()
 {
 	BaseGUI::Release();
 	ProjectManager::Release();
+	AppManager::GetInstance().Save();
 	delete s_pAppManager;
 }

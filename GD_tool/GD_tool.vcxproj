@@ -160,7 +160,6 @@
     <ClCompile Include="src\DX11Graph.cpp" />
     <ClCompile Include="src\DX11.cpp" />
     <ClCompile Include="src\DX11Map.cpp" />
-    <ClCompile Include="src\Editor.cpp" />
     <ClCompile Include="src\FloatVariable.cpp" />
     <ClCompile Include="src\Formula.cpp" />
     <ClCompile Include="src\imgui.cpp" />
@@ -169,7 +168,6 @@
     <ClCompile Include="src\IntegerVariable.cpp" />
     <ClCompile Include="src\LoadSystem.cpp" />
     <ClCompile Include="src\MessageSystem.cpp" />
-    <ClCompile Include="src\NodeEditor.cpp" />
     <ClCompile Include="src\Object.cpp" />
     <ClCompile Include="src\OperatorNodes.cpp" />
     <ClCompile Include="src\ProjectManager.cpp" />
@@ -188,7 +186,6 @@
     <ClInclude Include="src\include\DX11.h" />
     <ClInclude Include="src\include\DX11Map.h" />
     <ClInclude Include="src\include\DXDefines.h" />
-    <ClInclude Include="src\include\Editor.h" />
     <ClInclude Include="src\include\GlobalEnums.h" />
     <ClInclude Include="src\include\FloatVariable.h" />
     <ClInclude Include="src\include\Formula.h" />
@@ -199,7 +196,6 @@
     <ClInclude Include="src\include\IntegerVariable.h" />
     <ClInclude Include="src\include\LoadSystem.h" />
     <ClInclude Include="src\include\MessageSystem.h" />
-    <ClInclude Include="src\include\NodeEditor.h" />
     <ClInclude Include="src\include\Object.h" />
     <ClInclude Include="src\include\OperatorNodes.h" />
     <ClInclude Include="src\include\ProjectManager.h" />

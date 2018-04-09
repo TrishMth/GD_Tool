@@ -170,7 +170,7 @@ int32_t GD_Tool::Mainframework::DX11BaseWindow::Run()
 			m_pDevCon->ClearRenderTargetView(m_pBackBuffer, (float*)&clear_color);
 			ImGui::Render();
 			RenderDrawData(ImGui::GetDrawData());
-			if (BaseGUI::GetInstance().VSync())
+			if (AppManager::GetInstance().GetCurrentConfig().VSync)
 				m_pSwapChain->Present(1, 0);
 			else
 				m_pSwapChain->Present(0, 0);

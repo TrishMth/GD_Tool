@@ -100,13 +100,16 @@ namespace GD_Tool
 				case 2: 
 					Maximized = atoi(str.c_str());
 				case 3: 
-					styles = atoi(str.c_str());
+					Styles = atoi(str.c_str());
+				case 4: 
+					VSync = atoi(str.c_str());
 				}
 			}
-			uint32_t WindowWidth = 0; 
-			uint32_t WindowHeight = 0;
+			uint32_t WindowWidth = 1024; 
+			uint32_t WindowHeight = 768;
 			bool Maximized = false; 
-			uint8_t styles = 0;
+			uint8_t Styles = 0;
+			bool VSync = 1;
 		};
 		
 	}

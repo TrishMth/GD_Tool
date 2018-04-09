@@ -578,15 +578,28 @@ void GD_Tool::Mainframework::BaseGUI::CreateGeneralSettings()
 {
 	ImGui::SetNextWindowSize(ImVec2(200, 100), ImGuiCond_FirstUseEver);
 
+	AppConfigDesc currentConfig = AppManager::GetInstance().GetCurrentConfig();
 	if (!ImGui::Begin("General Settings", &m_bShowGeneralSettings))
 	{
 		ImGui::End();
 		return;
 	}
-	ImGui::Checkbox("VSync", &m_bVSync);
+	ImGui::Checkbox("VSync", &currentConfig.VSync);
 	static ImGuiComboFlags flags = 0;
 	const char* typeName[] = { "Dark", "Light", "Classic"};
-	static const char* currentType = typeName[0];
+	static const char* currentType;
+	switch (AppManager::GetInstance().GetCurrentConfig().Styles)
+	{
+	case 0:
+		currentType = "Dark";
+		break;
+	case 1:
+		currentType = "Light";
+		break;
+	case2:
+		currentType = "Classic";
+		break;
+	}
 	if (ImGui::BeginCombo("Select window style", currentType, flags))
 	{
 		for (uint32_t i = 0; i < IM_ARRAYSIZE(typeName); i++)
@@ -600,11 +613,21 @@ void GD_Tool::Mainframework::BaseGUI::CreateGeneralSettings()
 		ImGui::EndCombo();
 	}
 	if (currentType == typeName[0])
+	{
 		ImGui::StyleColorsDark();
+		currentConfig.Styles = 0;
+	}
 	else if (currentType == typeName[1])
+	{
 		ImGui::StyleColorsLight();
+		currentConfig.Styles = 1;
+	}
 	else
+	{
 		ImGui::StyleColorsClassic();
+		currentConfig.Styles = 2;
+	}
+	AppManager::GetInstance().SetNewConfig(currentConfig);
 	ImGui::End();
 }
 
