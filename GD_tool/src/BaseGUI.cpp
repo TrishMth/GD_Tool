@@ -17,16 +17,34 @@ GD_Tool::Mainframework::BaseGUI::BaseGUI()
 {
 	s_pBaseGUI = this;
 	ImGui::CreateContext();
+	
 }
 
 void GD_Tool::Mainframework::BaseGUI::Init()
+{
+	switch (AppManager::GetInstance().GetCurrentConfig().Styles)
+	{
+	case 0:
+		ImGui::StyleColorsDark();
+		break;
+	case 1:
+		ImGui::StyleColorsLight();
+		break;
+	case 2: ImGui::StyleColorsClassic();
+		break;
+	}
+
+	
+}
+
+void GD_Tool::Mainframework::BaseGUI::Run()
 {
 	CreateMenuBar();
 	if (m_bShowNewProjWnd)
 		CreateNewWindow("New Project");
 	else if (m_bShowOpenProjWnd)
 		CreateNewWindow("Open Project");
-	
+
 	if (m_bShowObjectManager)
 		CreateObjectMngWnd();
 
@@ -35,8 +53,8 @@ void GD_Tool::Mainframework::BaseGUI::Init()
 
 	if (m_bShowGlobalVariables && ProjectManager::GetInstance().IsInstantiated())
 		CreateGlobalVars();
-		
-	
+
+
 	if (m_bShowGeneralSettings)
 		CreateGeneralSettings();
 
@@ -45,7 +63,7 @@ void GD_Tool::Mainframework::BaseGUI::Init()
 
 	for (std::list<Formula*>::iterator it = m_showNodeWndContainer.begin(); it != m_showNodeWndContainer.end(); ++it)
 	{
-		Formula* formula = *it; 
+		Formula* formula = *it;
 		if (formula->GetShowNodeWindow())
 			CreateFormulaNodeWnd(formula);
 		else
@@ -74,13 +92,14 @@ void GD_Tool::Mainframework::BaseGUI::UpdateAllWndSizes()
 GD_Tool::Mainframework::BaseGUI::~BaseGUI()
 {
 	s_pBaseGUI = nullptr;
-	ImGui::DestroyContext();
 }
 
 void GD_Tool::Mainframework::BaseGUI::CreateInstance()
 {
 	if (s_pBaseGUI == nullptr)
+	{
 		s_pBaseGUI = new BaseGUI();
+	}
 }
 
 GD_Tool::Mainframework::BaseGUI & GD_Tool::Mainframework::BaseGUI::GetInstance()
@@ -90,6 +109,7 @@ GD_Tool::Mainframework::BaseGUI & GD_Tool::Mainframework::BaseGUI::GetInstance()
 
 void GD_Tool::Mainframework::BaseGUI::Release()
 {
+	ImGui::DestroyContext();
 	delete s_pBaseGUI;
 }
 

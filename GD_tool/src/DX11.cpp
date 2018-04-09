@@ -1,6 +1,5 @@
 #include "include\DX11.h"
 
-
 //function to check the HRESULT of some functions
 bool GD_Tool::Mainframework::DX11::Failed(HRESULT aResult)
 {

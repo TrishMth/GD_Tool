@@ -24,6 +24,7 @@ namespace GD_Tool
 			static void Release();
 
 			void Init();
+			void Run();
 			void AddLogToConsole(char* text, ImVec4 col);
 			bool VSync();
 			void UpdateAllWndSizes();
@@ -35,6 +36,7 @@ namespace GD_Tool
 
 			BaseGUI();
 			BaseGUI(const BaseGUI&) = delete; 
+
 
 			void CreateMenuBar();
 			void CreateNewWindow(const char* wndName);

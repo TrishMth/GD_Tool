@@ -20,6 +20,7 @@ namespace GD_Tool
 {
 	namespace Mainframework
 	{
+
 		class DX11
 		{
 		private: // Functions
@@ -101,7 +102,6 @@ namespace GD_Tool
 			ID3D11Device * m_pBaseDevice;
 
 			std::wstring m_MainWindowCaption;
-
 			bool m_enable4xMsaa;
 
 		};

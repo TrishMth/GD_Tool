@@ -149,7 +149,10 @@ int32_t GD_Tool::Mainframework::DX11BaseWindow::Run()
 	GUI.Fonts->AddFontDefault();
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 	bool show_window_demo = true; 
-	
+
+	BaseGUI::GetInstance().Init();
+
+
 	while (msg.message != WM_QUIT)
 	{
 		if (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
@@ -164,8 +167,9 @@ int32_t GD_Tool::Mainframework::DX11BaseWindow::Run()
 		{
 				
 			UpdateScene(ImGui::GetIO().Framerate);
-			BaseGUI::GetInstance().Init();
-			
+
+			BaseGUI::GetInstance().Run();
+
 			m_pDevCon->OMSetRenderTargets(1, &m_pBackBuffer, NULL);
 			m_pDevCon->ClearRenderTargetView(m_pBackBuffer, (float*)&clear_color);
 			ImGui::Render();
@@ -182,6 +186,8 @@ int32_t GD_Tool::Mainframework::DX11BaseWindow::Run()
 		}
 		
 	}
+	AppManager::GetInstance().Release();
+
 	return (int32_t)msg.wParam;
 }
 
@@ -630,7 +636,6 @@ void GD_Tool::Mainframework::DX11BaseWindow::ReleaseWindow()
 	SafeRelease(m_pDepthStencilState);
 	SafeRelease(m_pRasterizerState);
 	SafeRelease(m_pFontTexView);
-	ImGui::DestroyContext();
 }
 
 void GD_Tool::Mainframework::DX11BaseWindow::BuildShader()
