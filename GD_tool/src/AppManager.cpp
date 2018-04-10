@@ -18,12 +18,17 @@ void GD_Tool::Mainframework::AppManager::Save()
 		std::string buffer; 
 		buffer.append(std::to_string(m_configDesc.WindowWidth) + "\n");
 		buffer.append(std::to_string(m_configDesc.WindowHeight) + "\n"); 
+		buffer.append(std::to_string(m_configDesc.WindowPosX) + "\n");
+		buffer.append(std::to_string(m_configDesc.WindowPosY) + "\n");
 		buffer.append(std::to_string(m_configDesc.Maximized) + "\n"); 
 		buffer.append(std::to_string(m_configDesc.Styles)+ "\n"); 
 		buffer.append(std::to_string(m_configDesc.VSync) + "\n");
-
+		buffer.append(m_configDesc.RecentlyOpened1 + "\n"); 
+		buffer.append(m_configDesc.RecentlyOpened2 + "\n"); 
+		buffer.append(m_configDesc.RecentlyOpened3 + "\n");
 		fileStream.write(buffer.c_str(), buffer.size());
 	}
+	fileStream.close();
 }
 
 GD_Tool::Mainframework::AppManager::~AppManager()
@@ -59,6 +64,8 @@ void GD_Tool::Mainframework::AppManager::NewProject(const std::string & ProjectN
 		MessageSystem::Log("AppManager", "Create new project", "A new project with the name: " + ProjectName + " is created");
 		return;
 	}
+	else
+		return;
 	ProjectManager::CreateInstance(ProjectName);
 	
 }

@@ -119,8 +119,8 @@ bool GD_Tool::Mainframework::DX11::InitMainWindow()
 		wndClass.lpszClassName,
 		"GD_Tool",
 		WS_OVERLAPPEDWINDOW,
-		100,
-		100,
+		AppManager::GetInstance().GetCurrentConfig().WindowPosX,
+		AppManager::GetInstance().GetCurrentConfig().WindowPosY,
 		rect.right,
 		rect.bottom,
 		NULL,
@@ -312,8 +312,6 @@ bool GD_Tool::Mainframework::DX11::Init(const uint32_t& resolutionX, const uint3
 	ShowWindow(m_hMainWnd, SW_SHOW);
 	UpdateWindow(m_hMainWnd);
 
-	/*if (!InitDirect3D())
-		return false; */
 
 	return true; 
 }

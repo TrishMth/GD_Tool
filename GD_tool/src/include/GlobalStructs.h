@@ -110,8 +110,17 @@ namespace GD_Tool
 					break;
 				case 5: 
 					Styles = atoi(str.c_str());
+					break;
 				case 6: 
 					VSync = atoi(str.c_str());
+					break;
+				case 7: 
+					RecentlyOpened1 = str; 
+					break;
+				case 8: 
+					RecentlyOpened2 = str; 
+				case 9: 
+					RecentlyOpened3 = str;
 				}
 			}
 			uint32_t WindowWidth = 1024; 
@@ -121,6 +130,9 @@ namespace GD_Tool
 			bool Maximized = false; 
 			uint32_t Styles = 0;
 			bool VSync = 1;
+			std::string RecentlyOpened1; 
+			std::string RecentlyOpened2; 
+			std::string RecentlyOpened3;
 		};
 		
 	}

@@ -141,6 +141,8 @@ int32_t GD_Tool::Mainframework::DX11BaseWindow::Run()
 
 	RECT rect{ 0 };
 	GetClientRect(m_hMainWnd, &rect);
+	RECT wndRect{ 0 };
+	GetWindowRect(m_hMainWnd, &wndRect);
 	GUI.DisplaySize = ImVec2((float)(rect.right - rect.left), (float)(rect.bottom - rect.top));
 
 	int width, height;
@@ -178,6 +180,8 @@ int32_t GD_Tool::Mainframework::DX11BaseWindow::Run()
 				m_pSwapChain->Present(1, 0);
 			else
 				m_pSwapChain->Present(0, 0);
+			
+			GetWindowRect(m_hMainWnd, &wndRect);
 
 		}
 		else
@@ -186,8 +190,8 @@ int32_t GD_Tool::Mainframework::DX11BaseWindow::Run()
 		}
 		
 	}
+	AppManager::GetInstance().SetNewWndPos(wndRect.left, wndRect.top);
 	AppManager::GetInstance().Release();
-
 	return (int32_t)msg.wParam;
 }
 
@@ -602,14 +606,6 @@ LRESULT GD_Tool::Mainframework::DX11BaseWindow::MsgProc(HWND hwnd, UINT msg, WPA
 
 	switch (msg)
 	{
-	/*case WM_MOVING:
-		if (m_pDevice != nullptr && wParam != SIZE_MINIMIZED)
-		{
-			m_posX = (INT)LOWORD(lParam); 
-			m_posY = (INT)HIWORD(lParam);
-			AppManager::GetInstance().SetNewWndPos(m_posX, m_posY);
-
-		}*/
 	case WM_SIZE:
 		if (m_pDevice != nullptr && wParam != SIZE_MINIMIZED)
 		{
