@@ -29,7 +29,7 @@ namespace GD_Tool
 			* @param resolutionY The resolution of the y-axis the window the graph should appear has.
 			* @return returns true if the initialization was successful, otherwise false
 			*/
-			virtual bool Init(const uint32_t& resolutionX, const uint32_t& resolutionY) final;
+			virtual bool Init(const uint32_t& resolutionX, const uint32_t& resolutionY, const int32_t& posX, const int32_t& posY) final;
 			/**
 			* Run function which draws the current graph and receives the messages from the window to update the graph.
 			*

@@ -43,7 +43,7 @@ GD_Tool::Mainframework::DX11Map::~DX11Map()
 
 bool GD_Tool::Mainframework::DX11Map::Init(const uint32_t & resolutionX, const uint32_t & resolutionY)
 {
-	if (!DX11::Init(resolutionX, resolutionY))
+	if (!DX11::Init(resolutionX, resolutionY, 100, 100))
 		return false;
 
 	BuildShader();

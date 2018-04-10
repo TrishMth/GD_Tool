@@ -100,18 +100,24 @@ namespace GD_Tool
 					WindowHeight = atoi(str.c_str());
 					break;
 				case 2: 
-					Maximized = atoi(str.c_str());
+					WindowPosX = atoi(str.c_str());
 					break;
 				case 3: 
-					Styles = atoi(str.c_str());
+					WindowPosY = atoi(str.c_str());
 					break;
 				case 4: 
-					VSync = atoi(str.c_str());
+					Maximized = atoi(str.c_str());
 					break;
+				case 5: 
+					Styles = atoi(str.c_str());
+				case 6: 
+					VSync = atoi(str.c_str());
 				}
 			}
 			uint32_t WindowWidth = 1024; 
 			uint32_t WindowHeight = 768;
+			int32_t WindowPosX = 100; 
+			int32_t WindowPosY = 100;
 			bool Maximized = false; 
 			uint32_t Styles = 0;
 			bool VSync = 1;

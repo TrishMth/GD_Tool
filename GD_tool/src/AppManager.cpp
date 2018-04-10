@@ -45,7 +45,7 @@ int32_t GD_Tool::Mainframework::AppManager::InitApp(HINSTANCE hInstance)
 #endif
 	m_configDesc = LoadSystem::LoadConfig();
 	DX11BaseWindow dx11Base(hInstance); 
-	if (!dx11Base.Init(m_configDesc.WindowWidth, m_configDesc.WindowHeight))
+	if (!dx11Base.Init(m_configDesc.WindowWidth, m_configDesc.WindowHeight, m_configDesc.WindowPosX, m_configDesc.WindowPosY))
 		return false; 
 	dx11Base.Run();
 	return 0;

@@ -17,7 +17,7 @@ GD_Tool::Mainframework::DX11Graph::~DX11Graph()
 
 bool GD_Tool::Mainframework::DX11Graph::Init(const uint32_t& resolutionX, const uint32_t& resolutionY)
 {
-	if (!DX11::Init(resolutionX, resolutionY))
+	if (!DX11::Init(resolutionX, resolutionY, 100, 100))
 		return false; 
 
 	BuildShader();

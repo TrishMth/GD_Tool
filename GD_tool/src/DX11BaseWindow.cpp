@@ -86,9 +86,9 @@ GD_Tool::Mainframework::DX11BaseWindow::~DX11BaseWindow()
 	ReleaseWindow();
 }
 
-bool GD_Tool::Mainframework::DX11BaseWindow::Init(const uint32_t & resolutionX, const uint32_t & resolutionY)
+bool GD_Tool::Mainframework::DX11BaseWindow::Init(const uint32_t & resolutionX, const uint32_t & resolutionY, const int32_t& posX, const int32_t& posY)
 {
-	if (!DX11::Init(resolutionX, resolutionY))
+	if (!DX11::Init(resolutionX, resolutionY, posX, posY))
 		return false; 
 	ImGui::CreateContext();
 
@@ -602,12 +602,23 @@ LRESULT GD_Tool::Mainframework::DX11BaseWindow::MsgProc(HWND hwnd, UINT msg, WPA
 
 	switch (msg)
 	{
+	/*case WM_MOVING:
+		if (m_pDevice != nullptr && wParam != SIZE_MINIMIZED)
+		{
+			m_posX = (INT)LOWORD(lParam); 
+			m_posY = (INT)HIWORD(lParam);
+			AppManager::GetInstance().SetNewWndPos(m_posX, m_posY);
+
+		}*/
 	case WM_SIZE:
-		if (m_pDevice != NULL && wParam != SIZE_MINIMIZED)
+		if (m_pDevice != nullptr && wParam != SIZE_MINIMIZED)
 		{
 			InvalidateDeviceObjects();
 			CleanupRenderTarget();
 			m_pSwapChain->ResizeBuffers(0, (UINT)LOWORD(lParam), (UINT)HIWORD(lParam), DXGI_FORMAT_UNKNOWN, 0);
+			m_resolutionX = (UINT)LOWORD(lParam); 
+			m_resolutionY = (UINT)HIWORD(lParam);
+			AppManager::GetInstance().SetNewWindowSize(m_resolutionX, m_resolutionY);
 			CreateRenderTarget();
 			BuildShader();
 		}

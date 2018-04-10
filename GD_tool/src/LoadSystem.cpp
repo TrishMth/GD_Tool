@@ -132,7 +132,7 @@ GD_Tool::Mainframework::AppConfigDesc GD_Tool::Mainframework::LoadSystem::LoadCo
 
 GD_Tool::Mainframework::AppConfigDesc GD_Tool::Mainframework::LoadSystem::CreateDefaultConfigFile(std::fstream& stream, GD_Tool::Mainframework::AppConfigDesc& desc)
 {
-	std::string buffer = std::to_string(desc.WindowWidth) + "\n" + std::to_string(desc.WindowHeight) + "\n"
+	std::string buffer = std::to_string(desc.WindowWidth) + "\n" + std::to_string(desc.WindowHeight) + "\n" + std::to_string(desc.WindowPosX) + "\n" + std::to_string(desc.WindowPosY) +"\n" 
 		+ std::to_string(desc.Maximized) + "\n" + std::to_string(desc.Styles) + "\n" + std::to_string(desc.VSync) +"\n";
 	stream.write(buffer.c_str(), buffer.size()); 
 	return desc; 

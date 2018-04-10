@@ -1,4 +1,5 @@
 #include "include\DX11.h"
+#include "include\AppManager.h"
 
 //function to check the HRESULT of some functions
 bool GD_Tool::Mainframework::DX11::Failed(HRESULT aResult)
@@ -118,8 +119,8 @@ bool GD_Tool::Mainframework::DX11::InitMainWindow()
 		wndClass.lpszClassName,
 		"GD_Tool",
 		WS_OVERLAPPEDWINDOW,
-		200,
-		200,
+		100,
+		100,
 		rect.right,
 		rect.bottom,
 		NULL,
@@ -295,10 +296,12 @@ float GD_Tool::Mainframework::DX11::AspectRatio() const
 	return static_cast<float>(m_resolutionX) / m_resolutionY;
 }
 
-bool GD_Tool::Mainframework::DX11::Init(const uint32_t& resolutionX, const uint32_t& resolutionY)
+bool GD_Tool::Mainframework::DX11::Init(const uint32_t& resolutionX, const uint32_t& resolutionY, const int32_t& posX, const int32_t& posY)
 {
 	m_resolutionX = resolutionX; 
 	m_resolutionY = resolutionY;
+	m_posX = posX; 
+	m_posY = posY; 
 	if (!InitMainWindow())
 		return false; 
 	if (CreateDeviceD3D(m_hMainWnd) < 0)

@@ -62,7 +62,7 @@ namespace GD_Tool
 			/**
 			*The base function to initialize DX11. 
 			*/
-			virtual bool Init(const uint32_t& resolutionX, const uint32_t& resolutionY);
+			virtual bool Init(const uint32_t& resolutionX, const uint32_t& resolutionY, const int32_t& posX, const int32_t& posY);
 			virtual void OnResize(); 
 			virtual void DrawScene() = 0; 
 			virtual LRESULT CALLBACK MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam); 
@@ -90,6 +90,8 @@ namespace GD_Tool
 			UINT m_4xMsaaQuality;
 			uint32_t m_resolutionX; 
 			uint32_t m_resolutionY; 
+			int32_t m_posX; 
+			int32_t m_posY; 
 			int64_t m_time;
 			int64_t m_ticksPerSecond;
 

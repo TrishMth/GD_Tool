@@ -63,6 +63,8 @@ namespace GD_Tool
 			void NewProject(const std::string& ProjectName);
 			AppConfigDesc GetCurrentConfig() const { return m_configDesc;  }
 			void SetNewConfig(const AppConfigDesc& configDesc) { m_configDesc = configDesc; }
+			void SetNewWindowSize(const uint32_t& resolutionX, const uint32_t& resolutionY) { m_configDesc.WindowWidth = resolutionX; m_configDesc.WindowHeight = resolutionY; }
+			void SetNewWndPos(const int32_t& posX, const int32_t& posY) { m_configDesc.WindowPosX = posX; m_configDesc.WindowPosY = posY; }
 			bool CheckNewProjectFile(const std::string& ProjectName);
 			/**
 			* Loads a existing project by getting the filepath 
