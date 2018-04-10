@@ -89,38 +89,49 @@ namespace GD_Tool
 		};
 		struct AppConfigDesc
 		{
+
+			uint32_t WindowWidth = 1024; 
+			uint32_t WindowHeight = 768;
+			int32_t WindowPosX = 100; 
+			int32_t WindowPosY = 100;
+			bool Maximized = false; 
+			uint32_t Styles = 0;
+			bool VSync = 1;
+			std::string RecentlyOpenedPaths[3];
 			void SetAppConfigDesc(const std::string& str, const uint32_t& line)
 			{
 				switch (line)
 				{
-				case 0: 
+				case 0:
 					WindowWidth = atoi(str.c_str());
 					break;
-				case 1: 
+				case 1:
 					WindowHeight = atoi(str.c_str());
 					break;
-				case 2: 
+				case 2:
 					WindowPosX = atoi(str.c_str());
 					break;
-				case 3: 
+				case 3:
 					WindowPosY = atoi(str.c_str());
 					break;
-				case 4: 
+				case 4:
 					Maximized = atoi(str.c_str());
 					break;
-				case 5: 
+				case 5:
 					Styles = atoi(str.c_str());
 					break;
-				case 6: 
+				case 6:
 					VSync = atoi(str.c_str());
 					break;
-				case 7: 
+				case 7:
 					RecentlyOpenedPaths[0] = str; 
 					break;
 				case 8: 
 					RecentlyOpenedPaths[1] = str; 
+					break;
 				case 9: 
 					RecentlyOpenedPaths[2] = str;
+					break;
 				}
 			}
 			void CheckRecentlyOpenedFiles(const std::string& filePath)
@@ -128,7 +139,10 @@ namespace GD_Tool
 				for (uint8_t i = 0; i < 2; i++)
 				{
 					if (filePath != RecentlyOpenedPaths[i] && RecentlyOpenedPaths[i].empty())
-						RecentlyOpenedPaths[i] = filePath;
+					{
+						RecentlyOpenedPaths[i] = filePath.c_str();
+						break;
+					}
 					
 				}
 				if (filePath != RecentlyOpenedPaths[0] && filePath != RecentlyOpenedPaths[1] && filePath != RecentlyOpenedPaths[2])
@@ -138,14 +152,7 @@ namespace GD_Tool
 					RecentlyOpenedPaths[0] = filePath;
 				}
 			}
-			uint32_t WindowWidth = 1024; 
-			uint32_t WindowHeight = 768;
-			int32_t WindowPosX = 100; 
-			int32_t WindowPosY = 100;
-			bool Maximized = false; 
-			uint32_t Styles = 0;
-			bool VSync = 1;
-			std::string RecentlyOpenedPaths[3];
+			
 		};
 		
 	}

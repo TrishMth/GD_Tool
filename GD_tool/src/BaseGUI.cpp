@@ -132,7 +132,16 @@ void GD_Tool::Mainframework::BaseGUI::CreateMenuBar()
 				m_bShowOpenProjWnd = true; 
 			if (ImGui::BeginMenu("Open Recent"))
 			{
-				
+				if (!AppManager::GetInstance().GetCurrentConfig().RecentlyOpenedPaths[0].empty())
+				{
+					if (ImGui::MenuItem(AppManager::GetInstance().GetCurrentConfig().RecentlyOpenedPaths[0].c_str()))
+						AppManager::GetInstance().LoadProject(AppManager::GetInstance().GetCurrentConfig().RecentlyOpenedPaths[0]);
+					if (ImGui::MenuItem(AppManager::GetInstance().GetCurrentConfig().RecentlyOpenedPaths[1].c_str()))
+						AppManager::GetInstance().LoadProject(AppManager::GetInstance().GetCurrentConfig().RecentlyOpenedPaths[1]);
+					if (ImGui::MenuItem(AppManager::GetInstance().GetCurrentConfig().RecentlyOpenedPaths[2].c_str()))
+						AppManager::GetInstance().LoadProject(AppManager::GetInstance().GetCurrentConfig().RecentlyOpenedPaths[2]);
+				}
+				ImGui::EndMenu();
 			}
 			
 		ImGui::EndMenu();

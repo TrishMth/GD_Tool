@@ -133,7 +133,7 @@ void GD_Tool::Mainframework::ProjectManager::Save()
 	{
 		std::fstream fileStream;
 		m_fileName = m_filePath + "//project.txt";
-		
+		AppManager::GetInstance().GetCurrentConfig().CheckRecentlyOpenedFiles(m_fileName);
 		fileStream.open(m_fileName.c_str(),std::fstream::out);
 		if (fileStream.is_open())
 		{
