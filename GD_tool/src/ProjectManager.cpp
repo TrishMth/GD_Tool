@@ -3,17 +3,16 @@
 GD_Tool::Mainframework::ProjectManager* GD_Tool::Mainframework::ProjectManager::s_pProManager = nullptr;
 
 
-GD_Tool::Mainframework::ProjectManager::ProjectManager(const std::string name)
+GD_Tool::Mainframework::ProjectManager::ProjectManager(const std::string& name)
 	:m_name(name)
 	,m_objIndex(0)
 	,m_formulaIndex(0)
 	,m_isDirty(true)
 	, m_globalVarIndex(0)
 {
-	
 	m_filePath = ".//" + m_name;
-	s_pProManager = this;
 	Save();
+	s_pProManager = this;
 }
 
 
@@ -134,7 +133,7 @@ void GD_Tool::Mainframework::ProjectManager::Save()
 	{
 		std::fstream fileStream;
 		m_fileName = m_filePath + "//project.txt";
-
+		
 		fileStream.open(m_fileName.c_str(),std::fstream::out);
 		if (fileStream.is_open())
 		{

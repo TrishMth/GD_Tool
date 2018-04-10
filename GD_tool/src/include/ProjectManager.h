@@ -6,6 +6,7 @@
 #include "Formula.h"
 #include "GlobalStructs.h"
 #include "GlobalEnums.h"
+#include "MessageSystem.h"
 #pragma endregion 
 #pragma region External Includes
 #include "Windows.h"
@@ -28,7 +29,7 @@ namespace GD_Tool
 			*
 			* @param name The name of the new Project
 			*/
-			ProjectManager(const std::string name); 
+			ProjectManager(const std::string& name); 
 			/**
 			* Copy Constructor of the ProjectManager, it will denie the copy of the instance 
 			*

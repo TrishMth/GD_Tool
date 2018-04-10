@@ -130,7 +130,10 @@ void GD_Tool::Mainframework::BaseGUI::CreateMenuBar()
 			}
 			if (ImGui::MenuItem("Open"))
 				m_bShowOpenProjWnd = true; 
-			
+			if (ImGui::BeginMenu("Open Recent"))
+			{
+				
+			}
 			
 		ImGui::EndMenu();
 		}
@@ -177,13 +180,14 @@ void GD_Tool::Mainframework::BaseGUI::CreateNewWindow(const char* wndName)
 	ImGui::SetNextWindowSize(ImVec2(200, 100), ImGuiCond_FirstUseEver);
 	
 	ImGui::SetNextWindowPos(ImVec2((io.DisplaySize.x / 2 )-100, (io.DisplaySize.y / 2)- 100), ImGuiCond_FirstUseEver);
-	static char str[64] = "Enter name here";
+	static char str[128] = "Enter name here";
 	if (m_bShowNewProjWnd || m_bShowOpenProjWnd)
 	{
 		if (ImGui::Begin(wndName))
 		{
 			if (m_bShowNewProjWnd)
 			{
+				m_bShowOpenProjWnd = false;
 				ImGui::InputText("Project name", str, IM_ARRAYSIZE(str));
 				if (ImGui::Button("Accept"))
 				{
@@ -195,9 +199,13 @@ void GD_Tool::Mainframework::BaseGUI::CreateNewWindow(const char* wndName)
 			}
 			else if (m_bShowOpenProjWnd)
 			{
+				m_bShowNewProjWnd = false; 
 				ImGui::InputText("Project file path", str, IM_ARRAYSIZE(str));
 				if (ImGui::Button("Accept"))
 				{
+					std::string filePath = ".\\"; 
+					filePath.append(str);
+					filePath.append("\\project.txt");
 					AppManager::GetInstance().LoadProject(str);
 					m_bShowOpenProjWnd = false;
 				}

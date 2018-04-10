@@ -23,9 +23,9 @@ void GD_Tool::Mainframework::AppManager::Save()
 		buffer.append(std::to_string(m_configDesc.Maximized) + "\n"); 
 		buffer.append(std::to_string(m_configDesc.Styles)+ "\n"); 
 		buffer.append(std::to_string(m_configDesc.VSync) + "\n");
-		buffer.append(m_configDesc.RecentlyOpened1 + "\n"); 
-		buffer.append(m_configDesc.RecentlyOpened2 + "\n"); 
-		buffer.append(m_configDesc.RecentlyOpened3 + "\n");
+		buffer.append(m_configDesc.RecentlyOpenedPaths[0] + "\n"); 
+		buffer.append(m_configDesc.RecentlyOpenedPaths[1] + "\n"); 
+		buffer.append(m_configDesc.RecentlyOpenedPaths[2] + "\n");
 		fileStream.write(buffer.c_str(), buffer.size());
 	}
 	fileStream.close();
@@ -62,7 +62,6 @@ void GD_Tool::Mainframework::AppManager::NewProject(const std::string & ProjectN
 	if (CheckNewProjectFile(ProjectName))
 	{
 		MessageSystem::Log("AppManager", "Create new project", "A new project with the name: " + ProjectName + " is created");
-		return;
 	}
 	else
 		return;
@@ -91,7 +90,7 @@ void GD_Tool::Mainframework::AppManager::LoadProject(const std::string & FilePat
 	if (!ProjectManager::GetInstance().IsInstantiated())
 		MessageSystem::Error("AppManager", "Couldn't load the project", "The project data couldn't get load or the file isn't compatible.");
 	else
-		MessageSystem::Log("LoadSystem", "Loading successful", "The data of: " + FilePath + "successfully loaded the project");
+		MessageSystem::Log("LoadSystem", "Loading successful", "The data of: " + FilePath + " successfully loaded the project");
 
 }
 

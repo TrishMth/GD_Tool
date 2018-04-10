@@ -115,12 +115,27 @@ namespace GD_Tool
 					VSync = atoi(str.c_str());
 					break;
 				case 7: 
-					RecentlyOpened1 = str; 
+					RecentlyOpenedPaths[0] = str; 
 					break;
 				case 8: 
-					RecentlyOpened2 = str; 
+					RecentlyOpenedPaths[1] = str; 
 				case 9: 
-					RecentlyOpened3 = str;
+					RecentlyOpenedPaths[2] = str;
+				}
+			}
+			void CheckRecentlyOpenedFiles(const std::string& filePath)
+			{
+				for (uint8_t i = 0; i < 2; i++)
+				{
+					if (filePath != RecentlyOpenedPaths[i] && RecentlyOpenedPaths[i].empty())
+						RecentlyOpenedPaths[i] = filePath;
+					
+				}
+				if (filePath != RecentlyOpenedPaths[0] && filePath != RecentlyOpenedPaths[1] && filePath != RecentlyOpenedPaths[2])
+				{
+					RecentlyOpenedPaths[2] = RecentlyOpenedPaths[1]; 
+					RecentlyOpenedPaths[1] = RecentlyOpenedPaths[0]; 
+					RecentlyOpenedPaths[0] = filePath;
 				}
 			}
 			uint32_t WindowWidth = 1024; 
@@ -130,9 +145,7 @@ namespace GD_Tool
 			bool Maximized = false; 
 			uint32_t Styles = 0;
 			bool VSync = 1;
-			std::string RecentlyOpened1; 
-			std::string RecentlyOpened2; 
-			std::string RecentlyOpened3;
+			std::string RecentlyOpenedPaths[3];
 		};
 		
 	}
