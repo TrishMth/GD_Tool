@@ -5,11 +5,11 @@
 #include "Formula.h"
 #include "GlobalEnums.h"
 #include "imgui.h"
-#include "AddNode.h"
 #pragma endregion 
 #pragma region External includes
 #include <string>
 #include <map>
+#include <list>
 #include <DirectXMath.h>
 #pragma endregion 
 
@@ -47,7 +47,6 @@ namespace GD_Tool
 		{
 			std::string GetBuffer() const { std::string FullBuffer = Begin + Name; return FullBuffer; }
 			std::string Name;
-		private:
 			std::string Begin = "_pDesc\n";
 		};
 		/**
@@ -90,14 +89,14 @@ namespace GD_Tool
 		struct AppConfigDesc
 		{
 
-			uint32_t WindowWidth = 1024; 
-			uint32_t WindowHeight = 768;
+			uint32_t WindowWidth = 1600; 
+			uint32_t WindowHeight = 900;
 			int32_t WindowPosX = 100; 
 			int32_t WindowPosY = 100;
 			bool Maximized = false; 
 			uint32_t Styles = 0;
 			bool VSync = 1;
-			std::string RecentlyOpenedPaths[3];
+			std::list<std::string> RecentlyOpenedPaths;
 			void SetAppConfigDesc(const std::string& str, const uint32_t& line)
 			{
 				switch (line)
@@ -122,37 +121,33 @@ namespace GD_Tool
 					break;
 				case 6:
 					VSync = atoi(str.c_str());
-					break;
-				case 7:
-					RecentlyOpenedPaths[0] = str; 
-					break;
+					break;	
+				case 7: 
+					if(!str.empty())
+						RecentlyOpenedPaths.push_back(str);
+					break; 
 				case 8: 
-					RecentlyOpenedPaths[1] = str; 
+					if(!str.empty())
+						RecentlyOpenedPaths.push_back(str);
 					break;
-				case 9: 
-					RecentlyOpenedPaths[2] = str;
+				case 9:
+					if(!str.empty())
+						RecentlyOpenedPaths.push_back(str); 
 					break;
 				}
 			}
 			void CheckRecentlyOpenedFiles(const std::string& filePath)
 			{
-				for (uint8_t i = 0; i < 2; i++)
+				for (std::list<std::string>::iterator it = RecentlyOpenedPaths.begin(); it != RecentlyOpenedPaths.end(); ++it)
 				{
-					if (filePath != RecentlyOpenedPaths[i] && RecentlyOpenedPaths[i].empty())
+					if (*it == filePath)
 					{
-						RecentlyOpenedPaths[i] = filePath.c_str();
+						RecentlyOpenedPaths.erase(it);
 						break;
 					}
 					
-				}
-				if (filePath != RecentlyOpenedPaths[0] && filePath != RecentlyOpenedPaths[1] && filePath != RecentlyOpenedPaths[2])
-				{
-					RecentlyOpenedPaths[2] = RecentlyOpenedPaths[1]; 
-					RecentlyOpenedPaths[1] = RecentlyOpenedPaths[0]; 
-					RecentlyOpenedPaths[0] = filePath;
-				}
+				}				
 			}
-			
 		};
 		
 	}

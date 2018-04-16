@@ -23,9 +23,10 @@ void GD_Tool::Mainframework::AppManager::Save()
 		buffer.append(std::to_string(m_configDesc.Maximized) + "\n"); 
 		buffer.append(std::to_string(m_configDesc.Styles)+ "\n"); 
 		buffer.append(std::to_string(m_configDesc.VSync) + "\n");
-		buffer.append(m_configDesc.RecentlyOpenedPaths[0] + "\n"); 
-		buffer.append(m_configDesc.RecentlyOpenedPaths[1] + "\n"); 
-		buffer.append(m_configDesc.RecentlyOpenedPaths[2] + "\n");
+		for (std::list<std::string>::iterator it = m_configDesc.RecentlyOpenedPaths.begin(); it != m_configDesc.RecentlyOpenedPaths.end(); ++it)
+		{
+			buffer.append(*it + "\n");
+		}
 		fileStream.write(buffer.c_str(), buffer.size());
 	}
 	fileStream.close();

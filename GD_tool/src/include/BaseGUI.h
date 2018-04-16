@@ -53,6 +53,8 @@ namespace GD_Tool
 			void CreateGeneralSettings();
 			void CreateStats();
 			void CreateNode(Formula* formula);
+			void CreateLevelEditor();
+			void CreateProjectSettings();
 
 			bool m_bShowNewProjWnd; 
 			bool m_bShowOpenProjWnd;
@@ -65,6 +67,8 @@ namespace GD_Tool
 			bool m_bShowCreateVariables;
 			bool m_bShowGeneralSettings; 
 			bool m_bShowStats; 
+			bool m_bShowLevelEditor;
+			bool m_bShowProjectSettings;
 
 			bool m_bVSync; 
 			bool m_bUpdateWndSize; 
@@ -73,7 +77,7 @@ namespace GD_Tool
 			ImVector<ImVec4> m_inputCol;
 			
 			std::list<Formula*> m_showNodeWndContainer;
-
+			std::list<std::string> m_recentOpenFiles; 
 		};
 	}
 }

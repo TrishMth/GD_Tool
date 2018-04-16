@@ -136,9 +136,6 @@
     <ClInclude Include="src\include\OperatorNodes.h">
       <Filter>NodeSystem Headerfiles</Filter>
     </ClInclude>
-    <ClInclude Include="src\include\AddNode.h">
-      <Filter>NodeSystem Headerfiles</Filter>
-    </ClInclude>
     <ClInclude Include="src\include\VariableNodes.h">
       <Filter>NodeSystem Headerfiles</Filter>
     </ClInclude>
@@ -187,7 +184,7 @@
     <ClInclude Include="src\include\BaseGUI.h">
       <Filter>GUIHeaderfiles</Filter>
     </ClInclude>
-    <ClInclude Include="src\include\AddNodeBase.h">
+    <ClInclude Include="src\include\AddTemplate.h">
       <Filter>NodeSystem Headerfiles</Filter>
     </ClInclude>
   </ItemGroup>

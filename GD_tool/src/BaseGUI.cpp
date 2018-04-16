@@ -17,7 +17,6 @@ GD_Tool::Mainframework::BaseGUI::BaseGUI()
 {
 	s_pBaseGUI = this;
 	ImGui::CreateContext();
-	
 }
 
 void GD_Tool::Mainframework::BaseGUI::Init()
@@ -33,6 +32,7 @@ void GD_Tool::Mainframework::BaseGUI::Init()
 	case 2: ImGui::StyleColorsClassic();
 		break;
 	}
+	m_recentOpenFiles = AppManager::GetInstance().GetCurrentConfig().RecentlyOpenedPaths;
 
 	
 }
@@ -58,8 +58,14 @@ void GD_Tool::Mainframework::BaseGUI::Run()
 	if (m_bShowGeneralSettings)
 		CreateGeneralSettings();
 
+	if (m_bShowProjectSettings)
+		CreateProjectSettings();
+
 	if (m_bShowStats)
 		CreateStats();
+
+	if (m_bShowLevelEditor)
+		CreateLevelEditor();
 
 	for (std::list<Formula*>::iterator it = m_showNodeWndContainer.begin(); it != m_showNodeWndContainer.end(); ++it)
 	{
@@ -128,18 +134,26 @@ void GD_Tool::Mainframework::BaseGUI::CreateMenuBar()
 				if (ProjectManager::GetInstance().IsInstantiated())
 					ProjectManager::GetInstance().Save();
 			}
+			if (ImGui::MenuItem("Save all"))
+			{
+				if (ProjectManager::GetInstance().IsInstantiated())
+				{
+					for(std::map<uint32_t, Object*>::iterator it = ProjectManager::GetInstance().GetObjects().begin(); it != ProjectManager::GetInstance().GetObjects().end(); ++it)					
+						it->second->Save();
+					for (std::map<uint32_t, Formula*>::iterator it = ProjectManager::GetInstance().GetFormulas().begin(); it != ProjectManager::GetInstance().GetFormulas().end(); ++it)
+						it->second->Save();
+					ProjectManager::GetInstance().Save();
+				}
+			}
 			if (ImGui::MenuItem("Open"))
 				m_bShowOpenProjWnd = true; 
 			if (ImGui::BeginMenu("Open Recent"))
 			{
-				if (!AppManager::GetInstance().GetCurrentConfig().RecentlyOpenedPaths[0].empty())
+				for (std::list<std::string>::iterator it = m_recentOpenFiles.begin(); it != m_recentOpenFiles.end(); ++it)
 				{
-					if (ImGui::MenuItem(AppManager::GetInstance().GetCurrentConfig().RecentlyOpenedPaths[0].c_str()))
-						AppManager::GetInstance().LoadProject(AppManager::GetInstance().GetCurrentConfig().RecentlyOpenedPaths[0]);
-					if (ImGui::MenuItem(AppManager::GetInstance().GetCurrentConfig().RecentlyOpenedPaths[1].c_str()))
-						AppManager::GetInstance().LoadProject(AppManager::GetInstance().GetCurrentConfig().RecentlyOpenedPaths[1]);
-					if (ImGui::MenuItem(AppManager::GetInstance().GetCurrentConfig().RecentlyOpenedPaths[2].c_str()))
-						AppManager::GetInstance().LoadProject(AppManager::GetInstance().GetCurrentConfig().RecentlyOpenedPaths[2]);
+					if (ImGui::MenuItem(it->c_str()))
+						AppManager::GetInstance().LoadProject(it->c_str());
+					
 				}
 				ImGui::EndMenu();
 			}
@@ -152,6 +166,14 @@ void GD_Tool::Mainframework::BaseGUI::CreateMenuBar()
 			{
 
 			}
+			if (ProjectManager::GetInstance().IsInstantiated())
+			{
+				if (ImGui::MenuItem("Project settings", nullptr, &m_bShowProjectSettings))
+				{
+				}
+			}
+
+
 		ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Window"))
@@ -175,7 +197,12 @@ void GD_Tool::Mainframework::BaseGUI::CreateMenuBar()
 				if (ImGui::MenuItem("GlobalVariables", nullptr, &m_bShowGlobalVariables))
 				{
 					MessageSystem::Log("GUI", "Open global variables window", "Successfully opened the global variables window");
-				}			
+				}		
+
+				if (ImGui::MenuItem("Level Editor", nullptr, &m_bShowLevelEditor))
+				{
+					MessageSystem::Log("GUI", "Open level editor window", "Successfully opened the global variables window");
+				}
 			}
 			ImGui::EndMenu();
 		}
@@ -434,12 +461,12 @@ void GD_Tool::Mainframework::BaseGUI::CreateSubObject(Object* obj)
 void GD_Tool::Mainframework::BaseGUI::CreateFormulaWnd()
 {
 	ImGuiIO& io = ImGui::GetIO();
-	ImGui::SetNextWindowPos(ImVec2(200, 100), ImGuiCond_FirstUseEver);
-	ImGui::SetNextWindowSize(ImVec2(io.DisplaySize.x / 2 - 100, io.DisplaySize.y / 2 -50), ImGuiCond_FirstUseEver);
+	ImGui::SetNextWindowSize(ImVec2(200, 100), ImGuiCond_FirstUseEver);
+	ImGui::SetNextWindowPos(ImVec2(io.DisplaySize.x / 2 - 100, io.DisplaySize.y / 2 - 50), ImGuiCond_FirstUseEver);
 	if (ImGui::Begin("Create new formula"))
 	{
-		static char str[128] = "Formula name"; 
-		ImGui::InputText("Please enter a name for the new formula", str, IM_ARRAYSIZE(str));
+		static char str[64] = "Formula name"; 
+		ImGui::InputText("Name", str, IM_ARRAYSIZE(str));
 		if (ImGui::Button("Create") && str != nullptr)
 		{
 			ProjectManager::GetInstance().CreateFormula(str);
@@ -454,54 +481,56 @@ void GD_Tool::Mainframework::BaseGUI::CreateGlobalVars()
 	ImGuiIO& io = ImGui::GetIO();
 	ImGui::SetNextWindowPos(ImVec2(1, 20), ImGuiCond_FirstUseEver);
 	ImGui::SetNextWindowSize(ImVec2(200, 150), ImGuiCond_FirstUseEver);
-	if (ImGui::Begin("Global Variables"))
+	if (!ImGui::Begin("Global Variables", &m_bShowGlobalVariables))
 	{
-		uint32_t counter = 0;
-		std::map<uint32_t, BaseVariable*> variables = ProjectManager::GetInstance().GetGlobalVars();
-		int32_t selectionMask = (1 << 2);
-		int32_t nodeClicked = -1;
-		for (std::map<uint32_t, BaseVariable*>::iterator it = variables.begin(); it != variables.end(); it++, counter++)
-		{
-			ImGuiTreeNodeFlags node_flags =  ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ((selectionMask & (1 << counter)) ? ImGuiTreeNodeFlags_Selected : 0);
-			bool nodeOpen = ImGui::TreeNodeEx((void*)(intptr_t)counter, node_flags, it->second->GetName().c_str(), counter);
-			
-			static char str[128] = "Enter new name here";
-			static int inputInt = 0;
-			if (ImGui::IsItemClicked())
-				nodeClicked = counter;
-			if (nodeOpen)
-			{
-				if (ImGui::InputText("New Name", str, IM_ARRAYSIZE(str)) && str != "Enter new name here" && str != it->second->GetName().c_str())
-					it->second->ChangeName(str);
-
-				switch (it->second->GetType())
-				{
-				case GlobalEnums::EVariableTypes::Integer:
-				{
-					IntegerVariable* intVar = (IntegerVariable*)it->second;
-					if (intVar != nullptr)
-					{
-						inputInt = intVar->GetValue();
-						if (ImGui::InputInt("Current Value", &inputInt) && inputInt != intVar->GetValue())
-							it->second->Set(inputInt);
-					}
-				}
-					break;
-				}
-				ImGui::TreePop();
-			}
-			
-		}
-		if (ImGui::Button("Create new variable"))
-		{
-			m_bShowCreateVariables = true; 
-		}
-		if (m_bShowCreateVariables)
-		{
-			CreateNewGlobalVar();
-		}
 		ImGui::End();
 	}
+
+	uint32_t counter = 0;
+	std::map<uint32_t, BaseVariable*> variables = ProjectManager::GetInstance().GetGlobalVars();
+	int32_t selectionMask = (1 << 2);
+	int32_t nodeClicked = -1;
+	for (std::map<uint32_t, BaseVariable*>::iterator it = variables.begin(); it != variables.end(); it++, counter++)
+	{
+		ImGuiTreeNodeFlags node_flags =  ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ((selectionMask & (1 << counter)) ? ImGuiTreeNodeFlags_Selected : 0);
+		bool nodeOpen = ImGui::TreeNodeEx((void*)(intptr_t)counter, node_flags, it->second->GetName().c_str(), counter);
+			
+		static char str[128] = "Enter new name here";
+		static int inputInt = 0;
+		if (ImGui::IsItemClicked())
+			nodeClicked = counter;
+		if (nodeOpen)
+		{
+			if (ImGui::InputText("New Name", str, IM_ARRAYSIZE(str)) && str != "Enter new name here" && str != it->second->GetName().c_str())
+				it->second->ChangeName(str);
+
+			switch (it->second->GetType())
+			{
+			case GlobalEnums::EVariableTypes::Integer:
+			{
+				IntegerVariable* intVar = (IntegerVariable*)it->second;
+				if (intVar != nullptr)
+				{
+					inputInt = intVar->GetValue();
+					if (ImGui::InputInt("Current Value", &inputInt) && inputInt != intVar->GetValue())
+						it->second->Set(inputInt);
+				}
+			}
+				break;
+			}
+			ImGui::TreePop();
+		}
+			
+	}
+	if (ImGui::Button("Create new variable"))
+	{
+		m_bShowCreateVariables = true; 
+	}
+	if (m_bShowCreateVariables)
+	{
+		CreateNewGlobalVar();
+	}
+	ImGui::End();
 }
 
 void GD_Tool::Mainframework::BaseGUI::CreateNewGlobalVar()
@@ -613,7 +642,7 @@ void GD_Tool::Mainframework::BaseGUI::CreateFormulaNodeWnd(Formula* formula)
 
 void GD_Tool::Mainframework::BaseGUI::CreateGeneralSettings()
 {
-	ImGui::SetNextWindowSize(ImVec2(200, 100), ImGuiCond_FirstUseEver);
+	ImGui::SetNextWindowSize(ImVec2(400, 100), ImGuiCond_FirstUseEver);
 
 	AppConfigDesc currentConfig = AppManager::GetInstance().GetCurrentConfig();
 	if (!ImGui::Begin("General Settings", &m_bShowGeneralSettings))
@@ -633,7 +662,7 @@ void GD_Tool::Mainframework::BaseGUI::CreateGeneralSettings()
 	case 1:
 		currentType = "Light";
 		break;
-	case2:
+	case 2:
 		currentType = "Classic";
 		break;
 	}
@@ -733,5 +762,51 @@ void GD_Tool::Mainframework::BaseGUI::CreateNode(Formula* formula)
 		}
 		ImGui::End();
 	}
+}
+
+void GD_Tool::Mainframework::BaseGUI::CreateLevelEditor()
+{
+	ImGui::SetNextWindowSize(ImVec2(900, 500), ImGuiCond_FirstUseEver);
+
+	if (!ImGui::Begin("Level Editor", &m_bShowLevelEditor))
+		ImGui::End();
+	
+	static float values[90] = { 0 };
+
+	ImGui::PlotLines("Lines", values, IM_ARRAYSIZE(values), 0, "avg 0.0", 0, 1.0f, ImVec2(800, 200));
+
+	std::map<uint32_t, Object*> objects = ProjectManager::GetInstance().GetObjects();	
+	static const char* currentPlayer = "No Object";
+	if (ImGui::BeginCombo("Choose Player", currentPlayer))
+	{
+		for (std::map<uint32_t, Object*>::iterator it = objects.begin(); it != objects.end(); ++it)
+		{
+			
+			bool isSelected = (currentPlayer == _strdup(it->second->GetName().c_str()));
+			if (ImGui::Selectable(_strdup(it->second->GetName().c_str()), isSelected))
+				currentPlayer = _strdup(it->second->GetName().c_str());
+			if (isSelected)
+				ImGui::SetItemDefaultFocus();			
+		}
+		ImGui::EndCombo();
+	}
+	
+
+	ImGui::End();
+}
+
+void GD_Tool::Mainframework::BaseGUI::CreateProjectSettings()
+{
+	ImGui::SetNextWindowSize(ImVec2(1000, 700), ImGuiCond_FirstUseEver);
+
+	if (!ImGui::Begin("Project settings", &m_bShowProjectSettings))
+	{
+		ImGui::End();
+	}
+	static char str[64] = "New project name";
+	ImGui::InputText("Enter new name", str, IM_ARRAYSIZE(str)); ImGui::SameLine(); if (ImGui::Button("Change name")) { ProjectManager::GetInstance().ChangeName(str); }
+	if (ImGui::Button("Delete project")) { ProjectManager::GetInstance().Delete(); m_bShowProjectSettings = false; }
+
+	ImGui::End();
 }
 

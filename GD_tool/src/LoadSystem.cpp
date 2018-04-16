@@ -30,7 +30,7 @@ void GD_Tool::Mainframework::LoadSystem::LoadProject(const std::string & filePat
 				inProDesc = true;
 				continue;
 			}
-			else if (strBuffer == "_objDesc")
+			else if (strBuffer ==  "_objDesc")
 			{
 				inProDesc = false;
 				inObjDesc = true;
@@ -64,12 +64,11 @@ void GD_Tool::Mainframework::LoadSystem::LoadProject(const std::string & filePat
 					objDesc.Count = atoi((strBuffer + "\n").c_str());
 					objDescCount++;
 				}
-				else
+				else 
 				{
-					objDesc.Names.push_back(strBuffer);		
-					ProjectManager::GetInstance().CreateObject(strBuffer);
-					LoadObjData(strBuffer);
-				}
+					for (int i = 0; i < objDesc.Count; i++)
+						LoadObjData(strBuffer, objDesc);
+				}				
 			}
 			if (inFormDesc)
 			{
@@ -138,8 +137,9 @@ GD_Tool::Mainframework::AppConfigDesc GD_Tool::Mainframework::LoadSystem::Create
 	return desc; 
 }
 
-bool GD_Tool::Mainframework::LoadSystem::LoadObjData(const std::string & objName)
+bool GD_Tool::Mainframework::LoadSystem::LoadObjData(const std::string & objName, const ObjectDesc& objDesc)
 {
+
 	return false;
 }
 

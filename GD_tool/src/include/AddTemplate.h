@@ -14,7 +14,7 @@ namespace GD_Tool
 	namespace Mainframework
 	{
 		template<typename T1, typename T2, typename T3>
-		class AddNode : public OperatorNodes
+		class AddTemplate
 		{
 		private: 
 			T1 m_baseValue; 
@@ -23,7 +23,7 @@ namespace GD_Tool
 			/**
 			* Default Constructor of the Addnote class which inherits from the OperatorNodes base
 			*/
-			AddNode(const uint32_t& index) : OperatorNodes(index) {}
+			AddTemplate(const uint32_t& index) {}
 			/**
 			* Function to set the base of the operation(int). 
 			* 
@@ -45,7 +45,7 @@ namespace GD_Tool
 			/**
 			* Default Destructof of the AddNote class
 			*/
-			~AddNode() {}
+			~AddTemplate() {}
 		};
 	}
 }

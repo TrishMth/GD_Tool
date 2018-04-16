@@ -41,6 +41,13 @@ void GD_Tool::Mainframework::ProjectManager::ChangeName(const std::string newNam
 
 void GD_Tool::Mainframework::ProjectManager::CreateObject(const std::string & name)
 {
+	for (std::map<uint32_t, Object*>::iterator it = m_baseObjects.begin(); it != m_baseObjects.end(); ++it)
+		if (name == it->second->GetName())
+		{
+			MessageSystem::Error("Project Manager", "Failed to create new object", "A object with the name " + name + " already exists and can't created");
+			return;
+		}
+
 	Object* newObj = new Object(m_objIndex,name);
 	m_objIndex++;
 	AddObject(newObj);
@@ -49,24 +56,48 @@ void GD_Tool::Mainframework::ProjectManager::CreateObject(const std::string & na
 
 void GD_Tool::Mainframework::ProjectManager::CreateGlobalVariable(const GlobalEnums::EVariableTypes & type, const std::string & name, const int32_t & value)
 {
+	for (std::map<uint32_t, BaseVariable*>::iterator it = m_globalVariables.begin(); it != m_globalVariables.end(); ++it)
+		if (name == it->second->GetName())
+		{
+			MessageSystem::Error("ProjectManager", "Failed to create the new Variable", "A variable with this name already exists");
+			return;
+		}
 	BaseVariable* newVariable = new BaseVariable(type, name, value);
 	AddVariable(newVariable);
 }
 
 void GD_Tool::Mainframework::ProjectManager::CreateGlobalVariable(const GlobalEnums::EVariableTypes & type, const std::string & name, const float & value)
 {
+	for (std::map<uint32_t, BaseVariable*>::iterator it = m_globalVariables.begin(); it != m_globalVariables.end(); ++it)
+		if (name == it->second->GetName())
+		{
+			MessageSystem::Error("ProjectManager", "Failed to create the new Variable", "A variable with this name already exists");
+			return;
+		}
 	BaseVariable* newVariable = new BaseVariable(type, name, value);
 	AddVariable(newVariable);
 }
 
 void GD_Tool::Mainframework::ProjectManager::CreateGlobalVariable(const GlobalEnums::EVariableTypes & type, const std::string & name, const double & value)
 {
+	for (std::map<uint32_t, BaseVariable*>::iterator it = m_globalVariables.begin(); it != m_globalVariables.end(); ++it)
+		if (name == it->second->GetName())
+		{
+			MessageSystem::Error("ProjectManager", "Failed to create the new Variable", "A variable with this name already exists");
+			return;
+		}
 	BaseVariable* newVariable = new BaseVariable(type, name, value);
 	AddVariable(newVariable);
 }
 
 void GD_Tool::Mainframework::ProjectManager::CreateGlobalVariable(const GlobalEnums::EVariableTypes & type, const std::string & name, const bool & value)
 {
+	for (std::map<uint32_t, BaseVariable*>::iterator it = m_globalVariables.begin(); it != m_globalVariables.end(); ++it)
+		if (name == it->second->GetName())
+		{
+			MessageSystem::Error("ProjectManager", "Failed to create the new Variable", "A variable with this name already exists");
+			return;
+		}
 	BaseVariable* newVariable = new BaseVariable(type, name, value);
 	AddVariable(newVariable);
 }
@@ -114,6 +145,13 @@ void GD_Tool::Mainframework::ProjectManager::AddObject(Object * obj)
 
 void GD_Tool::Mainframework::ProjectManager::CreateFormula(const std::string& name)
 {
+	for (std::map<uint32_t, Formula*>::iterator it = m_formulas.begin(); it != m_formulas.end(); ++it)
+		if (name == it->second->GetName())
+		{
+			MessageSystem::Error("ProjectManager", "Failed to create the new formula", "A formula with this name already exists");
+			return;
+		}
+
 	Formula* newFormula = new Formula(name);
 	m_formulas.insert(std::pair<uint32_t, Formula*>(m_formulaIndex, newFormula));
 	m_formulaIndex++;
@@ -134,6 +172,7 @@ void GD_Tool::Mainframework::ProjectManager::Save()
 		std::fstream fileStream;
 		m_fileName = m_filePath + "//project.txt";
 		AppManager::GetInstance().GetCurrentConfig().CheckRecentlyOpenedFiles(m_fileName);
+		AppManager::GetInstance().AddNewProjectFile(m_fileName);
 		fileStream.open(m_fileName.c_str(),std::fstream::out);
 		if (fileStream.is_open())
 		{
@@ -161,17 +200,22 @@ void GD_Tool::Mainframework::ProjectManager::Save()
 
 		}
 		fileStream.close();
+		MessageSystem::Log("Project Manager", "Saved", "Successfully saved the current project");
 	}
 }
 
 void GD_Tool::Mainframework::ProjectManager::Delete()
 {
-
 	if (remove(m_fileName.c_str()))
-		printf("successfully deleted");
+	{
+		MessageSystem::Log("ProjectManager", "Project deleted", "The project is succesfully deleted");
+	}
 	else
-		printf("error deleting the file");
-	delete s_pProManager;
+	{
+		MessageSystem::Error("ProjectManager", "Failed to delete", "The project couldn't get deleted");
+		return;
+	}
+	Release();
 }
 
 void GD_Tool::Mainframework::ProjectManager::Release()

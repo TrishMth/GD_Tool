@@ -45,7 +45,7 @@ namespace GD_Tool
 			* @param objName The name of the Object you want to read out the data. 
 			* @return True if you could read out the datas of the object, otherwise false. 
 			*/
-			bool static LoadObjData(const std::string& objName); 
+			bool static LoadObjData(const std::string& objName, const ObjectDesc& objDesc); 
 			/**
 			* Static function to load the datas of a formula 
 			* 

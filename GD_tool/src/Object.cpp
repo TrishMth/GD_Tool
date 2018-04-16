@@ -89,10 +89,12 @@ void GD_Tool::Mainframework::Object::Save()
 		fileStream.open(m_fileName, std::fstream::out);
 		if (fileStream.is_open())
 		{
+
 			m_isDirty = false; 
 		}
 		fileStream.close();
 		
+		MessageSystem::Log("Object" + m_name, "Object saved", "Successfully saved " + m_name);
 	}
 }
 

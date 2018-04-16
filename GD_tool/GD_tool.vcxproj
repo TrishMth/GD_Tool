@@ -175,8 +175,7 @@
     <ClCompile Include="src\WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\include\AddNode.h" />
-    <ClInclude Include="src\include\AddNodeBase.h" />
+    <ClInclude Include="src\include\AddTemplate.h" />
     <ClInclude Include="src\include\AppManager.h" />
     <ClInclude Include="src\include\BaseGUI.h" />
     <ClInclude Include="src\include\BaseNode.h" />
