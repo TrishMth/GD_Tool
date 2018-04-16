@@ -170,7 +170,11 @@ int32_t GD_Tool::Mainframework::DX11BaseWindow::Run()
 				
 			UpdateScene(ImGui::GetIO().Framerate);
 
-			BaseGUI::GetInstance().Run();
+			if (!BaseGUI::GetInstance().Run())
+			{
+				AppManager::GetInstance().SetNewWndPos(wndRect.left, wndRect.top);
+				break;
+			}
 
 			m_pDevCon->OMSetRenderTargets(1, &m_pBackBuffer, NULL);
 			m_pDevCon->ClearRenderTargetView(m_pBackBuffer, (float*)&clear_color);
@@ -190,8 +194,6 @@ int32_t GD_Tool::Mainframework::DX11BaseWindow::Run()
 		}
 		
 	}
-	//AppManager::GetInstance().SetNewWndPos(wndRect.left, wndRect.top);
-	//AppManager::GetInstance().Release();
 	return (int32_t)msg.wParam;
 }
 

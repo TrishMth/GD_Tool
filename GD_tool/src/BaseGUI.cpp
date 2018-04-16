@@ -1,6 +1,7 @@
 #include "include\BaseGUI.h"
 
 GD_Tool::Mainframework::BaseGUI* GD_Tool::Mainframework::BaseGUI::s_pBaseGUI = nullptr;
+bool GD_Tool::Mainframework::BaseGUI::m_bShowReleasePopup = false;
 
 GD_Tool::Mainframework::BaseGUI::BaseGUI()
 	:m_bShowNewProjWnd(false)
@@ -14,6 +15,7 @@ GD_Tool::Mainframework::BaseGUI::BaseGUI()
 	, m_bVSync(true)
 	, m_bShowStats(false)
 	, m_bUpdateWndSize(false)
+	
 {
 	s_pBaseGUI = this;
 	ImGui::CreateContext();
@@ -37,7 +39,7 @@ void GD_Tool::Mainframework::BaseGUI::Init()
 	
 }
 
-void GD_Tool::Mainframework::BaseGUI::Run()
+bool GD_Tool::Mainframework::BaseGUI::Run()
 {
 	CreateMenuBar();
 	if (m_bShowNewProjWnd)
@@ -76,6 +78,11 @@ void GD_Tool::Mainframework::BaseGUI::Run()
 			m_showNodeWndContainer.erase(it);
 	}
 
+	if (m_bShowReleasePopup)
+		CreateReleasePopUp();
+	if (!s_pBaseGUI)
+		return false;
+	return true;
 }
 
 void GD_Tool::Mainframework::BaseGUI::AddLogToConsole(char* text, ImVec4 col)
@@ -120,36 +127,18 @@ GD_Tool::Mainframework::BaseGUI & GD_Tool::Mainframework::BaseGUI::GetInstance()
 	return *s_pBaseGUI;
 }
 
-void GD_Tool::Mainframework::BaseGUI::Release()
+bool GD_Tool::Mainframework::BaseGUI::Release(const bool& showPopUp)
 {
-	if (ProjectManager::GetInstance().GetDirtyStatus())
+	if (showPopUp)
 	{
-		if (!ImGui::Begin("FUCK YOU"))
-		{
-			ImGui::End(); 
-			return;
-		}
-		ImGui::OpenPopup("Save before quit?");
-		if (ImGui::BeginPopupModal("Save changes before quit?", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
-		{
-			ImGui::Text("All unsaved changes will get discarded, do you want to save them before quit?");
-			if (ImGui::Button("Yes", ImVec2(120, 0))) 
-			{
-				ProjectManager::GetInstance().Save();
-				ProjectManager::GetInstance().Release();
-				ImGui::CloseCurrentPopup();
-			}
-			ImGui::SameLine();
-			if (ImGui::Button("No", ImVec2(120, 0))) { ProjectManager::GetInstance().Release();	ImGui::CloseCurrentPopup();}
-
-			ImGui::EndPopup();
-			ImGui::End();
-		}
+		m_bShowReleasePopup = true;
+		if (m_bShowReleasePopup)
+			return false;
 	}
-	else
-		ProjectManager::GetInstance().Release();
+
 	ImGui::DestroyContext();
 	delete s_pBaseGUI;
+	return true;
 }
 
 void GD_Tool::Mainframework::BaseGUI::CreateMenuBar()
@@ -889,5 +878,34 @@ void GD_Tool::Mainframework::BaseGUI::CreateLevelDetailsPanel(bool* active, cons
 		ImGui::EndCombo();
 	}
 	ImGui::End();
+}
+
+void GD_Tool::Mainframework::BaseGUI::CreateReleasePopUp()
+{
+	ImGui::OpenPopup("Save before quit?");
+	if (ImGui::BeginPopupModal("Save before quit?", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		ImGui::Text("All unsaved changes will get discarded, do you want to save them before quit?");
+		if (ImGui::Button("Yes", ImVec2(120, 0)))
+		{
+			ProjectManager::GetInstance().Save();
+			ImGui::CloseCurrentPopup();
+			ImGui::EndPopup();
+			BaseGUI::GetInstance().Release(false);
+			ProjectManager::GetInstance().Release();
+			return;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("No", ImVec2(120, 0))) 
+		{
+			ImGui::CloseCurrentPopup();
+			ImGui::EndPopup();
+			BaseGUI::GetInstance().Release(false); 
+			ProjectManager::GetInstance().Release();	
+			return;
+		}
+		ImGui::EndPopup();
+	}
+
 }
 

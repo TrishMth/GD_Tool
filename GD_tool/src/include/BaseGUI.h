@@ -21,10 +21,10 @@ namespace GD_Tool
 		public: 
 			static void CreateInstance();
 			static BaseGUI& GetInstance();
-			static void Release();
+			static bool Release(const bool& showPopUp);
 
 			void Init();
-			void Run();
+			bool Run();
 			void AddLogToConsole(char* text, ImVec4 col);
 			bool VSync();
 			void UpdateAllWndSizes();
@@ -57,6 +57,7 @@ namespace GD_Tool
 			void CreateLevelEditor();
 			void CreateProjectSettings();
 			void CreateLevelDetailsPanel(bool* active, const ImVec2& pos, const float& width);
+			void CreateReleasePopUp();
 
 			bool m_bShowNewProjWnd; 
 			bool m_bShowOpenProjWnd;
@@ -71,6 +72,7 @@ namespace GD_Tool
 			bool m_bShowStats; 
 			bool m_bShowLevelEditor;
 			bool m_bShowProjectSettings;
+			static bool m_bShowReleasePopup;
 
 			bool m_bVSync; 
 			bool m_bUpdateWndSize; 
