@@ -100,10 +100,11 @@ GD_Tool::Mainframework::AppManager& GD_Tool::Mainframework::AppManager::GetInsta
 	return *s_pAppManager; 
 }
 
-void GD_Tool::Mainframework::AppManager::Release()
+bool GD_Tool::Mainframework::AppManager::Release()
 {
 	BaseGUI::Release();
-	ProjectManager::Release();
+	//ProjectManager::Release();
 	AppManager::GetInstance().Save();
 	delete s_pAppManager;
+	return true;
 }

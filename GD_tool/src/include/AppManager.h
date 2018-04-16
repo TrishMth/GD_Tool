@@ -82,7 +82,7 @@ namespace GD_Tool
 			/**
 			* Safe Release the instance of the AppManager
 			*/
-			static void Release();
+			static bool Release();
 		};
 	}
 }

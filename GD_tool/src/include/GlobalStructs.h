@@ -54,16 +54,7 @@ namespace GD_Tool
 		*/
 		struct ObjectDesc
 		{
-			std::string GetObjDesc() const
-			{
-				std::string FullBuffer = Begin;
-				for (uint32_t i = 0; i < Count; i++)
-				{
-					FullBuffer.append(Names[i]);
-				}
-				return FullBuffer;
-			}
-			uint32_t Count;
+			
 			std::vector<std::string> Names;
 			std::string Begin = "_objDesc\n";
 		};
@@ -72,16 +63,7 @@ namespace GD_Tool
 		*/
 		struct FormulaDesc
 		{
-			std::string GetFormulaDesc() const
-			{
-				std::string FullBuffer = Begin;
-				for (uint32_t i = 0; i < Count; i++)
-				{
-					FullBuffer.append(Names[i]);
-				}
-				return FullBuffer;
-			}
-			uint32_t Count;
+		
 			std::vector<std::string> Names;
 			std::string Begin = "_FormDesc\n";
 			std::string End = "_End\n";

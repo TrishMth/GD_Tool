@@ -11,7 +11,6 @@ GD_Tool::Mainframework::ProjectManager::ProjectManager(const std::string& name)
 	, m_globalVarIndex(0)
 {
 	m_filePath = ".//" + m_name;
-	Save();
 	s_pProManager = this;
 }
 
@@ -50,7 +49,7 @@ void GD_Tool::Mainframework::ProjectManager::CreateObject(const std::string & na
 
 	Object* newObj = new Object(m_objIndex,name);
 	m_objIndex++;
-	AddObject(newObj);
+	AddObject(newObj); 
 	m_isDirty = true; 
 }
 
@@ -167,6 +166,8 @@ void GD_Tool::Mainframework::ProjectManager::RemoveFormula(const uint32_t & inde
 
 void GD_Tool::Mainframework::ProjectManager::Save()
 {
+	if (!ProjectManager::GetInstance().IsInstantiated())
+		return;
 	if (m_isDirty)
 	{
 		std::fstream fileStream;
@@ -182,14 +183,12 @@ void GD_Tool::Mainframework::ProjectManager::Save()
 			package.Name = m_name + "\n";
 			std::string buffer = package.GetBuffer();
 			buffer.append(objPackage.Begin);
-			buffer.append(std::to_string(m_objIndex) + "\n");
 			for (std::map<uint32_t, Object*>::iterator it = m_baseObjects.begin(); it != m_baseObjects.end(); ++it)
 			{
 				buffer.append(it->second->GetName() + "\n");
 
 			}
 			buffer.append(formDesc.Begin);
-			buffer.append(std::to_string(m_formulaIndex) + "\n");
 			for (std::map<uint32_t, Formula*>::iterator it = m_formulas.begin(); it != m_formulas.end(); ++it)
 			{
 				buffer.append(it->second->GetName() + "\n");
@@ -200,26 +199,85 @@ void GD_Tool::Mainframework::ProjectManager::Save()
 
 		}
 		fileStream.close();
+		
 		MessageSystem::Log("Project Manager", "Saved", "Successfully saved the current project");
 	}
 }
 
-void GD_Tool::Mainframework::ProjectManager::Delete()
+int32_t GD_Tool::Mainframework::ProjectManager::Delete(const std::string& dirPath, bool  deleteSubDirs)
 {
-	if (remove(m_fileName.c_str()))
+	bool subDir = false; 
+
+	HANDLE hFile; 
+	std::string strFilePath; 
+	std::string strPattern; 
+	WIN32_FIND_DATA fileInfo; 
+
+
+	strPattern = dirPath + "\\*.*"; 
+	hFile = ::FindFirstFile(strPattern.c_str(), &fileInfo);
+	if (hFile != INVALID_HANDLE_VALUE)
 	{
-		MessageSystem::Log("ProjectManager", "Project deleted", "The project is succesfully deleted");
+		do
+		{
+			if (fileInfo.cFileName[0] != '.')
+			{
+				strFilePath.erase();
+				strFilePath = dirPath + "\\" + fileInfo.cFileName;
+
+				if (fileInfo.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+				{
+					if (deleteSubDirs)
+					{
+						int32_t IRC = Delete(strFilePath);
+						if (IRC)
+							return IRC;
+					}
+					else
+						subDir = true;
+				}
+				else
+				{
+					if (::SetFileAttributes(strFilePath.c_str(), FILE_ATTRIBUTE_NORMAL) == FALSE)
+						return ::GetLastError();
+
+					if (::DeleteFile(strFilePath.c_str()) == FALSE)
+						return ::GetLastError();
+				}
+			}
+		} while (::FindNextFile(hFile, &fileInfo) == TRUE);
+
+		::FindClose(hFile);
+
+		DWORD dwError = ::GetLastError();
+		if (dwError != ERROR_NO_MORE_FILES)
+			return dwError;
+		else
+		{
+			if (!subDir)
+			{
+				if (::SetFileAttributes(dirPath.c_str(), FILE_ATTRIBUTE_NORMAL) == FALSE)
+					return ::GetLastError();
+
+				if (::RemoveDirectory(dirPath.c_str()) == FALSE)
+					return ::GetLastError();
+			}
+		}
+		MessageSystem::Log("Project Manager", "Project deleted", "The project is successfully deleted");
 	}
 	else
 	{
-		MessageSystem::Error("ProjectManager", "Failed to delete", "The project couldn't get deleted");
-		return;
+		MessageSystem::Error("Project manager", "Invalid handle", "The current project has no directory anymore");
+		return -1;
 	}
+
 	Release();
+	return 0;
 }
 
-void GD_Tool::Mainframework::ProjectManager::Release()
+void GD_Tool::Mainframework::ProjectManager::Release(const bool& saveBeforeRelease)
 {
+	ProjectManager::GetInstance().Save();
 	delete s_pProManager;
 }
 

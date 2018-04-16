@@ -79,6 +79,8 @@ namespace GD_Tool
 
 			std::map<uint32_t, BaseVariable*> GetGlobalVars() const;
 
+			bool GetDirtyStatus() const { return m_isDirty; }
+
 			void RemoveGlobalVar(const uint32_t& index);
 			/**
 			* Function to get the current name of the project
@@ -136,11 +138,11 @@ namespace GD_Tool
 			* Deletes the project file
 			*
 			*/
-			void Delete();
+			int32_t Delete(const std::string& dirPath, bool deleteSubDirs = true);
 			/**
 			* Safe Release function for the ProjectManager
 			*/
-			static void Release();
+			static void Release(const bool& saveBeforeRelease = true);
 			/** 
 			* Default Destructor of the ProjectManager
 			*/

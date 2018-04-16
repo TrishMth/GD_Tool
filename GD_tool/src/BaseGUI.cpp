@@ -100,6 +100,13 @@ GD_Tool::Mainframework::BaseGUI::~BaseGUI()
 	s_pBaseGUI = nullptr;
 }
 
+bool GD_Tool::Mainframework::BaseGUI::IsInstantiated() const
+{
+
+	return s_pBaseGUI!= nullptr ? true : false;
+
+}
+
 void GD_Tool::Mainframework::BaseGUI::CreateInstance()
 {
 	if (s_pBaseGUI == nullptr)
@@ -115,6 +122,32 @@ GD_Tool::Mainframework::BaseGUI & GD_Tool::Mainframework::BaseGUI::GetInstance()
 
 void GD_Tool::Mainframework::BaseGUI::Release()
 {
+	if (ProjectManager::GetInstance().GetDirtyStatus())
+	{
+		if (!ImGui::Begin("FUCK YOU"))
+		{
+			ImGui::End(); 
+			return;
+		}
+		ImGui::OpenPopup("Save before quit?");
+		if (ImGui::BeginPopupModal("Save changes before quit?", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
+		{
+			ImGui::Text("All unsaved changes will get discarded, do you want to save them before quit?");
+			if (ImGui::Button("Yes", ImVec2(120, 0))) 
+			{
+				ProjectManager::GetInstance().Save();
+				ProjectManager::GetInstance().Release();
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("No", ImVec2(120, 0))) { ProjectManager::GetInstance().Release();	ImGui::CloseCurrentPopup();}
+
+			ImGui::EndPopup();
+			ImGui::End();
+		}
+	}
+	else
+		ProjectManager::GetInstance().Release();
 	ImGui::DestroyContext();
 	delete s_pBaseGUI;
 }
@@ -138,9 +171,11 @@ void GD_Tool::Mainframework::BaseGUI::CreateMenuBar()
 			{
 				if (ProjectManager::GetInstance().IsInstantiated())
 				{
-					for(std::map<uint32_t, Object*>::iterator it = ProjectManager::GetInstance().GetObjects().begin(); it != ProjectManager::GetInstance().GetObjects().end(); ++it)					
+					std::map<uint32_t, Object*> objects = ProjectManager::GetInstance().GetObjects();
+					std::map<uint32_t, Formula*>formulas = ProjectManager::GetInstance().GetFormulas();
+					for(std::map<uint32_t, Object*>::iterator it = objects.begin(); it != objects.end(); ++it)
 						it->second->Save();
-					for (std::map<uint32_t, Formula*>::iterator it = ProjectManager::GetInstance().GetFormulas().begin(); it != ProjectManager::GetInstance().GetFormulas().end(); ++it)
+					for (std::map<uint32_t, Formula*>::iterator it = formulas.begin(); it != formulas.end(); ++it)
 						it->second->Save();
 					ProjectManager::GetInstance().Save();
 				}
@@ -194,7 +229,7 @@ void GD_Tool::Mainframework::BaseGUI::CreateMenuBar()
 				{
 					MessageSystem::Log("GUI", "Open Object Manager Window", "Successfully opened the object creation manager window");
 				}
-				if (ImGui::MenuItem("GlobalVariables", nullptr, &m_bShowGlobalVariables))
+				if (ImGui::MenuItem("Global Variables", nullptr, &m_bShowGlobalVariables))
 				{
 					MessageSystem::Log("GUI", "Open global variables window", "Successfully opened the global variables window");
 				}		
@@ -768,31 +803,44 @@ void GD_Tool::Mainframework::BaseGUI::CreateLevelEditor()
 {
 	ImGui::SetNextWindowSize(ImVec2(900, 500), ImGuiCond_FirstUseEver);
 
-	if (!ImGui::Begin("Level Editor", &m_bShowLevelEditor))
-		ImGui::End();
-	
-	static float values[90] = { 0 };
-
-	ImGui::PlotLines("Lines", values, IM_ARRAYSIZE(values), 0, "avg 0.0", 0, 1.0f, ImVec2(800, 200));
-
-	std::map<uint32_t, Object*> objects = ProjectManager::GetInstance().GetObjects();	
-	static const char* currentPlayer = "No Object";
-	if (ImGui::BeginCombo("Choose Player", currentPlayer))
+	if (ImGui::Begin("Level Editor", &m_bShowLevelEditor, ImGuiWindowFlags_MenuBar))
 	{
-		for (std::map<uint32_t, Object*>::iterator it = objects.begin(); it != objects.end(); ++it)
+		
+		static bool detailsPanel = false; 
+		if (ImGui::BeginMenuBar())
 		{
-			
-			bool isSelected = (currentPlayer == _strdup(it->second->GetName().c_str()));
-			if (ImGui::Selectable(_strdup(it->second->GetName().c_str()), isSelected))
-				currentPlayer = _strdup(it->second->GetName().c_str());
-			if (isSelected)
-				ImGui::SetItemDefaultFocus();			
-		}
-		ImGui::EndCombo();
-	}
-	
+			if (ImGui::BeginMenu("Window"))
+			{
+				if (ImGui::MenuItem("Details Panel", nullptr, &detailsPanel))
+				{
+				}
+				ImGui::EndMenu();
+			}
 
-	ImGui::End();
+			ImGui::EndMenuBar();
+		}
+
+		float width = ImGui::GetWindowWidth();
+		ImVec2 pos = ImGui::GetWindowPos();
+		if(detailsPanel)
+			CreateLevelDetailsPanel(&detailsPanel, pos, width);
+
+		ImDrawList* drawList = ImGui::GetWindowDrawList();
+
+		ImVec2 canvasPos = ImGui::GetCursorScreenPos(); 
+		ImVec2 canvasSize = ImGui::GetContentRegionAvail();
+
+		if (canvasSize.x < 50.0f) canvasSize.x = 50.0f; 
+		if (canvasSize.y < 50.0f) canvasSize.y = 50.0f; 
+	
+		drawList->AddRect(canvasPos, ImVec2(canvasPos.x + canvasSize.x, canvasPos.y + canvasSize.y), IM_COL32(255, 255, 255, 255));
+		ImGui::InvisibleButton("canvas", canvasSize);
+
+
+
+		ImGui::End();
+	}
+
 }
 
 void GD_Tool::Mainframework::BaseGUI::CreateProjectSettings()
@@ -805,8 +853,41 @@ void GD_Tool::Mainframework::BaseGUI::CreateProjectSettings()
 	}
 	static char str[64] = "New project name";
 	ImGui::InputText("Enter new name", str, IM_ARRAYSIZE(str)); ImGui::SameLine(); if (ImGui::Button("Change name")) { ProjectManager::GetInstance().ChangeName(str); }
-	if (ImGui::Button("Delete project")) { ProjectManager::GetInstance().Delete(); m_bShowProjectSettings = false; }
+	if (ImGui::Button("Delete project")) 
+	{ 
+		if (m_bShowObjectManager)
+			m_bShowObjectManager = false;
+		int32_t IRC = ProjectManager::GetInstance().Delete(ProjectManager::GetInstance().GetFilePath(), true); 
+		MessageSystem::Log("GUI", "Delete", std::to_string(IRC));
+		m_bShowProjectSettings = false; 
+	}
 
+	ImGui::End();
+}
+
+void GD_Tool::Mainframework::BaseGUI::CreateLevelDetailsPanel(bool* active, const ImVec2& pos, const float& width)
+{
+	ImGui::SetNextWindowSize(ImVec2(200, 700), ImGuiCond_FirstUseEver);
+	ImGui::SetNextWindowPos(ImVec2(pos.x + width, pos.y), ImGuiCond_FirstUseEver);
+
+	if (!ImGui::Begin("Details Panel", active))
+		ImGui::End();
+
+	std::map<uint32_t, Object*> objects = ProjectManager::GetInstance().GetObjects();
+	static const char* currentPlayer = "No Object";
+	if (ImGui::BeginCombo("Choose Player", currentPlayer))
+	{
+		for (std::map<uint32_t, Object*>::iterator it = objects.begin(); it != objects.end(); ++it)
+		{
+
+			bool isSelected = (currentPlayer == _strdup(it->second->GetName().c_str()));
+			if (ImGui::Selectable(_strdup(it->second->GetName().c_str()), isSelected))
+				currentPlayer = _strdup(it->second->GetName().c_str());
+			if (isSelected)
+				ImGui::SetItemDefaultFocus();
+		}
+		ImGui::EndCombo();
+	}
 	ImGui::End();
 }
 

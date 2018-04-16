@@ -190,8 +190,8 @@ int32_t GD_Tool::Mainframework::DX11BaseWindow::Run()
 		}
 		
 	}
-	AppManager::GetInstance().SetNewWndPos(wndRect.left, wndRect.top);
-	AppManager::GetInstance().Release();
+	//AppManager::GetInstance().SetNewWndPos(wndRect.left, wndRect.top);
+	//AppManager::GetInstance().Release();
 	return (int32_t)msg.wParam;
 }
 
@@ -621,6 +621,12 @@ LRESULT GD_Tool::Mainframework::DX11BaseWindow::MsgProc(HWND hwnd, UINT msg, WPA
 		return 0;
 	case WM_SYSCOMMAND:
 		if ((wParam & 0xfff0) == SC_KEYMENU) // Disable ALT application menu
+			return 0;
+		break;
+	case WM_CLOSE:
+		if (AppManager::GetInstance().Release())
+			DestroyWindow(m_hMainWnd);
+		else
 			return 0;
 		break;
 	case WM_DESTROY:

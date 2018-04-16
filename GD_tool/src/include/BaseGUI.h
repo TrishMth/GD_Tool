@@ -29,6 +29,7 @@ namespace GD_Tool
 			bool VSync();
 			void UpdateAllWndSizes();
 			~BaseGUI();
+			bool IsInstantiated() const; 
 
 		private: 
 			static BaseGUI* s_pBaseGUI;
@@ -55,6 +56,7 @@ namespace GD_Tool
 			void CreateNode(Formula* formula);
 			void CreateLevelEditor();
 			void CreateProjectSettings();
+			void CreateLevelDetailsPanel(bool* active, const ImVec2& pos, const float& width);
 
 			bool m_bShowNewProjWnd; 
 			bool m_bShowOpenProjWnd;

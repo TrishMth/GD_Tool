@@ -59,29 +59,11 @@ void GD_Tool::Mainframework::LoadSystem::LoadProject(const std::string & filePat
 			}
 			if (inObjDesc)
 			{
-				if (objDescCount == 0)
-				{
-					objDesc.Count = atoi((strBuffer + "\n").c_str());
-					objDescCount++;
-				}
-				else 
-				{
-					for (int i = 0; i < objDesc.Count; i++)
-						LoadObjData(strBuffer, objDesc);
-				}				
+				LoadObjData(strBuffer);
 			}
 			if (inFormDesc)
 			{
-				if (formDescCount == 0)
-				{
-					formDesc.Count = atoi((strBuffer + "\n").c_str());
-					formDescCount++;
-				}
-				else
-				{
-					formDesc.Names.push_back(strBuffer);
-					ProjectManager::GetInstance().CreateFormula(strBuffer);
-				}
+				LoadFormData(strBuffer);
 			}			
 		}
 		ProjectManager::GetInstance().Save();
@@ -137,13 +119,46 @@ GD_Tool::Mainframework::AppConfigDesc GD_Tool::Mainframework::LoadSystem::Create
 	return desc; 
 }
 
-bool GD_Tool::Mainframework::LoadSystem::LoadObjData(const std::string & objName, const ObjectDesc& objDesc)
+bool GD_Tool::Mainframework::LoadSystem::LoadObjData(const std::string & objName)
 {
-
-	return false;
+	if (!ProjectManager::GetInstance().IsInstantiated())
+	{
+		MessageSystem::Error("Load System", "Couldn't load project", "The project isn't instaniated yet, please check the project.txt file for the right format");
+		return false;
+	}
+	std::fstream fileStream; 
+	fileStream.open(ProjectManager::GetInstance().GetFilePath() + "//Objects//" + objName + "_Obj.txt");
+	if (fileStream.is_open())	
+	{ 
+		ProjectManager::GetInstance().CreateObject(objName);
+	}
+	else
+	{
+		MessageSystem::Error("Load system", "Couldn't load object: " + objName + " of: " + ProjectManager::GetInstance().GetName(), "There is no file to load the object");
+		return false; 
+	}
+	fileStream.close();
+	return true; 
 }
 
 bool GD_Tool::Mainframework::LoadSystem::LoadFormData(const std::string & formName)
 {
-	return false;
+	if (!ProjectManager::GetInstance().IsInstantiated())
+	{
+		MessageSystem::Error("Load System", "Couldn't load project", "The project isn't instaniated yet, please check the project.txt file for the right format");
+		return false;
+	}
+	std::fstream fileStream;
+	fileStream.open(ProjectManager::GetInstance().GetFilePath() + "//Formulas//" + formName + "_Formula.txt");
+	if (fileStream.is_open())
+	{
+		ProjectManager::GetInstance().CreateFormula(formName);
+	}
+	else
+	{
+		MessageSystem::Error("Load system", "Couldn't load formula: " + formName + " of: " + ProjectManager::GetInstance().GetName(), "There is no file to load the formula");
+		return false;
+	}
+	fileStream.close();
+	return true;
 }
