@@ -14,6 +14,7 @@
 #include <map>
 #include <fstream>
 #include <iostream>
+#include <Shlwapi.h>
 #pragma endregion
 
 namespace GD_Tool
@@ -78,6 +79,8 @@ namespace GD_Tool
 			void AddVariable(BaseVariable* variable);
 
 			std::map<uint32_t, BaseVariable*> GetGlobalVars() const;
+
+			bool CheckDirytStatus();
 
 			bool GetDirtyStatus() const { return m_isDirty; }
 

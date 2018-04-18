@@ -102,8 +102,19 @@ GD_Tool::Mainframework::AppManager& GD_Tool::Mainframework::AppManager::GetInsta
 
 bool GD_Tool::Mainframework::AppManager::Release()
 {
-	if (!BaseGUI::Release(true))
-		return false;
+	if (ProjectManager::GetInstance().IsInstantiated())
+	{
+		if (ProjectManager::GetInstance().CheckDirytStatus())
+		{
+			if (!BaseGUI::Release(true))
+				return false;
+		}
+		else
+			if (!BaseGUI::Release(false))
+				return false;
+	}
+	if (ProjectManager::GetInstance().IsInstantiated())
+		ProjectManager::Release();
 	AppManager::GetInstance().Save();
 	delete s_pAppManager;
 	return true;

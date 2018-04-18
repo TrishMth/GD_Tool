@@ -40,6 +40,7 @@ namespace GD_Tool
 			* @return std::string The name of the current formula
 			*/
 			std::string GetName() const { return m_name; }
+			bool GetDirtyStatus() const { return m_isDirty; }
 			/**
 			* Function to change the name of the formula
 			*

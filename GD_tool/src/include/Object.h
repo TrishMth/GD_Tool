@@ -51,6 +51,8 @@ namespace GD_Tool
 			* @return The objects attached to this obj
 			*/
 			std::map<uint32_t, Object*> GetAttachedObjs() const { return m_attachedObjs; }
+
+			bool GetDirtyStatus() const { return m_isDirty; }
 			/**
 			* Getter function to get the index of the attached Objects
 			*

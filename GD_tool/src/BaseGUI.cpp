@@ -31,7 +31,8 @@ void GD_Tool::Mainframework::BaseGUI::Init()
 	case 1:
 		ImGui::StyleColorsLight();
 		break;
-	case 2: ImGui::StyleColorsClassic();
+	case 2:
+		ImGui::StyleColorsClassic();
 		break;
 	}
 	m_recentOpenFiles = AppManager::GetInstance().GetCurrentConfig().RecentlyOpenedPaths;
@@ -41,6 +42,9 @@ void GD_Tool::Mainframework::BaseGUI::Init()
 
 bool GD_Tool::Mainframework::BaseGUI::Run()
 {
+
+	// TODO: A lot of optimization 
+
 	CreateMenuBar();
 	if (m_bShowNewProjWnd)
 		CreateNewWindow("New Project");
@@ -98,7 +102,7 @@ bool GD_Tool::Mainframework::BaseGUI::VSync()
 
 void GD_Tool::Mainframework::BaseGUI::UpdateAllWndSizes()
 {
-
+	//TODO: Code for updating the window size after resize the window.
 }
 
 
@@ -151,7 +155,7 @@ void GD_Tool::Mainframework::BaseGUI::CreateMenuBar()
 			if (ImGui::MenuItem("New")) 
 				m_bShowNewProjWnd = true;
 
-			if (ImGui::MenuItem("Save"))
+			if (ImGui::MenuItem("Save", "Ctrl+S"))
 			{
 				if (ProjectManager::GetInstance().IsInstantiated())
 					ProjectManager::GetInstance().Save();
@@ -169,7 +173,7 @@ void GD_Tool::Mainframework::BaseGUI::CreateMenuBar()
 					ProjectManager::GetInstance().Save();
 				}
 			}
-			if (ImGui::MenuItem("Open"))
+			if (ImGui::MenuItem("Open", "Ctrl+O"))
 				m_bShowOpenProjWnd = true; 
 			if (ImGui::BeginMenu("Open Recent"))
 			{
@@ -347,10 +351,11 @@ void GD_Tool::Mainframework::BaseGUI::CreateObjectMngWnd()
 void GD_Tool::Mainframework::BaseGUI::CreateObjectWnd()
 {
 	ImGuiIO& io = ImGui::GetIO();
-	ImGui::SetNextWindowSize(ImVec2(200, 100), ImGuiCond_FirstUseEver);
+	ImGui::SetNextWindowSize(ImVec2(450, 100), ImGuiCond_FirstUseEver);
 	ImGui::SetNextWindowPos(ImVec2(io.DisplaySize.x / 2 - 100, io.DisplaySize.y / 2 - 100), ImGuiCond_FirstUseEver);
 	if(ImGui::Begin("Create new object"), &m_bShowCreateObject)
 	{
+		ImGui::PushItemWidth(150);
 		static char str[128] = "Object name";
 		ImGui::InputText("Please enter a name for the new object", str, IM_ARRAYSIZE(str));
 		if (ImGui::Button("Create") && str != nullptr)
@@ -406,7 +411,6 @@ void GD_Tool::Mainframework::BaseGUI::CreateConsole()
 
 void GD_Tool::Mainframework::BaseGUI::CreateObjectTree(Object* obj, const int32_t& count, const int32_t& selectionMask, int32_t& nodeClicked)
 {
-	
 	ImGui::PushStyleVar(ImGuiStyleVar_IndentSpacing, ImGui::GetFontSize() * 3);
 	ImGuiTreeNodeFlags nodeFlags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ((selectionMask & (1 << count)) ? ImGuiTreeNodeFlags_Selected : 0);
 	bool nodeOpen = ImGui::TreeNodeEx((void*)(intptr_t)count, nodeFlags, obj->GetName().c_str(), count);
@@ -901,7 +905,7 @@ void GD_Tool::Mainframework::BaseGUI::CreateReleasePopUp()
 			ImGui::CloseCurrentPopup();
 			ImGui::EndPopup();
 			BaseGUI::GetInstance().Release(false); 
-			ProjectManager::GetInstance().Release();	
+			ProjectManager::GetInstance().Release(false);	
 			return;
 		}
 		ImGui::EndPopup();

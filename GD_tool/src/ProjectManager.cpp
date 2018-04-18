@@ -113,6 +113,25 @@ std::map<uint32_t, GD_Tool::Mainframework::BaseVariable*> GD_Tool::Mainframework
 	return m_globalVariables;
 }
 
+bool GD_Tool::Mainframework::ProjectManager::CheckDirytStatus()
+{
+	if (!m_isDirty)
+	{
+		for (std::map<uint32_t, Object*>::iterator it = m_baseObjects.begin(); it != m_baseObjects.end(); ++it)
+		{
+			if (it->second->GetDirtyStatus())
+				return true;
+		}
+		for (std::map<uint32_t, Formula*>::iterator it = m_formulas.begin(); it != m_formulas.end(); ++it)
+		{
+			if (it->second->GetDirtyStatus())
+				return true;
+		}
+		return false; 
+	}
+	return true;
+}
+
 void GD_Tool::Mainframework::ProjectManager::RemoveGlobalVar(const uint32_t & index)
 {
 	m_globalVariables.erase(index);
@@ -145,12 +164,13 @@ void GD_Tool::Mainframework::ProjectManager::AddObject(Object * obj)
 void GD_Tool::Mainframework::ProjectManager::CreateFormula(const std::string& name)
 {
 	for (std::map<uint32_t, Formula*>::iterator it = m_formulas.begin(); it != m_formulas.end(); ++it)
+	{
 		if (name == it->second->GetName())
 		{
 			MessageSystem::Error("ProjectManager", "Failed to create the new formula", "A formula with this name already exists");
 			return;
 		}
-
+	}
 	Formula* newFormula = new Formula(name);
 	m_formulas.insert(std::pair<uint32_t, Formula*>(m_formulaIndex, newFormula));
 	m_formulaIndex++;
@@ -270,14 +290,25 @@ int32_t GD_Tool::Mainframework::ProjectManager::Delete(const std::string& dirPat
 		MessageSystem::Error("Project manager", "Invalid handle", "The current project has no directory anymore");
 		return -1;
 	}
-
+	AppManager::GetInstance().GetCurrentConfig().CheckRecentlyOpenedFiles(m_filePath);
 	Release();
 	return 0;
 }
 
 void GD_Tool::Mainframework::ProjectManager::Release(const bool& saveBeforeRelease)
 {
-	ProjectManager::GetInstance().Save();
+	HANDLE hFile;
+	WIN32_FIND_DATA fileInfo;
+	std::string str = ProjectManager::GetInstance().GetFilePath();
+
+	if(saveBeforeRelease)
+		ProjectManager::GetInstance().Save();
+	else
+	{
+		hFile = ::FindFirstFile(str.c_str(), &fileInfo);
+		if (::FindNextFile(hFile, &fileInfo) == FALSE)
+			ProjectManager::GetInstance().Delete(str, true);
+	}
 	delete s_pProManager;
 }
 
