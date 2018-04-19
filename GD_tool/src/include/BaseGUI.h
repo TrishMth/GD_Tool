@@ -31,6 +31,9 @@ namespace GD_Tool
 			~BaseGUI();
 			bool IsInstantiated() const; 
 
+			GraphPoints& GetGraphPoints() const { return *m_pGraphPoints; }
+			void SetGraphPoints(GraphPoints* graphpoints) { m_pGraphPoints = graphpoints; }
+
 		private: 
 			static BaseGUI* s_pBaseGUI;
 
@@ -80,6 +83,8 @@ namespace GD_Tool
 			ImVector<char*> m_inputBuf;
 			ImVector<ImVec4> m_inputCol;
 			
+			GraphPoints* m_pGraphPoints;
+
 			std::list<Formula*> m_showNodeWndContainer;
 			std::list<std::string> m_recentOpenFiles; 
 		};

@@ -40,6 +40,20 @@ namespace GD_Tool
 			float x = 0, y = 0, z = 0;
 			float Color[4]{ 0,0,0,0 };
 		};
+		struct GraphPoints
+		{
+			ImVec2 list[100]; 
+			
+			
+			ImVec2 operator[](const uint32_t& index)
+			{
+				return list[index];
+			}
+			void SetHeight(const uint32_t& index, const uint32_t& height)
+			{
+				list[index].y = height;
+			}
+		};
 		/**
 		* Description struct for the project 
 		*/

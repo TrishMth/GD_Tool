@@ -23,9 +23,19 @@ void GD_Tool::Mainframework::AppManager::Save()
 		buffer.append(std::to_string(m_configDesc.Maximized) + "\n"); 
 		buffer.append(std::to_string(m_configDesc.Styles)+ "\n"); 
 		buffer.append(std::to_string(m_configDesc.VSync) + "\n");
-		for (std::list<std::string>::iterator it = m_configDesc.RecentlyOpenedPaths.begin(); it != m_configDesc.RecentlyOpenedPaths.end(); ++it)
+		if (m_configDesc.RecentlyOpenedPaths.empty())
 		{
-			buffer.append(*it + "\n");
+			buffer.append("\n");
+			buffer.append("\n");
+			buffer.append("\n");
+		}
+		else
+		{
+			for (std::list<std::string>::iterator it = m_configDesc.RecentlyOpenedPaths.begin(); it != m_configDesc.RecentlyOpenedPaths.end(); ++it)
+			{
+				buffer.append(*it + "\n");
+			}
+
 		}
 		fileStream.write(buffer.c_str(), buffer.size());
 	}
@@ -113,8 +123,6 @@ bool GD_Tool::Mainframework::AppManager::Release()
 			if (!BaseGUI::Release(false))
 				return false;
 	}
-	if (ProjectManager::GetInstance().IsInstantiated())
-		ProjectManager::Release();
 	AppManager::GetInstance().Save();
 	delete s_pAppManager;
 	return true;

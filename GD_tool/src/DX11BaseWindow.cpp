@@ -172,7 +172,7 @@ int32_t GD_Tool::Mainframework::DX11BaseWindow::Run()
 
 			if (!BaseGUI::GetInstance().Run())
 			{
-				AppManager::GetInstance().SetNewWndPos(wndRect.left, wndRect.top);
+				//AppManager::GetInstance().SetNewWndPos(wndRect.left, wndRect.top);
 				break;
 			}
 

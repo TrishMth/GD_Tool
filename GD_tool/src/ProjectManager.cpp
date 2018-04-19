@@ -290,7 +290,7 @@ int32_t GD_Tool::Mainframework::ProjectManager::Delete(const std::string& dirPat
 		MessageSystem::Error("Project manager", "Invalid handle", "The current project has no directory anymore");
 		return -1;
 	}
-	AppManager::GetInstance().GetCurrentConfig().CheckRecentlyOpenedFiles(m_filePath);
+	AppManager::GetInstance().GetCurrentConfig().CheckRecentlyOpenedFiles(m_fileName);
 	Release();
 	return 0;
 }

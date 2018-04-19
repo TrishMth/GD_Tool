@@ -15,7 +15,7 @@ GD_Tool::Mainframework::BaseGUI::BaseGUI()
 	, m_bVSync(true)
 	, m_bShowStats(false)
 	, m_bUpdateWndSize(false)
-	
+	, m_pGraphPoints(nullptr)
 {
 	s_pBaseGUI = this;
 	ImGui::CreateContext();
@@ -108,6 +108,7 @@ void GD_Tool::Mainframework::BaseGUI::UpdateAllWndSizes()
 
 GD_Tool::Mainframework::BaseGUI::~BaseGUI()
 {
+	delete m_pGraphPoints;
 	s_pBaseGUI = nullptr;
 }
 
@@ -139,7 +140,6 @@ bool GD_Tool::Mainframework::BaseGUI::Release(const bool& showPopUp)
 		if (m_bShowReleasePopup)
 			return false;
 	}
-
 	ImGui::DestroyContext();
 	delete s_pBaseGUI;
 	return true;
@@ -817,7 +817,7 @@ void GD_Tool::Mainframework::BaseGUI::CreateLevelEditor()
 		ImVec2 pos = ImGui::GetWindowPos();
 		if(detailsPanel)
 			CreateLevelDetailsPanel(&detailsPanel, pos, width);
-
+		ImGuiIO& io = ImGui::GetIO();
 		ImDrawList* drawList = ImGui::GetWindowDrawList();
 
 		ImVec2 canvasPos = ImGui::GetCursorScreenPos(); 
@@ -825,8 +825,16 @@ void GD_Tool::Mainframework::BaseGUI::CreateLevelEditor()
 
 		if (canvasSize.x < 50.0f) canvasSize.x = 50.0f; 
 		if (canvasSize.y < 50.0f) canvasSize.y = 50.0f; 
-	
+		
 		drawList->AddRect(canvasPos, ImVec2(canvasPos.x + canvasSize.x, canvasPos.y + canvasSize.y), IM_COL32(255, 255, 255, 255));
+
+		ImVec2 list[3] = { ImVec2(0,0),ImVec2(io.DisplaySize.x / 2, io.DisplaySize.y / 2), ImVec2(io.DisplaySize.x, io.DisplaySize.y) };
+
+		//TODO: Implement graph rendering 
+
+		drawList->PushClipRect(canvasPos, ImVec2(canvasPos.x + canvasSize.x, canvasPos.y + canvasSize.y), true); 
+
+		drawList->PopClipRect();
 		ImGui::InvisibleButton("canvas", canvasSize);
 
 
@@ -895,8 +903,7 @@ void GD_Tool::Mainframework::BaseGUI::CreateReleasePopUp()
 			ProjectManager::GetInstance().Save();
 			ImGui::CloseCurrentPopup();
 			ImGui::EndPopup();
-			BaseGUI::GetInstance().Release(false);
-			ProjectManager::GetInstance().Release();
+			AppManager::GetInstance().Release();
 			return;
 		}
 		ImGui::SameLine();
@@ -906,6 +913,7 @@ void GD_Tool::Mainframework::BaseGUI::CreateReleasePopUp()
 			ImGui::EndPopup();
 			BaseGUI::GetInstance().Release(false); 
 			ProjectManager::GetInstance().Release(false);	
+			AppManager::GetInstance().Release();
 			return;
 		}
 		ImGui::EndPopup();

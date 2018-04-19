@@ -61,11 +61,11 @@ namespace GD_Tool
 			* @param ProjectName The name of the new project
 			*/
 			void NewProject(const std::string& ProjectName);
-			AppConfigDesc& GetCurrentConfig() { return m_configDesc;  }
+			inline AppConfigDesc& GetCurrentConfig() { return m_configDesc;  }
 			void AddNewProjectFile(const std::string& fileName) { m_configDesc.RecentlyOpenedPaths.push_back(fileName); if (m_configDesc.RecentlyOpenedPaths.size() > 3) m_configDesc.RecentlyOpenedPaths.pop_front(); }
-			void SetNewConfig(const AppConfigDesc& configDesc) { m_configDesc = configDesc; }
-			void SetNewWindowSize(const uint32_t& resolutionX, const uint32_t& resolutionY) { m_configDesc.WindowWidth = resolutionX; m_configDesc.WindowHeight = resolutionY; }
-			void SetNewWndPos(const int32_t& posX, const int32_t& posY) { m_configDesc.WindowPosX = posX; m_configDesc.WindowPosY = posY; }
+			inline void SetNewConfig(const AppConfigDesc& configDesc) { m_configDesc = configDesc; }
+			inline void SetNewWindowSize(const uint32_t& resolutionX, const uint32_t& resolutionY) { m_configDesc.WindowWidth = resolutionX; m_configDesc.WindowHeight = resolutionY; }
+			inline void SetNewWndPos(const int32_t& posX, const int32_t& posY) { m_configDesc.WindowPosX = posX; m_configDesc.WindowPosY = posY; }
 			bool CheckNewProjectFile(const std::string& ProjectName);
 			/**
 			* Loads a existing project by getting the filepath 
