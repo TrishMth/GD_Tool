@@ -51,7 +51,9 @@ namespace GD_Tool
 			void CreateFormulaTree(Formula* formula, const int32_t& count, const int32_t& selectionMask, int32_t& nodeClicked);
 			void CreateSubObject(Object* obj);
 			void CreateFormulaWnd();
+			bool CreateFormulaWnd(bool* active, Object* obj);
 			void CreateGlobalVars();
+			void CreateGlobalForm();
 			void CreateNewGlobalVar();
 			void CreateFormulaNodeWnd(Formula* formula);
 			void CreateGeneralSettings();
@@ -61,6 +63,8 @@ namespace GD_Tool
 			void CreateProjectSettings();
 			void CreateLevelDetailsPanel(bool* active, const ImVec2& pos, const float& width);
 			void CreateReleasePopUp();
+			void CreateObjDetailsPanel(bool* active, const ImVec2& pos, const float& width);
+			void CreateObjVar(bool* active, Object* obj);
 
 			bool m_bShowNewProjWnd; 
 			bool m_bShowOpenProjWnd;
@@ -75,6 +79,7 @@ namespace GD_Tool
 			bool m_bShowStats; 
 			bool m_bShowLevelEditor;
 			bool m_bShowProjectSettings;
+			bool m_bShowGlobalFormulas;
 			static bool m_bShowReleasePopup;
 
 			bool m_bVSync; 
@@ -84,6 +89,8 @@ namespace GD_Tool
 			ImVector<ImVec4> m_inputCol;
 			
 			GraphPoints* m_pGraphPoints;
+
+			Object* m_pCurrFocusedObj;
 
 			std::list<Formula*> m_showNodeWndContainer;
 			std::list<std::string> m_recentOpenFiles; 

@@ -47,7 +47,7 @@ void GD_Tool::Mainframework::ProjectManager::CreateObject(const std::string & na
 			return;
 		}
 
-	Object* newObj = new Object(m_objIndex,name);
+	Object* newObj = new Object(m_objIndex,name, m_filePath + "//" + name);
 	m_objIndex++;
 	AddObject(newObj); 
 	m_isDirty = true; 

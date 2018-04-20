@@ -1,6 +1,7 @@
 #pragma once
 #pragma region Internal Includes
 #include "BaseVariable.h"
+#include "Formula.h"
 #pragma endregion 
 #pragma region External Includes
 #include <string>
@@ -21,7 +22,7 @@ namespace GD_Tool
 			/**
 			* Default Constructor of the Object Class
 			*/
-			Object(const uint32_t& objIndex, const std::string& name); 
+			Object(const uint32_t& objIndex, const std::string& name, const std::string& objDirPath);
 			/**
 			* Getter function to get the name of the object
 			*
@@ -52,7 +53,7 @@ namespace GD_Tool
 			*/
 			std::map<uint32_t, Object*> GetAttachedObjs() const { return m_attachedObjs; }
 
-			bool GetDirtyStatus() const { return m_isDirty; }
+			bool GetDirtyStatus();
 			/**
 			* Getter function to get the index of the attached Objects
 			*
@@ -86,7 +87,11 @@ namespace GD_Tool
 			* 
 			* @return All variables of this obj
 			*/
-			std::map<uint32_t, BaseVariable*> GetVariables() const {m_variables;}
+			std::map<uint32_t, BaseVariable*> GetVariables() const {return m_variables;}
+			void CreateFormula(const std::string& name);
+			void AddFormula(Formula* formula);
+			void RemoveFormula(const uint32_t& index);
+			std::map<uint32_t, Formula*> GetFormulas() const { return m_localFormulas; }
 			/**
 			* Function to save the changes of this object
 			*
@@ -103,11 +108,14 @@ namespace GD_Tool
 		private: 
 			std::map<uint32_t, BaseVariable*> m_variables;
 			std::map<uint32_t, Object*> m_attachedObjs; 
+			std::map<uint32_t, Formula*> m_localFormulas;
 			uint32_t m_attachedIndex; 
 			uint32_t m_objIndex; 
 			uint32_t m_variableIndex; 
+			uint32_t m_formulaIndex; 
 			std::string m_name;
 			std::string m_fileName;
+			std::string m_dirName;
 			bool m_isDirty; 
 		};
 	}
