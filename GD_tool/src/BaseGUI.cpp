@@ -76,14 +76,16 @@ bool GD_Tool::Mainframework::BaseGUI::Run()
 
 	if (m_bShowGlobalFormulas)
 		CreateGlobalForm();
-
-	for (std::list<Formula*>::iterator it = m_showNodeWndContainer.begin(); it != m_showNodeWndContainer.end(); ++it)
+	for (std::list<Formula*>::iterator it = m_showNodeWndContainer.begin(); it != m_showNodeWndContainer.end();)
 	{
 		Formula* formula = *it;
 		if (formula->GetShowNodeWindow())
+		{
 			CreateFormulaNodeWnd(formula);
+			++it;
+		}		
 		else
-			m_showNodeWndContainer.erase(it);
+			it = m_showNodeWndContainer.erase(it);
 	}
 
 	if (m_bShowReleasePopup)
@@ -395,7 +397,6 @@ void GD_Tool::Mainframework::BaseGUI::CreateConsole()
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 1));
 	ImGui::LogToClipboard();
 
-	ImVec4 col_default_text = ImGui::GetStyleColorVec4(ImGuiCol_Text);
 
 	ImGuiListClipper clipper(m_inputBuf.Size);
 	while (clipper.Step())
@@ -606,86 +607,90 @@ void GD_Tool::Mainframework::BaseGUI::CreateNewGlobalVar()
 	ImGuiIO& io = ImGui::GetIO();
 	ImGui::SetNextWindowSize(ImVec2(200, 100), ImGuiCond_FirstUseEver);
 	ImGui::SetNextWindowPos(ImVec2(io.DisplaySize.x / 2 - 100, io.DisplaySize.y / 2 - 50), ImGuiCond_FirstUseEver);
-	if (ImGui::Begin("Create new variable"))
+	if (!ImGui::Begin("Create new variable"))
 	{
-		static ImGuiComboFlags flags = 0;
-		GlobalEnums::EVariableTypes varType = GlobalEnums::EVariableTypes::Integer;
-		const char* typeName[] = { "Integer", "Boolean", "Float", "Double" };
-		static const char* currentType = typeName[0];
-		if (ImGui::BeginCombo("Variable Type", currentType, flags))
+		ImGui::End();
+		return;
+	}
+
+	static ImGuiComboFlags flags = 0;
+	GlobalEnums::EVariableTypes varType = GlobalEnums::EVariableTypes::Integer;
+	const char* typeName[] = { "Integer", "Boolean", "Float", "Double" };
+	static const char* currentType = typeName[0];
+	if (ImGui::BeginCombo("Variable Type", currentType, flags))
+	{
+		for (uint32_t i = 0; i < IM_ARRAYSIZE(typeName); i++)
 		{
-			for (uint32_t i = 0; i < IM_ARRAYSIZE(typeName); i++)
-			{
-				bool isSelected = (currentType == typeName[i]);
-				if (ImGui::Selectable(typeName[i], isSelected))
-					currentType = typeName[i];
-				if (isSelected)
-					ImGui::SetItemDefaultFocus();
-			}
-			ImGui::EndCombo();
+			bool isSelected = (currentType == typeName[i]);
+			if (ImGui::Selectable(typeName[i], isSelected))
+				currentType = typeName[i];
+			if (isSelected)
+				ImGui::SetItemDefaultFocus();
 		}
-		static char str[128] = "Variable name";
-		ImGui::InputText("Please enter a name for the new variable", str, IM_ARRAYSIZE(str));
+		ImGui::EndCombo();
+	}
+	static char str[128] = "Variable name";
+	ImGui::InputText("Please enter a name for the new variable", str, IM_ARRAYSIZE(str));
 
-		if (currentType == typeName[0])
-			varType = GlobalEnums::EVariableTypes::Integer;
-		else if (currentType == typeName[1])
-			varType = GlobalEnums::EVariableTypes::Boolean;
-		else if (currentType == typeName[2])
-			varType = GlobalEnums::EVariableTypes::Float;
-		else if (currentType == typeName[3])
-			varType = GlobalEnums::EVariableTypes::Double;
+	if (currentType == typeName[0])
+		varType = GlobalEnums::EVariableTypes::Integer;
+	else if (currentType == typeName[1])
+		varType = GlobalEnums::EVariableTypes::Boolean;
+	else if (currentType == typeName[2])
+		varType = GlobalEnums::EVariableTypes::Float;
+	else if (currentType == typeName[3])
+		varType = GlobalEnums::EVariableTypes::Double;
 
-		static int inputInt = 0;
-		static float inputFloat = 0.0f;
-		static double inputDouble = 0.0f;
-		static bool inputBool = false;
+	static int inputInt = 0;
+	static float inputFloat = 0.0f;
+	static double inputDouble = 0.0f;
+	static bool inputBool = false;
+	switch (varType)
+	{
+	case GlobalEnums::EVariableTypes::Integer:
+		ImGui::InputInt("Value", &inputInt);
+		break;
+	case GlobalEnums::EVariableTypes::Float:
+		ImGui::InputFloat("Value", &inputFloat, 0.01f, 1.0f);
+		break;
+	case GlobalEnums::EVariableTypes::Double:
+		ImGui::InputDouble("Value", &inputDouble, 0.00000000001f, 1.0f, "%6f");
+		break;
+	case GlobalEnums::EVariableTypes::Boolean:
+		ImGui::Checkbox("Value", &inputBool);
+		break;
+	}
+	if (ImGui::Button("Create variable"))
+	{
+		BaseVariable* var = nullptr;
 		switch (varType)
 		{
 		case GlobalEnums::EVariableTypes::Integer:
-			ImGui::InputInt("Value", &inputInt);
+			var = new BaseVariable(varType, str, inputInt);
 			break;
 		case GlobalEnums::EVariableTypes::Float:
-			ImGui::InputFloat("Value", &inputFloat, 0.01f, 1.0f);
+			var = new BaseVariable(varType, str, inputFloat);
 			break;
 		case GlobalEnums::EVariableTypes::Double:
-			ImGui::InputDouble("Value", &inputDouble, 0.00000000001f, 1.0f, "%6f");
+			var = new BaseVariable(varType, str, inputDouble);
 			break;
 		case GlobalEnums::EVariableTypes::Boolean:
-			ImGui::Checkbox("Value", &inputBool);
+			var = new BaseVariable(varType, str, inputBool);
 			break;
 		}
-		if (ImGui::Button("Create variable"))
+		if (var != nullptr)
 		{
-			BaseVariable* var = nullptr;
-			switch (varType)
-			{
-			case GlobalEnums::EVariableTypes::Integer:
-				var = new BaseVariable(varType, str, inputInt);
-				break;
-			case GlobalEnums::EVariableTypes::Float:
-				var = new BaseVariable(varType, str, inputFloat);
-				break;
-			case GlobalEnums::EVariableTypes::Double:
-				var = new BaseVariable(varType, str, inputDouble);
-				break;
-			case GlobalEnums::EVariableTypes::Boolean:
-				var = new BaseVariable(varType, str, inputBool);
-				break;
-			}
-			if (var != nullptr)
-			{
-				ProjectManager::GetInstance().AddVariable(var);
-				m_bShowCreateVariables = false;
-				ImGui::End();
-				return;
-			}
-			else
-				MessageSystem::Error("GUI", "Couldn't create the variable", "The variable couldn't get generated.");
+			ProjectManager::GetInstance().AddVariable(var);
+			m_bShowCreateVariables = false;
+			ImGui::End();
+			return;
 		}
-
-		ImGui::End();
+		else
+			MessageSystem::Error("GUI", "Couldn't create the variable", "The variable couldn't get generated.");
 	}
+
+	ImGui::End();
+	
 }
 
 void GD_Tool::Mainframework::BaseGUI::CreateFormulaNodeWnd(Formula* formula)
@@ -693,11 +698,14 @@ void GD_Tool::Mainframework::BaseGUI::CreateFormulaNodeWnd(Formula* formula)
 	ImGuiIO& io = ImGui::GetIO();
 	static bool showContextMenu;
 	bool active = formula->GetShowNodeWindow();
-	if (!ImGui::Begin("Formula node window", &active) )
+	std::string str = formula->GetName() + " node window";
+	if (!ImGui::Begin(str.c_str(), &active) )
 	{
 		ImGui::End();
 		return;
 	}
+	if (!active)
+		formula->SetShowNodeWindow(active);
 	if (ImGui::IsMouseClicked(1) && ImGui::IsMouseHoveringWindow())
 		showContextMenu = true;
 
